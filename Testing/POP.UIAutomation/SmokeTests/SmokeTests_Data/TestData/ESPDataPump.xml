@@ -1,0 +1,10 @@
+<?xml version="1.0" standalone="yes"?>
+<ESPDataPump>
+  <record>
+    <TopDownId>1</TopDownId>
+	<PumpModel>GN5200 - Reda</PumpModel>
+	<NumberOfStages>196</NumberOfStages>
+	<HeadTuningfactor>1.0000</HeadTuningfactor>
+  </record>
+</ESPDataPump>
+	

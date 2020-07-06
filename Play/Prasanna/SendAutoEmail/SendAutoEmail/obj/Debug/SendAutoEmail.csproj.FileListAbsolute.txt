@@ -1,0 +1,13 @@
+c:\users\e159279\documents\visual studio 2017\Projects\SendAutoEmail\SendAutoEmail\bin\Debug\SendAutoEmail.exe.config
+c:\users\e159279\documents\visual studio 2017\Projects\SendAutoEmail\SendAutoEmail\bin\Debug\SendAutoEmail.exe
+c:\users\e159279\documents\visual studio 2017\Projects\SendAutoEmail\SendAutoEmail\bin\Debug\SendAutoEmail.pdb
+c:\users\e159279\documents\visual studio 2017\Projects\SendAutoEmail\SendAutoEmail\obj\Debug\SendAutoEmail.csprojResolveAssemblyReference.cache
+c:\users\e159279\documents\visual studio 2017\Projects\SendAutoEmail\SendAutoEmail\obj\Debug\SendAutoEmail.exe
+c:\users\e159279\documents\visual studio 2017\Projects\SendAutoEmail\SendAutoEmail\obj\Debug\SendAutoEmail.pdb
+c:\users\e159279\documents\visual studio 2017\Projects\SendAutoEmail\SendAutoEmail\bin\Debug\Microsoft.SqlServer.SendMailTask.dll
+c:\users\e159279\documents\visual studio 2017\Projects\SendAutoEmail\SendAutoEmail\bin\Debug\Microsoft.SqlServer.ManagedDTS.dll
+c:\users\e159279\documents\visual studio 2017\Projects\SendAutoEmail\SendAutoEmail\bin\Debug\Microsoft.SqlServer.DTSRuntimeWrap.dll
+c:\users\e159279\documents\visual studio 2017\Projects\SendAutoEmail\SendAutoEmail\bin\Debug\Microsoft.SqlServer.ManagedConnections.dll
+c:\users\e159279\documents\visual studio 2017\Projects\SendAutoEmail\SendAutoEmail\bin\Debug\Microsoft.SqlServer.PipelineHost.dll
+c:\users\e159279\documents\visual studio 2017\Projects\SendAutoEmail\SendAutoEmail\bin\Debug\Microsoft.SqlServer.DTSPipelineWrap.dll
+c:\users\e159279\documents\visual studio 2017\Projects\SendAutoEmail\SendAutoEmail\bin\Debug\Microsoft.SqlServer.ConnectionInfo.dll

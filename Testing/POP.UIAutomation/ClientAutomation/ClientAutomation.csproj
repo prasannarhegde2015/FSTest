@@ -1,0 +1,153 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="14.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProductVersion>
+    </ProductVersion>
+    <SchemaVersion>2.0</SchemaVersion>
+    <ProjectGuid>{A74DF0EB-0480-4B08-B7AB-27732900E854}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>ClientAutomation</RootNamespace>
+    <AssemblyName>ClientAutomation.test</AssemblyName>
+    <TargetFrameworkVersion>v4.6.1</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+    <ProjectTypeGuids>{3AC096D0-A1C2-E12C-1390-A8335801FDAB};{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</ProjectTypeGuids>
+    <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>
+    <VSToolsPath Condition="'$(VSToolsPath)' == ''">$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v$(VisualStudioVersion)</VSToolsPath>
+    <ReferencePath>$(ProgramFiles)\Common Files\microsoft shared\VSTT\$(VisualStudioVersion)\UITestExtensionPackages</ReferencePath>
+    <IsCodedUITest>True</IsCodedUITest>
+    <TestProjectType>CodedUITest</TestProjectType>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>$(ProjectDir)..\..\out\bin\$(Configuration)\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>$(ProjectDir)..\..\out\bin\$(Configuration)\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="ArtOfTest.WebAii, Version=2018.2.606.0, Culture=neutral, PublicKeyToken=4fd5f65be123776c, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\..\Libraries\Testing\Telerik\ArtOfTest.WebAii.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.VisualStudio.QualityTools.UnitTestFramework, Version=10.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
+      <Private>False</Private>
+    </Reference>
+    <Reference Include="System" />
+    <Reference Include="System.Configuration" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.DirectoryServices.AccountManagement" />
+    <Reference Include="System.Drawing" />
+    <Reference Include="System.Management" />
+    <Reference Include="System.Windows.Forms" />
+    <Reference Include="System.Xml" />
+    <Reference Include="Telerik.TestingFramework.Controls.KendoUI, Version=2018.2.606.0, Culture=neutral, PublicKeyToken=528163f3e645de45, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\..\Libraries\Testing\Telerik\Telerik.TestingFramework.Controls.KendoUI.dll</HintPath>
+    </Reference>
+    <Reference Include="Telerik.WebAii.Controls.Html, Version=2018.2.606.0, Culture=neutral, PublicKeyToken=528163f3e645de45, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\..\Libraries\Testing\Telerik\Telerik.WebAii.Controls.Html.dll</HintPath>
+    </Reference>
+    <Reference Include="WindowsBase" />
+  </ItemGroup>
+  <ItemGroup>
+    <CodeAnalysisDependentAssemblyPaths Condition=" '$(VS100COMNTOOLS)' != '' " Include="$(VS100COMNTOOLS)..\IDE\PrivateAssemblies">
+      <Visible>False</Visible>
+    </CodeAnalysisDependentAssemblyPaths>
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="APIUITestBase.cs" />
+    <Compile Include="ForeSiteAutoBase.cs" />
+    <Compile Include="ForeSiteAuto.cs" />
+    <Compile Include="Helper\CommonHelper.cs" />
+    <Compile Include="PageObjects\PageAnalysis.cs" />
+    <Compile Include="PageObjects\PageDashboard.cs" />
+    <Compile Include="PageObjects\PageEquipmentConfiguration.cs" />
+    <Compile Include="PageObjects\PageJobManagement.cs" />
+    <Compile Include="PageObjects\PageMasterDefinition.cs" />
+    <Compile Include="PageObjects\PageWellConfig.cs" />
+    <Compile Include="PageObjects\PageWellTest.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Common\UITestData.cs" />
+    <Compile Include="TelerikCoreUtils\TelerikObject.cs" />
+    <Compile Include="TestClasses\EquipmentConfiguration.cs" />
+    <Compile Include="TestClasses\JobManagement.cs" />
+    <Compile Include="TestClasses\RMHistoricalInfo.cs" />
+    <Compile Include="TestClasses\WellAnalysis.cs" />
+    <Compile Include="TestClasses\WellConfiguration.cs" />
+    <Compile Include="TestClasses\WellTestFlow.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="App.config">
+      <SubType>Designer</SubType>
+    </None>
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\..\..\Common\POP.APIClient\POP.APIClient.csproj">
+      <Project>{FBE39395-632E-4145-B899-CDBE3CB7477A}</Project>
+      <Name>POP.APIClient</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\..\Common\POP.DTOs\POP.DTOs.csproj">
+      <Project>{e698d674-48a8-48b0-8ae6-18fc9830c3c1}</Project>
+      <Name>POP.DTOs</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\..\Common\POP.Enums\POP.Enums.csproj">
+      <Project>{1ca3717a-7703-4495-8750-8b82c3dd89af}</Project>
+      <Name>POP.Enums</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\..\Common\POP.Interfaces\POP.Interfaces.csproj">
+      <Project>{F37FF20D-98FC-43E5-A9EE-060FC736C161}</Project>
+      <Name>POP.Interfaces</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <ItemGroup />
+  <Choose>
+    <When Condition="'$(VisualStudioVersion)' == '10.0' And '$(IsCodedUITest)' == 'True'">
+      <ItemGroup>
+        <Reference Include="Microsoft.VisualStudio.QualityTools.CodedUITestFramework, Version=10.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
+          <Private>False</Private>
+        </Reference>
+        <Reference Include="Microsoft.VisualStudio.TestTools.UITest.Common, Version=10.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
+          <Private>False</Private>
+        </Reference>
+        <Reference Include="Microsoft.VisualStudio.TestTools.UITest.Extension, Version=10.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
+          <Private>False</Private>
+        </Reference>
+        <Reference Include="Microsoft.VisualStudio.TestTools.UITesting, Version=10.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
+          <Private>False</Private>
+        </Reference>
+      </ItemGroup>
+    </When>
+  </Choose>
+  <Choose>
+    <When Condition="('$(VisualStudioVersion)' == '10.0' Or '$(VisualStudioVersion)' == '11.0') And '$(IsCodedUITest)' == 'True'">
+      <ItemGroup>
+        <Reference Include="UIAutomationTypes" />
+      </ItemGroup>
+    </When>
+  </Choose>
+  <Import Project="$(VSToolsPath)\TeamTest\Microsoft.TestTools.targets" Condition="Exists('$(VSToolsPath)\TeamTest\Microsoft.TestTools.targets')" />
+  <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+</Project>

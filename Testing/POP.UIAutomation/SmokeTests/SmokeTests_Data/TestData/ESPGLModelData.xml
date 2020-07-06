@@ -1,0 +1,157 @@
+<?xml version="1.0" standalone="yes"?>
+<ESPModeldata>
+  <record>
+    <FieldName>Oil Specific Gravity</FieldName>
+    <ValueUS>0.8500</ValueUS>
+    <ValueMetric>0.8500</ValueMetric>
+    <UOMUS>SG</UOMUS>
+    <UOMMetric>SG</UOMMetric>
+  </record>
+  <record>
+    <FieldName>Gas Specific Gravity</FieldName>
+    <ValueUS>0.6500</ValueUS>
+    <ValueMetric>0.6500</ValueMetric>
+    <UOMUS>SG</UOMUS>
+    <UOMMetric>SG</UOMMetric>
+  </record>
+  <record>
+    <FieldName>Water Salinity</FieldName>
+    <ValueUS>30000.0000</ValueUS>
+    <ValueMetric>30.0000000</ValueMetric>
+    <UOMUS>ppm</UOMUS>
+    <UOMMetric>g/kg</UOMMetric>
+  </record>
+  <record>
+    <FieldName>Hydrogen Sulfide (H2S)</FieldName>
+    <ValueUS>0.0000</ValueUS>
+    <ValueMetric>0.0000</ValueMetric>
+    <UOMUS>fraction</UOMUS>
+    <UOMMetric>fraction</UOMMetric>
+  </record>
+  <record>
+    <FieldName>Carbon Dioxide (C02)</FieldName>
+    <ValueUS>0.0000</ValueUS>
+    <ValueMetric>0.0000</ValueMetric>
+    <UOMUS>fraction</UOMUS>
+    <UOMMetric>fraction</UOMMetric>
+  </record>
+  <record>
+    <FieldName>Nitrogen (N2)</FieldName>
+    <ValueUS>0.0000</ValueUS>
+    <ValueMetric>0.0000</ValueMetric>
+    <UOMUS>fraction</UOMUS>
+    <UOMMetric>fraction</UOMMetric>
+  </record>
+  <record>
+    <FieldName>Pressure</FieldName>
+    <ValueUS>3000.00</ValueUS>
+    <ValueMetric>20684.3</ValueMetric>
+    <UOMUS>psia</UOMUS>
+    <UOMMetric>kPa</UOMMetric>
+  </record>
+  <record>
+    <FieldName>Temperature</FieldName>
+    <ValueUS>200.0</ValueUS>
+    <ValueMetric>93.3</ValueMetric>
+    <UOMUS>°F</UOMUS>
+    <UOMMetric>°C</UOMMetric>
+  </record>
+  <record>
+    <FieldName>MidPerf Depth (MD)</FieldName>
+    <ValueUS>8500.00</ValueUS>
+    <ValueMetric>2590.800</ValueMetric>
+    <UOMUS>ft</UOMUS>
+    <UOMMetric>m</UOMMetric>
+  </record>
+  <record>
+    <FieldName>Water Cut</FieldName>
+    <ValueUS>0.6000</ValueUS>
+    <ValueMetric>0.6000</ValueMetric>
+    <UOMUS>fraction</UOMUS>
+    <UOMMetric>fraction</UOMMetric>
+  </record>
+  <record>
+    <FieldName>Gas-Oil Ratio (GOR)</FieldName>
+    <ValueUS>500.0000</ValueUS>
+    <ValueMetric>89.05380</ValueMetric>
+    <UOMUS>scf/STB</UOMUS>
+    <UOMMetric>sm³/sm³</UOMMetric>
+  </record>
+  <record>
+    <FieldName>Productivity Index-ESP</FieldName>
+    <ValueUS>5.1089</ValueUS>
+    <ValueMetric>0.1178</ValueMetric>
+    <UOMUS>STB/d/psi</UOMUS>
+    <UOMMetric>sm3/d/kPa</UOMMetric>
+  </record>
+  <record>
+    <FieldName>Productivity Index-GL</FieldName>
+    <ValueUS>3.3000</ValueUS>
+    <ValueMetric>0.0761</ValueMetric>
+    <UOMUS>STB/d/psi</UOMUS>
+    <UOMMetric>sm3/d/kPa</UOMMetric>
+  </record>
+  <record>
+    <FieldName>Motor Model</FieldName>
+    <ValueUS>456 SK Series - Reda</ValueUS>
+    <ValueMetric>456 SK Series - Reda</ValueMetric>
+    <UOMUS>ignoreUnit</UOMUS>
+    <UOMMetric>ignoreUnit</UOMMetric>
+  </record>
+  <record>
+    <FieldName>Measured Depth</FieldName>
+    <ValueUS>8000.00</ValueUS>
+    <ValueMetric>2438.400</ValueMetric>
+    <UOMUS>ft</UOMUS>
+    <UOMMetric>m</UOMMetric>
+  </record>
+  <record>
+    <FieldName>Nameplate Rating</FieldName>
+    <ValueUS>300 hp, 2340 V, 81 A</ValueUS>
+    <ValueMetric>300 hp, 2340 V, 81 A</ValueMetric>
+    <UOMUS>ignoreUnit</UOMUS>
+    <UOMMetric>ignoreUnit</UOMMetric>
+  </record>
+  <record>
+    <FieldName>Operating Rating</FieldName>
+    <ValueUS>300 hp, 2340 V, 81 A</ValueUS>
+    <ValueMetric>300 hp, 2340 V, 81 A</ValueMetric>
+    <UOMUS>ignoreUnit</UOMUS>
+    <UOMMetric>ignoreUnit</UOMMetric>
+  </record>
+  <record>
+    <FieldName>Operating Frequency</FieldName>
+    <ValueUS>60.00</ValueUS>
+    <ValueMetric>60.00</ValueMetric>
+    <UOMUS>Hz</UOMUS>
+    <UOMMetric>Hz</UOMMetric>
+  </record>
+  <record>
+    <FieldName>Motor Wear Factor</FieldName>
+    <ValueUS>1.0000</ValueUS>
+    <ValueMetric>1.0000</ValueMetric>
+    <UOMUS>fraction</UOMUS>
+    <UOMMetric>fraction</UOMMetric>
+  </record>
+  <record>
+    <FieldName>Cable Size</FieldName>
+    <ValueUS>#2</ValueUS>
+    <ValueMetric>#2</ValueMetric>
+    <UOMUS>ignoreUnit</UOMUS>
+    <UOMMetric>ignoreUnit</UOMMetric>
+  </record>
+  <record>
+    <FieldName>Gas Separator Present</FieldName>
+    <ValueUS>true</ValueUS>
+    <ValueMetric>true</ValueMetric>
+    <UOMUS>ignoreUnit</UOMUS>
+    <UOMMetric>ignoreUnit</UOMMetric>
+  </record>
+  <record>
+    <FieldName>Separator Efficiency</FieldName>
+    <ValueUS>0.8000</ValueUS>
+    <ValueMetric>0.8000</ValueMetric>
+    <UOMUS>fraction</UOMUS>
+    <UOMMetric>fraction</UOMMetric>
+  </record>
+</ESPModeldata>

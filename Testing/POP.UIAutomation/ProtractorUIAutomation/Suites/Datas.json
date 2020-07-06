@@ -1,0 +1,49 @@
+{
+    "wellattributes":
+    {
+    "lease":"lease",
+    "field":"field",
+    "engineer":"engineer",
+    "region":"region",
+    "foreman":"foreman",
+    "gauger":"gauger"    
+    },
+"espwelltestdata":
+{
+"testdate":"01282019",
+"qualitycode":"//li[text()='Allocatable Test']",
+"qualitycodetext":"allocatable test",
+"tunningmethod":"l factor",
+"oilrate":"2397.4",
+"waterrate":"3596.1",
+"gasrate":"1198.70",
+"thp":"200.00",		
+"tht":"80.0",
+"chp":"200.00",
+"pip":"21144.63392",
+"pdp":"24554.65167",		
+"freq":"60.00",
+"flp":"100.00",	
+"sp":"70.00",
+"chokesize":"32.0"
+},
+"espwelltestdatametric":
+{
+"testdate":"01282019",
+"qualitycode":"//li[text()='Allocatable Test']",
+"qualitycodetext":"allocatable test",
+"tunningmethod":"l factor",
+"oilrate":"397.400",
+"waterrate":"3596.100",
+"gasrate":"1198.700",
+"thp":"200.0",		
+"tht":"80.0",
+"chp":"200.0",
+"pip":"21144.63392",
+"pdp":"24554.65167",		
+"freq":"60.00",
+"flp":"689.4",	
+"sp":"482.6",
+"chokesize":"32.00"
+}
+}

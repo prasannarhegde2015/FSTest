@@ -1,0 +1,37 @@
+REM  ********************  Configuration *********************************
+REM Set this path relative to Project Path "..\Testing\out\bin\Debug"
+set popexePath="C:\Workspace\Perforce\ForeSiteTrunk\Testing\out\bin\Debug\POP.Performance.exe"
+set servername=localhost
+Set /A WellCount=10
+Set /A HalfWellcount=%WellCount%/2
+Set CygNetDomain=9077
+Set CygNetSite=CYGNET
+REM  ********************  Configuration *********************************
+
+cd %popexePath%
+REM Add  RRL Wells:
+%popexePath% -CVS [%CygNetDomain%]%CygNetSite%.UIS -ForeSiteServer %servername% -BaseFacTag RPOC -StartWellCount 1 -EndWellCount %WellCount% -AddRRLWells
+
+REM  Add ESP Wells:
+%popexePath% -CVS [%CygNetDomain%]%CygNetSite%.UIS -ForeSiteServer %servername% -BaseFacTag ESPWELL -WellType ESP -StartWellCount 1 -EndWellCount %WellCount% -AddNonRRLWells
+
+REM Add  GL Wells:
+%popexePath% -CVS [%CygNetDomain%]%CygNetSite%.UIS -ForeSiteServer %servername% -BaseFacTag GLWELL -WellType GL -StartWellCount 1 -EndWellCount %WellCount% -AddNonRRLWells
+REM  Add  PGL Wells:
+%popexePath% -CVS [%CygNetDomain%]%CygNetSite%.UIS -ForeSiteServer %servername% -BaseFacTag PGLWELL -WellType PL -StartWellCount 1 -EndWellCount %WellCount% -AddNonRRLWells
+
+REM  Add  NFW Wells:
+%popexePath% -CVS [%CygNetDomain%]%CygNetSite%.UIS -ForeSiteServer %servername% -BaseFacTag NFWWELL -WellType NFW -StartWellCount 1 -EndWellCount %WellCount% -AddNonRRLWells
+
+REM  Add  WI Wells:
+%popexePath% -CVS [%CygNetDomain%]%CygNetSite%.UIS -ForeSiteServer %servername% -BaseFacTag WATERINJWELL -WellType WInj -StartWellCount 1 -EndWellCount %WellCount% -AddNonRRLWells
+
+REM  Add  GI Wells:
+%popexePath% -CVS [%CygNetDomain%]%CygNetSite%.UIS -ForeSiteServer %servername% -BaseFacTag GASINJWELL -WellType GInj -StartWellCount 1 -EndWellCount %WellCount% -AddNonRRLWells
+
+REM  Add WAG Wells:
+%popexePath% -CVS [%CygNetDomain%]%CygNetSite%.UIS -ForeSiteServer %servername% -BaseFacTag IWC -WellType WGInj -StartWellCount 1 -EndWellCount %HalfWellcount% -AddNonRRLWells
+
+REM  Add  PCP Wells:
+%popexePath% -CVS [%CygNetDomain%]%CygNetSite%.UIS -ForeSiteServer %servername% -BaseFacTag WFTA1K -WellType PCP -StartWellCount 1 -EndWellCount %HalfWellcount% -AddNonRRLWells
+

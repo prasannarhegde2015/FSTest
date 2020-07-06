@@ -1,0 +1,7 @@
+c:\users\e159279\source\repos\ExceltoXML\ExceltoXML\bin\Debug\ExceltoXML.exe.config
+c:\users\e159279\source\repos\ExceltoXML\ExceltoXML\bin\Debug\ExceltoXML.exe
+c:\users\e159279\source\repos\ExceltoXML\ExceltoXML\bin\Debug\ExceltoXML.pdb
+c:\users\e159279\source\repos\ExceltoXML\ExceltoXML\obj\Debug\ExceltoXML.csprojAssemblyReference.cache
+c:\users\e159279\source\repos\ExceltoXML\ExceltoXML\obj\Debug\ExceltoXML.csproj.CoreCompileInputs.cache
+c:\users\e159279\source\repos\ExceltoXML\ExceltoXML\obj\Debug\ExceltoXML.exe
+c:\users\e159279\source\repos\ExceltoXML\ExceltoXML\obj\Debug\ExceltoXML.pdb

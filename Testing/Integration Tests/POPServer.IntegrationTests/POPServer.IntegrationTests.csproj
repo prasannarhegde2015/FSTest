@@ -1,0 +1,478 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="14.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProjectGuid>{78D88610-2E01-4080-9721-E813D8AD6338}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>Weatherford.POP.Server.IntegrationTests</RootNamespace>
+    <AssemblyName>POPServer.IntegrationTests</AssemblyName>
+    <TargetFrameworkVersion>v4.6.1</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+    <ProjectTypeGuids>{3AC096D0-A1C2-E12C-1390-A8335801FDAB};{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</ProjectTypeGuids>
+    <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>
+    <VSToolsPath Condition="'$(VSToolsPath)' == ''">$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v$(VisualStudioVersion)</VSToolsPath>
+    <ReferencePath>$(ProgramFiles)\Common Files\microsoft shared\VSTT\$(VisualStudioVersion)\UITestExtensionPackages</ReferencePath>
+    <IsCodedUITest>False</IsCodedUITest>
+    <TestProjectType>UnitTest</TestProjectType>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>$(ProjectDir)..\..\out\bin\$(Configuration)\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>$(ProjectDir)..\..\out\bin\$(Configuration)\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="CygNet.API.Core, Version=18.0.0.0, Culture=neutral, PublicKeyToken=5f01e689f7fdae75, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\..\Libraries\CygNet\CygNet.API.Core.dll</HintPath>
+    </Reference>
+    <Reference Include="CygNet.API.Facilities, Version=18.0.0.0, Culture=neutral, PublicKeyToken=b2c897fadd44ea79, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\..\Libraries\CygNet\CygNet.API.Facilities.dll</HintPath>
+    </Reference>
+    <Reference Include="CygNet.API.Historian">
+      <HintPath>..\..\..\Libraries\CygNet\CygNet.API.Historian.dll</HintPath>
+    </Reference>
+    <Reference Include="CygNet.API.Historian64">
+      <HintPath>..\..\..\Libraries\CygNet\CygNet.API.Historian64.dll</HintPath>
+    </Reference>
+    <Reference Include="CygNet.API.Points, Version=18.0.0.0, Culture=neutral, PublicKeyToken=b2c897fadd44ea79, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\..\Libraries\CygNet\CygNet.API.Points.dll</HintPath>
+    </Reference>
+    <Reference Include="CygNet.COMAPI">
+      <HintPath>..\..\..\Libraries\CygNet\CygNet.COMAPI.dll</HintPath>
+    </Reference>
+    <Reference Include="CygNet.Core, Version=18.0.0.0, Culture=neutral, PublicKeyToken=9c1b596fd7c44683, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\..\Libraries\CygNet\CygNet.Core.dll</HintPath>
+    </Reference>
+    <Reference Include="CygNet.Data.Core">
+      <HintPath>..\..\..\Libraries\CygNet\CygNet.Data.Core.dll</HintPath>
+    </Reference>
+    <Reference Include="CygNet.Data.Facilities, Version=18.0.0.0, Culture=neutral, PublicKeyToken=35847d6795d3b3d9, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\..\Libraries\CygNet\CygNet.Data.Facilities.dll</HintPath>
+    </Reference>
+    <Reference Include="CygNet.Data.Historian">
+      <HintPath>..\..\..\Libraries\CygNet\CygNet.Data.Historian.dll</HintPath>
+    </Reference>
+    <Reference Include="CygNet.Data.Points, Version=18.0.0.0, Culture=neutral, PublicKeyToken=35847d6795d3b3d9, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\..\Libraries\CygNet\CygNet.Data.Points.dll</HintPath>
+    </Reference>
+    <Reference Include="Newtonsoft.Json, Version=12.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\..\Libraries\Testing\Selenium\Newtonsoft.Json.dll</HintPath>
+    </Reference>
+    <Reference Include="System" />
+    <Reference Include="System.Configuration" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.DirectoryServices" />
+    <Reference Include="System.DirectoryServices.AccountManagement" />
+    <Reference Include="System.Runtime.Serialization" />
+    <Reference Include="System.ServiceProcess" />
+    <Reference Include="System.Web.Extensions" />
+    <Reference Include="System.Xml" />
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="Weatherford.DynaCardLibrary.API.Interfaces, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\..\Libraries\Weatherford\Weatherford.DynaCardLibrary.API.Interfaces.dll</HintPath>
+    </Reference>
+    <Reference Include="Weatherford.ReoService.DTOs">
+      <HintPath>..\..\..\Libraries\Weatherford\Weatherford.ReoService.DTOs.dll</HintPath>
+    </Reference>
+    <Reference Include="Weatherford.ReoService.Enums, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\..\Libraries\Weatherford\Weatherford.ReoService.Enums.dll</HintPath>
+    </Reference>
+    <Reference Include="Weatherford.ReoService.Interfaces">
+      <HintPath>..\..\..\Libraries\Weatherford\Weatherford.ReoService.Interfaces.dll</HintPath>
+    </Reference>
+  </ItemGroup>
+  <Choose>
+    <When Condition="('$(VisualStudioVersion)' == '10.0' or '$(VisualStudioVersion)' == '') and '$(TargetFrameworkVersion)' == 'v3.5'">
+      <ItemGroup>
+        <Reference Include="Microsoft.VisualStudio.QualityTools.UnitTestFramework, Version=10.1.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL" />
+      </ItemGroup>
+    </When>
+    <Otherwise>
+      <ItemGroup>
+        <Reference Include="Microsoft.VisualStudio.QualityTools.UnitTestFramework">
+          <Private>False</Private>
+        </Reference>
+      </ItemGroup>
+    </Otherwise>
+  </Choose>
+  <ItemGroup>
+    <Compile Include="AdministrationServiceTests.cs" />
+    <Compile Include="AlarmServiceTests.cs" />
+    <Compile Include="APIClientTestBase.cs" />
+    <Compile Include="AuditLogServiceTests.cs" />
+    <Compile Include="AuthenticationServiceTests.cs" />
+    <Compile Include="AuthorizationNegativeTests.cs" />
+    <Compile Include="CatalogServiceTests.cs" />
+    <Compile Include="ComponentServiceTests.cs" />
+    <Compile Include="DataConnectionServiceTests.cs" />
+    <Compile Include="DBEntityServiceTests.cs" />
+    <Compile Include="DocumentServiceTests.cs" />
+    <Compile Include="DynaCardServiceTests.cs" />
+    <Compile Include="EquipmentConfigurationServiceTests.cs" />
+    <Compile Include="EquipmentJobServiceTests.cs" />
+    <Compile Include="ExtensionMethod.cs" />
+    <Compile Include="HeatMapServiceTests.cs" />
+    <Compile Include="IntelligentAlarmServiceTests.cs" />
+    <Compile Include="JobAndEventServiceTests.cs" />
+    <Compile Include="ModelFileTests.cs" />
+    <Compile Include="PEDashboardTests.cs" />
+    <Compile Include="ProductionForecastServiceTests.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="ReportServiceTests.cs" />
+    <Compile Include="ScadaMappingSetTests.cs" />
+    <Compile Include="SurfaceNetworkServiceTests.cs" />
+    <Compile Include="SettingServiceTests.cs" />
+    <Compile Include="SurveillanceServiceTests.cs" />
+    <Compile Include="TestCategories.cs" />
+    <Compile Include="TestData.cs" />
+    <Compile Include="TokenServiceTests.cs" />
+    <Compile Include="RMTestData.cs" />
+    <Compile Include="WellAllocationServiceTests.cs" />
+    <Compile Include="WellboreComponentTests.cs" />
+    <Compile Include="WellBoreComponentsKLandKD.cs" />
+    <Compile Include="WellConfigurationServiceTests.cs" />
+    <Compile Include="WellInferredProductionAndAllocationServiceTests.cs" />
+    <Compile Include="WellMTBFServicesTests.cs" />
+    <Compile Include="WellServiceTests.cs" />
+    <Compile Include="WellTestServiceTests.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\..\..\Common\POP.Units\POP.Units.csproj">
+      <Project>{46CF5D69-1F22-4490-89FA-E31B73ACDFCD}</Project>
+      <Name>POP.Units</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\..\Server\POP.Quantities\POP.Quantities.csproj">
+      <Project>{c99c63b7-59a6-489e-8158-603584652e23}</Project>
+      <Name>POP.Quantities</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\..\Common\POP.APIClient\POP.APIClient.csproj">
+      <Project>{fbe39395-632e-4145-b899-cdbe3cb7477a}</Project>
+      <Name>POP.APIClient</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\..\Common\POP.DTOs\POP.DTOs.csproj">
+      <Project>{e698d674-48a8-48b0-8ae6-18fc9830c3c1}</Project>
+      <Name>POP.DTOs</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\..\Common\POP.Enums\POP.Enums.csproj">
+      <Project>{1ca3717a-7703-4495-8750-8b82c3dd89af}</Project>
+      <Name>POP.Enums</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\..\Common\POP.Interfaces\POP.Interfaces.csproj">
+      <Project>{F37FF20D-98FC-43E5-A9EE-060FC736C161}</Project>
+      <Name>POP.Interfaces</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\..\Server\POPScheduler.Jobs\POPScheduler.Jobs.csproj">
+      <Project>{a4b8c83f-8603-45ec-99c2-6091556b0982}</Project>
+      <Name>POPScheduler.Jobs</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\..\Server\POP.Settings\POP.Settings.csproj">
+      <Project>{8192a3e1-2f6b-419d-bbf9-75bcfccb8685}</Project>
+      <Name>POP.Settings</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\..\Server\POPServer\POPServer.csproj">
+      <Project>{D8AA219B-4C40-4CFD-A4E9-A741FBB732F5}</Project>
+      <Name>POPServer</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\AWT_FS\AWT_FS.csproj">
+      <Project>{65e86416-52cd-49d2-a2f6-9571bcaaa332}</Project>
+      <Name>AWT_FS</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="App.config">
+      <SubType>Designer</SubType>
+    </None>
+    <EmbeddedResource Include="TestDocuments\WellfloGasLiftExample1.wflx" />
+    <EmbeddedResource Include="TestDocuments\WellfloESPExample1.wflx" />
+    <EmbeddedResource Include="TestDocuments\WellfloGasInjectionExample1.wflx" />
+    <EmbeddedResource Include="TestDocuments\WellfloNFWExample1.wflx" />
+    <EmbeddedResource Include="TestDocuments\WellfloWaterInjectionExample1.wflx" />
+    <EmbeddedResource Include="TestDocuments\WellfloGasLiftExampleTuningTrace.WFLX" />
+    <EmbeddedResource Include="TestDocuments\GL-01-Base.wflx" />
+    <EmbeddedResource Include="TestDocuments\GasLift-LFactor1.wflx" />
+    <EmbeddedResource Include="TestDocuments\GasLift-LFactor2.wflx" />
+    <EmbeddedResource Include="TestDocuments\GasLift_ProductionTestData.wflx" />
+    <EmbeddedResource Include="TestDocuments\22Wells.reo" />
+    <EmbeddedResource Include="TestDocuments\Lomond_A-18.wflx" />
+    <EmbeddedResource Include="TestDocuments\Lomond_B-18.wflx" />
+    <EmbeddedResource Include="TestDocuments\Ness_J-20.wflx" />
+    <EmbeddedResource Include="TestDocuments\Ness_J-43.wflx" />
+    <EmbeddedResource Include="TestDocuments\Ness_J-44.wflx" />
+    <EmbeddedResource Include="TestDocuments\MultiInjection_GL.wflx" />
+    <EmbeddedResource Include="TestDocuments\ShallowInjection_GL.wflx" />
+    <EmbeddedResource Include="TestDocuments\Esp_ProductionTestData.wflx" />
+    <EmbeddedResource Include="TestDocuments\ProductionTestData.wflx" />
+    <EmbeddedResource Include="TestDocuments\Esp_TandemPumpsExample.wflx" />
+    <EmbeddedResource Include="TestDocuments\PL-631.wflx" />
+    <EmbeddedResource Include="TestDocuments\GLDHPGBlackOil.wflx" />
+    <EmbeddedResource Include="TestDocuments\GLDHPGCondensate.wflx" />
+    <EmbeddedResource Include="TestDocuments\GLNoDHPGBlackOil.wflx" />
+    <EmbeddedResource Include="TestDocuments\GLNoDHPGCondensate.wflx" />
+    <EmbeddedResource Include="TestDocuments\AlarmTypes.csv" />
+    <EmbeddedResource Include="TestDocuments\ESPLiftPoints.csv">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </EmbeddedResource>
+    <EmbeddedResource Include="TestDocuments\GasInjLiftPoints.csv">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </EmbeddedResource>
+    <EmbeddedResource Include="TestDocuments\GasLiftPoints.csv">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </EmbeddedResource>
+    <EmbeddedResource Include="TestDocuments\NFWLiftPoints.csv">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </EmbeddedResource>
+    <EmbeddedResource Include="TestDocuments\PGLLiftPoints.csv">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </EmbeddedResource>
+    <EmbeddedResource Include="TestDocuments\RPOCPoints.csv">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </EmbeddedResource>
+    <EmbeddedResource Include="TestDocuments\WaterInjLiftPoints.csv">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </EmbeddedResource>
+    <EmbeddedResource Include="TestDocuments\PCP-Multiphase.wflx" />
+    <EmbeddedResource Include="TestDocuments\PCP-SinglePhase.wflx" />
+    <EmbeddedResource Include="TestDocuments\Dry Gas - IPR Auto Tuning.wflx" />
+    <EmbeddedResource Include="TestDocuments\Condensate Gas - IPR Auto Tuning.wflx" />
+    <EmbeddedResource Include="TestDocuments\GL_BlackOil.wflx" />
+    <EmbeddedResource Include="TestDocuments\Black Oil - IPR Auto Tuning.wflx" />
+    <EmbeddedResource Include="TestDocuments\Gldesign.wflx" />
+    <EmbeddedResource Include="TestDocuments\GasLift_CHP_InflowOutflowCurves.json" />
+    <EmbeddedResource Include="TestDocuments\GasLift_CHP_PerformanceCurves.json" />
+    <EmbeddedResource Include="TestDocuments\GradientCurveVelocityCurve.json" />
+    <EmbeddedResource Include="TestDocuments\SensitivitiesUnits_US.json" />
+    <EmbeddedResource Include="TestDocuments\SensitivitiesUnits_Metric.json" />
+    <EmbeddedResource Include="TestDocuments\GradientCurveVelocityCurve_Metric.json" />
+    <EmbeddedResource Include="TestDocuments\GasLift_CHP_PerformanceCurves_Metric.json" />
+    <EmbeddedResource Include="TestDocuments\GasLift_CHP_InflowOutflowCurves_Metric.json" />
+    <EmbeddedResource Include="TestDocuments\Gradient_Performance_InOutflowCurve_WellboreForNF.json" />
+    <EmbeddedResource Include="TestDocuments\Gradient_Performance_InOutflowCurve_WellboreForNF_Metric.json" />
+    <EmbeddedResource Include="TestDocuments\NFW_ErosionCoefficient_US.json" />
+    <EmbeddedResource Include="TestDocuments\NFW_ErosionCoefficient_Metric.json" />
+    <EmbeddedResource Include="TestDocuments\PCP_Anaylsys_json_test_US.json" />
+    <EmbeddedResource Include="TestDocuments\Tutorial3.rts" />
+    <EmbeddedResource Include="TestDocuments\Tutorial4.rts" />
+    <EmbeddedResource Include="TestDocuments\GI1.wflx" />
+    <EmbeddedResource Include="TestDocuments\GI2.wflx" />
+    <EmbeddedResource Include="TestDocuments\GP1.wflx" />
+    <EmbeddedResource Include="TestDocuments\GP2.wflx" />
+    <EmbeddedResource Include="TestDocuments\GP3.wflx" />
+    <EmbeddedResource Include="TestDocuments\GP4.wflx" />
+    <EmbeddedResource Include="TestDocuments\Recycle Network.reo" />
+    <EmbeddedResource Include="TestDocuments\ProductionTileMapResponsePercent.json">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </EmbeddedResource>
+    <EmbeddedResource Include="TestDocuments\ProductionTileMapResponseVolume.json">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </EmbeddedResource>
+    <EmbeddedResource Include="TestDocuments\Tutorial2.rts" />
+    <EmbeddedResource Include="TestDocuments\TutorialExample2.epf" />
+    <EmbeddedResource Include="TestDocuments\TutorialExample2.reo" />
+    <EmbeddedResource Include="TestDocuments\Well1.wflx" />
+    <EmbeddedResource Include="TestDocuments\Well2.wflx" />
+    <EmbeddedResource Include="TestDocuments\Well3.wflx" />
+    <EmbeddedResource Include="TestDocuments\Well4.wflx" />
+    <EmbeddedResource Include="TestDocuments\Well5.wflx" />
+    <EmbeddedResource Include="TestDocuments\Tutorial2_PFScenarioWellResultsArray.json" />
+    <EmbeddedResource Include="TestDocuments\Tutoial2_USunit_Timestep1.json" />
+    <EmbeddedResource Include="TestDocuments\Tutoial2_USunit_Timestep10.json" />
+    <EmbeddedResource Include="TestDocuments\Tutoial2_USunit_Timestep11.json" />
+    <EmbeddedResource Include="TestDocuments\Tutoial2_USunit_Timestep2.json" />
+    <EmbeddedResource Include="TestDocuments\Tutoial2_USunit_Timestep3.json" />
+    <EmbeddedResource Include="TestDocuments\Tutoial2_USunit_Timestep4.json" />
+    <EmbeddedResource Include="TestDocuments\Tutoial2_USunit_Timestep5.json" />
+    <EmbeddedResource Include="TestDocuments\Tutoial2_USunit_Timestep6.json" />
+    <EmbeddedResource Include="TestDocuments\Tutoial2_USunit_Timestep7.json" />
+    <EmbeddedResource Include="TestDocuments\Tutoial2_USunit_Timestep8.json" />
+    <EmbeddedResource Include="TestDocuments\Tutoial2_USunit_Timestep9.json" />
+    <EmbeddedResource Include="TestDocuments\Tutoial2_USunit_Well1.json" />
+    <EmbeddedResource Include="TestDocuments\Tutoial2_USunit_Well2.json" />
+    <EmbeddedResource Include="TestDocuments\Tutoial2_USunit_Well3.json" />
+    <EmbeddedResource Include="TestDocuments\Tutoial2_USunit_Well4.json" />
+    <EmbeddedResource Include="TestDocuments\Tutoial2_USunit_Well5.json" />
+    <EmbeddedResource Include="TestDocuments\Tutoial2_Metricunit_Timestep1.json" />
+    <EmbeddedResource Include="TestDocuments\Tutoial2_Metricunit_Timestep10.json" />
+    <EmbeddedResource Include="TestDocuments\Tutoial2_Metricunit_Timestep11.json" />
+    <EmbeddedResource Include="TestDocuments\Tutoial2_Metricunit_Timestep2.json" />
+    <EmbeddedResource Include="TestDocuments\Tutoial2_Metricunit_Timestep3.json" />
+    <EmbeddedResource Include="TestDocuments\Tutoial2_Metricunit_Timestep4.json" />
+    <EmbeddedResource Include="TestDocuments\Tutoial2_Metricunit_Timestep5.json" />
+    <EmbeddedResource Include="TestDocuments\Tutoial2_Metricunit_Timestep6.json" />
+    <EmbeddedResource Include="TestDocuments\Tutoial2_Metricunit_Timestep7.json" />
+    <EmbeddedResource Include="TestDocuments\Tutoial2_Metricunit_Timestep8.json" />
+    <EmbeddedResource Include="TestDocuments\Tutoial2_Metricunit_Timestep9.json" />
+    <EmbeddedResource Include="TestDocuments\Tutoial2_Metricunit_Well1.json" />
+    <EmbeddedResource Include="TestDocuments\Tutoial2_Metricunit_Well2.json" />
+    <EmbeddedResource Include="TestDocuments\Tutoial2_Metricunit_Well3.json" />
+    <EmbeddedResource Include="TestDocuments\Tutoial2_Metricunit_Well4.json" />
+    <EmbeddedResource Include="TestDocuments\Tutoial2_Metricunit_Well5.json" />
+    <EmbeddedResource Include="TestDocuments\GasInjection_Analysis_json_test_US.json" />
+    <EmbeddedResource Include="TestDocuments\water_Analysis_json_test_US.json" />
+    <EmbeddedResource Include="TestDocuments\GLWell.wflx" />
+    <EmbeddedResource Include="TestDocuments\OilWell_01.wflx" />
+    <EmbeddedResource Include="TestDocuments\OilWell_02.wflx" />
+    <EmbeddedResource Include="TestDocuments\OilWell_03.wflx" />
+    <EmbeddedResource Include="TestDocuments\TutorialExample3.reo" />
+    <EmbeddedResource Include="TestDocuments\Tutorial3_2015.rts" />
+    <EmbeddedResource Include="TestDocuments\Tutorial3_Constraints_USunit_Timestep1.json" />
+    <EmbeddedResource Include="TestDocuments\Tutorial3_Constraints_USunit_Timestep2.json" />
+    <EmbeddedResource Include="TestDocuments\Tutorial3_Constraints_USunit_Timestep3.json" />
+    <EmbeddedResource Include="TestDocuments\Tutorial3_Constraints_USunit_Timestep4.json" />
+    <EmbeddedResource Include="TestDocuments\Tutorial3_PFScenarioResultsArray.json" />
+    <EmbeddedResource Include="TestDocuments\Tutorial3_Sinks_USunit_Timestep1.json" />
+    <EmbeddedResource Include="TestDocuments\Tutorial3_Sinks_USunit_Timestep2.json" />
+    <EmbeddedResource Include="TestDocuments\Tutorial3_Sinks_USunit_Timestep3.json" />
+    <EmbeddedResource Include="TestDocuments\Tutorial3_Sinks_USunit_Timestep4.json" />
+    <EmbeddedResource Include="TestDocuments\Tutorial3_Wellheads_USunit_Timestep1.json" />
+    <EmbeddedResource Include="TestDocuments\Tutorial3_Wellheads_USunit_Timestep2.json" />
+    <EmbeddedResource Include="TestDocuments\Tutorial3_Wellheads_USunit_Timestep3.json" />
+    <EmbeddedResource Include="TestDocuments\Tutorial3_Wellheads_USunit_Timestep4.json" />
+    <EmbeddedResource Include="TestDocuments\Tutorial3_2015_RunMessages.json" />
+    <EmbeddedResource Include="TestDocuments\RecycleNetwork.reo">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </EmbeddedResource>
+    <EmbeddedResource Include="TestDocuments\Tutorial3_2015_ExportFunctionality.json" />
+    <EmbeddedResource Include="TestDocuments\WellfloESPExample1_lessthan1_Lfactor.wflx" />
+    <EmbeddedResource Include="TestDocuments\Tutorial3_Reservoir_USunit_Timestep1.json" />
+    <EmbeddedResource Include="TestDocuments\Tutorial3_Reservoir_USunit_Timestep2.json" />
+    <EmbeddedResource Include="TestDocuments\Tutorial3_Reservoir_USunit_Timestep3.json" />
+    <EmbeddedResource Include="TestDocuments\Tutorial3_Reservoir_USunit_Timestep4.json" />
+    <EmbeddedResource Include="TestDocuments\ESP_Analysis_Json_test_Metric.json" />
+    <EmbeddedResource Include="TestDocuments\ESP_Analysis_Json_test_US.json">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </EmbeddedResource>
+    <EmbeddedResource Include="TestDocuments\Plunger_Analysis_Json_test_US.json" />
+    <EmbeddedResource Include="TestDocuments\WellfloGasInjectionExample2.wflx" />
+    <EmbeddedResource Include="TestDocuments\PGLDefaultDesign_Metric.json" />
+    <EmbeddedResource Include="TestDocuments\PGLDefaultDesign_US.json" />
+    <EmbeddedResource Include="TestDocuments\PGLSensitivityDesign_Metric.json" />
+    <EmbeddedResource Include="TestDocuments\PGLSensitivityDesign_US.json" />
+    <EmbeddedResource Include="TestDocuments\Images\22Wells.reo">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </EmbeddedResource>
+  </ItemGroup>
+  <ItemGroup>
+    <COMReference Include="CxCvsLib">
+      <Guid>{15C18842-1D5B-11D2-A6FC-0060080DDBB0}</Guid>
+      <VersionMajor>1</VersionMajor>
+      <VersionMinor>0</VersionMinor>
+      <Lcid>0</Lcid>
+      <WrapperTool>tlbimp</WrapperTool>
+      <Isolated>False</Isolated>
+      <EmbedInteropTypes>True</EmbedInteropTypes>
+    </COMReference>
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="TestDocuments\ForeSiteSplashTrans.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="TestDocuments\GLRelativeFacilityMapping.xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="TestDocuments\RRLDefaultSetPoints.xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="TestDocuments\GLRelativeFacilityMappingUDC.xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="TestDocuments\GLAdditionalUDC.xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="TestDocuments\Images\Compressors.html">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </EmbeddedResource>
+    <EmbeddedResource Include="TestDocuments\Images\Compressors.jpg">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </EmbeddedResource>
+    <EmbeddedResource Include="TestDocuments\Images\Compressors.xml">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </EmbeddedResource>
+    <EmbeddedResource Include="TestDocuments\Images\Injection Wells.html">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </EmbeddedResource>
+    <EmbeddedResource Include="TestDocuments\Images\Injection Wells.jpg">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </EmbeddedResource>
+    <EmbeddedResource Include="TestDocuments\Images\Injection Wells.xml">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </EmbeddedResource>
+    <EmbeddedResource Include="TestDocuments\Images\Process.html">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </EmbeddedResource>
+    <EmbeddedResource Include="TestDocuments\Images\Process.jpg">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </EmbeddedResource>
+    <EmbeddedResource Include="TestDocuments\Images\Process.xml">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </EmbeddedResource>
+    <EmbeddedResource Include="TestDocuments\Images\Production Wells.html">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </EmbeddedResource>
+    <EmbeddedResource Include="TestDocuments\Images\Production Wells.jpg">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </EmbeddedResource>
+    <EmbeddedResource Include="TestDocuments\Images\Production Wells.xml">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </EmbeddedResource>
+    <EmbeddedResource Include="TestDocuments\Images\TopView.html">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </EmbeddedResource>
+    <EmbeddedResource Include="TestDocuments\Images\TopView.jpg">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </EmbeddedResource>
+    <EmbeddedResource Include="TestDocuments\Images\TopView.xml">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </EmbeddedResource>
+  </ItemGroup>
+  <Choose>
+    <When Condition="'$(VisualStudioVersion)' == '10.0' And '$(IsCodedUITest)' == 'True'">
+      <ItemGroup>
+        <Reference Include="Microsoft.VisualStudio.QualityTools.CodedUITestFramework, Version=10.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
+          <Private>False</Private>
+        </Reference>
+        <Reference Include="Microsoft.VisualStudio.TestTools.UITest.Common, Version=10.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
+          <Private>False</Private>
+        </Reference>
+        <Reference Include="Microsoft.VisualStudio.TestTools.UITest.Extension, Version=10.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
+          <Private>False</Private>
+        </Reference>
+        <Reference Include="Microsoft.VisualStudio.TestTools.UITesting, Version=10.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
+          <Private>False</Private>
+        </Reference>
+      </ItemGroup>
+    </When>
+  </Choose>
+  <Import Project="$(VSToolsPath)\TeamTest\Microsoft.TestTools.targets" Condition="Exists('$(VSToolsPath)\TeamTest\Microsoft.TestTools.targets')" />
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+</Project>

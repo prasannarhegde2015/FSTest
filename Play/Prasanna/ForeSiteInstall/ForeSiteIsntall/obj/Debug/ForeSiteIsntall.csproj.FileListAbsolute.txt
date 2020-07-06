@@ -1,0 +1,6 @@
+c:\users\e159279\documents\visual studio 2017\Projects\ForeSiteIsntall\ForeSiteIsntall\bin\Debug\ForeSiteIsntall.dll.config
+c:\users\e159279\documents\visual studio 2017\Projects\ForeSiteIsntall\ForeSiteIsntall\bin\Debug\ForeSiteIsntall.dll
+c:\users\e159279\documents\visual studio 2017\Projects\ForeSiteIsntall\ForeSiteIsntall\bin\Debug\ForeSiteIsntall.pdb
+c:\users\e159279\documents\visual studio 2017\Projects\ForeSiteIsntall\ForeSiteIsntall\obj\Debug\ForeSiteIsntall.csprojResolveAssemblyReference.cache
+c:\users\e159279\documents\visual studio 2017\Projects\ForeSiteIsntall\ForeSiteIsntall\obj\Debug\ForeSiteIsntall.dll
+c:\users\e159279\documents\visual studio 2017\Projects\ForeSiteIsntall\ForeSiteIsntall\obj\Debug\ForeSiteIsntall.pdb

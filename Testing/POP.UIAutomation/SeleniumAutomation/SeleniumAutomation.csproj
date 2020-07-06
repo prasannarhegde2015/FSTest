@@ -1,0 +1,237 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="15.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProjectGuid>{9BA17A18-2638-42EF-A0F2-7DF107E11766}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <RootNamespace>SeleniumAutomation</RootNamespace>
+    <AssemblyName>SeleniumAutomation</AssemblyName>
+    <TargetFrameworkVersion>v4.6.1</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+    <AutoGenerateBindingRedirects>true</AutoGenerateBindingRedirects>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <PlatformTarget>AnyCPU</PlatformTarget>
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>$(ProjectDir)..\..\out\bin\$(Configuration)\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <PlatformTarget>AnyCPU</PlatformTarget>
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>$(ProjectDir)..\..\out\bin\$(Configuration)\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
+  </PropertyGroup>
+  <PropertyGroup>
+    <StartupObject />
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="DnsClient, Version=1.0.7.0, Culture=neutral, PublicKeyToken=4574bb5573c51424, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\..\Libraries\Testing\Selenium\DnsClient.dll</HintPath>
+    </Reference>
+    <Reference Include="ExtentReports, Version=3.1.3.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\..\Libraries\Testing\Selenium\ExtentReports.dll</HintPath>
+    </Reference>
+    <Reference Include="HtmlAgilityPack, Version=1.4.9.5, Culture=neutral, PublicKeyToken=bd319b19eaf3b43a, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\..\Libraries\Testing\Selenium\HtmlAgilityPack.dll</HintPath>
+    </Reference>
+    <Reference Include="Interop.AutoItX3Lib">
+      <HintPath>..\..\..\Libraries\Testing\Selenium\Interop.AutoItX3Lib.dll</HintPath>
+      <EmbedInteropTypes>True</EmbedInteropTypes>
+    </Reference>
+    <Reference Include="Microsoft.VisualStudio.QualityTools.UnitTestFramework, Version=10.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL" />
+    <Reference Include="MongoDB.Bson, Version=2.7.2.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\..\Libraries\Testing\Selenium\MongoDB.Bson.dll</HintPath>
+    </Reference>
+    <Reference Include="MongoDB.Driver, Version=2.7.2.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\..\Libraries\Testing\Selenium\MongoDB.Driver.dll</HintPath>
+    </Reference>
+    <Reference Include="MongoDB.Driver.Core, Version=2.7.2.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\..\Libraries\Testing\Selenium\MongoDB.Driver.Core.dll</HintPath>
+    </Reference>
+    <Reference Include="Newtonsoft.Json, Version=12.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\..\Libraries\Testing\Selenium\Newtonsoft.Json.dll</HintPath>
+    </Reference>
+    <Reference Include="PresentationFramework" />
+    <Reference Include="Protractor, Version=0.12.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\..\Libraries\Testing\Selenium\Protractor.dll</HintPath>
+    </Reference>
+    <Reference Include="RazorEngine, Version=3.10.0.0, Culture=neutral, PublicKeyToken=9ee697374c7e744a, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\..\Libraries\Testing\Selenium\RazorEngine.dll</HintPath>
+    </Reference>
+    <Reference Include="Selenium.WebDriverBackedSelenium, Version=3.141.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\..\Libraries\Testing\Selenium\Selenium.WebDriverBackedSelenium.dll</HintPath>
+    </Reference>
+    <Reference Include="SeleniumExtras.WaitHelpers">
+      <HintPath>..\..\..\Libraries\Testing\Selenium\SeleniumExtras.WaitHelpers.dll</HintPath>
+    </Reference>
+    <Reference Include="System" />
+    <Reference Include="System.Buffers, Version=4.0.1.0, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\..\Libraries\Testing\Selenium\System.Buffers.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Configuration" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.DirectoryServices.AccountManagement" />
+    <Reference Include="System.Drawing" />
+    <Reference Include="System.Management" />
+    <Reference Include="System.Runtime.InteropServices.RuntimeInformation, Version=4.0.1.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\..\Libraries\Testing\Selenium\System.Runtime.InteropServices.RuntimeInformation.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Runtime.Serialization" />
+    <Reference Include="System.Web.Extensions" />
+    <Reference Include="System.Web.Razor, Version=3.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\..\Libraries\Testing\Selenium\System.Web.Razor.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Windows.Forms" />
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="Microsoft.CSharp" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Net.Http" />
+    <Reference Include="System.Xml" />
+    <Reference Include="Weatherford.DynaCardLibrary.API.Interfaces, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\..\Libraries\Weatherford\Weatherford.DynaCardLibrary.API.Interfaces.dll</HintPath>
+    </Reference>
+    <Reference Include="WebDriver, Version=3.14.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\..\Libraries\Testing\Selenium\WebDriver.dll</HintPath>
+    </Reference>
+    <Reference Include="WebDriver.Support, Version=3.141.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\..\Libraries\Testing\Selenium\WebDriver.Support.dll</HintPath>
+    </Reference>
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="AGGridScreenDatas\TypeEventGrid.cs" />
+    <Compile Include="AGGridScreenDatas\TypeProspectivenConcludedJobsGrid.cs" />
+    <Compile Include="AGGridScreenDatas\TypeReadyJobsGrid.cs" />
+    <Compile Include="AGGridScreenDatas\TypeMorningReportGrid.cs" />
+    <Compile Include="AGGridScreenDatas\TypeJobCostDetailsGrid.cs" />
+    <Compile Include="AGGridScreenDatas\TypeWellboreReportGrid.cs" />
+    <Compile Include="AGGridScreenDatas\TypeDrillingReportGrid.cs" />
+    <Compile Include="AGGridScreenDatas\TypeJobManagementGeneralGrid.cs" />
+    <Compile Include="AGGridScreenDatas\TypeGroupConfigurationGrid.cs" />
+    <Compile Include="AGGridScreenDatas\TypeWelltestGrid.cs" />
+    <Compile Include="APIUITestBase.cs" />
+    <Compile Include="Analysis_Smoke.cs" />
+    <Compile Include="Configuration_Smoke.cs" />
+    <Compile Include="FSM_Smoke.cs" />
+    <Compile Include="FSM_UI.cs" />
+    <Compile Include="Helper\CommonHelper.cs" />
+    <Compile Include="Helper\ExtentFactory.cs" />
+    <Compile Include="PageObjects\AdditionalWellAttributes.cs" />
+    <Compile Include="PageObjects\DashboardPage.cs" />
+    <Compile Include="PageObjects\FieldserviceconfigPage.cs" />
+    <Compile Include="PageObjects\FieldServicesPage.cs" />
+    <Compile Include="PageObjects\GroupConfigurationPage.cs" />
+    <Compile Include="PageObjects\JobManagementPage.cs" />
+    <Compile Include="PageObjects\WellAnalysisPage.cs" />
+    <Compile Include="PageObjects\WellDesignPage.cs" />
+    <Compile Include="PageObjects\WellStatusPage.cs" />
+    <Compile Include="PageObjects\WellConfigurationPage.cs" />
+    <Compile Include="PageObjects\WellTestsPage.cs" />
+    <Compile Include="SearchnNavigation_Functional.cs" />
+    <Compile Include="SeleniumObject\ConcludedJoDataProcess.cs" />
+    <Compile Include="SeleniumObject\EventsDataProcess.cs" />
+    <Compile Include="SeleniumObject\ProspectiveJobDataProcess.cs" />
+    <Compile Include="SeleniumObject\MorningReportDataProcess.cs" />
+    <Compile Include="SeleniumObject\JobCostDetailsDataProcess.cs" />
+    <Compile Include="SeleniumObject\ReadyJobDataProcess.cs" />
+    <Compile Include="SeleniumObject\WellboreReportDataProcess.cs" />
+    <Compile Include="SeleniumObject\DrillingReportDataProcess.cs" />
+    <Compile Include="SeleniumObject\JobManagementGeneralDataProcess.cs" />
+    <Compile Include="SeleniumObject\GroupConfigurationDataProcess.cs" />
+    <Compile Include="SeleniumObject\IGridScenarios.cs" />
+    <Compile Include="SeleniumObject\WellTestDataProcess.cs" />
+    <Compile Include="TestClasses\WellAnalysis.cs" />
+    <Compile Include="TestClasses\WellDesign.cs" />
+    <Compile Include="TestClasses\WellStatus.cs" />
+    <Compile Include="TestClasses\WellTest.cs" />
+    <Compile Include="TestData\ESPTestData.cs" />
+    <Compile Include="TestData\GInjTestData.cs" />
+    <Compile Include="TestData\GLTestData.cs" />
+    <Compile Include="TestData\NFTestData.cs" />
+    <Compile Include="TestData\PGLTestData.cs" />
+    <Compile Include="TestData\TestData.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>TestData.resx</DependentUpon>
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Compile>
+    <Compile Include="TestClasses\JobManagement.cs" />
+    <Compile Include="TestClasses\PermissionVerification.cs" />
+    <Compile Include="TestData\WaterInjTestData.cs" />
+    <Compile Include="TestData\WellTestData.cs" />
+    <Compile Include="UpgradeTests.cs" />
+    <Compile Include="UserPermissionTests.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="SeleniumObject\SeleniumActions.cs" />
+    <Compile Include="TestClasses\WellConfiguration.cs" />
+    <Compile Include="TestData\TestData.cs" />
+    <Compile Include="WellDesign_Smoke.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="App.config">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="packages.config" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\..\..\Common\POP.APIClient\POP.APIClient.csproj">
+      <Project>{fbe39395-632e-4145-b899-cdbe3cb7477a}</Project>
+      <Name>POP.APIClient</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\..\Common\POP.DTOs\POP.DTOs.csproj">
+      <Project>{e698d674-48a8-48b0-8ae6-18fc9830c3c1}</Project>
+      <Name>POP.DTOs</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\..\Common\POP.Enums\POP.Enums.csproj">
+      <Project>{1ca3717a-7703-4495-8750-8b82c3dd89af}</Project>
+      <Name>POP.Enums</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\..\Common\POP.Interfaces\POP.Interfaces.csproj">
+      <Project>{f37ff20d-98fc-43e5-a9ee-060fc736c161}</Project>
+      <Name>POP.Interfaces</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\..\Common\POP.Localization\POP.Localization.csproj">
+      <Project>{7250F273-7160-418F-BD0F-90D4618DD0BC}</Project>
+      <Name>POP.Localization</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="TestData\TestData.resx">
+      <Generator>ResXFileCodeGenerator</Generator>
+      <LastGenOutput>TestData.Designer.cs</LastGenOutput>
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </EmbeddedResource>
+  </ItemGroup>
+  <ItemGroup>
+    <Service Include="{82A7F48D-3B50-4B1E-B82E-3ADA8210C358}" />
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+</Project>

@@ -1,0 +1,31 @@
+<?xml version="1.0" standalone="yes"?>
+<ESPTubingData>
+  <record>
+    <Name>Tubing 2</Name>
+	<StartPointMeasureUS>0.00</StartPointMeasureUS>
+	<StartPointMeasureMetric>0.000</StartPointMeasureMetric>
+	<EndPointMeasureUS>3,000.00</EndPointMeasureUS>
+	<EndPointMeasureMetric>914.400</EndPointMeasureMetric>
+	<ExternalDiameterUS>5.5000</ExternalDiameterUS>
+	<ExternalDiameterMetric>139.7000</ExternalDiameterMetric>
+	<InternalDiameterUS>4.8920</InternalDiameterUS>
+	<InternalDiameterMetric>124.2568</InternalDiameterMetric>
+	<RoughnessUS>0.0012</RoughnessUS>
+	<RoughnessMetric>0.0305</RoughnessMetric>
+  </record>
+  <record>
+    <Name>Tubing 1</Name>
+	<StartPointMeasureUS>3,000.00</StartPointMeasureUS>
+	<StartPointMeasureMetric>914.400</StartPointMeasureMetric>
+	<EndPointMeasureUS>8,000.00</EndPointMeasureUS>
+	<EndPointMeasureMetric>2,438.400</EndPointMeasureMetric>
+	<ExternalDiameterUS>4.5000</ExternalDiameterUS>
+	<ExternalDiameterMetric>114.3000</ExternalDiameterMetric>
+	<InternalDiameterUS>3.9960</InternalDiameterUS>
+	<InternalDiameterMetric>101.4984</InternalDiameterMetric>
+	<RoughnessUS>0.0012</RoughnessUS>
+	<RoughnessMetric>0.0305</RoughnessMetric>
+  </record>
+</ESPTubingData>
+	
+  

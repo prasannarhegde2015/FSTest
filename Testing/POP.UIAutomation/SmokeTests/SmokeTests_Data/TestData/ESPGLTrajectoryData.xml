@@ -1,0 +1,13 @@
+<?xml version="1.0" standalone="yes"?>
+<ESPTrajectoryData>
+  <record>
+    <MeasuredDepthUS>8,500.00</MeasuredDepthUS>
+	<MeasuredDepthMetric>2,590.800</MeasuredDepthMetric>
+	<TrueVerticalDepthUS>8,500.00</TrueVerticalDepthUS>
+	<TrueVerticalDepthMetric>2,590.800</TrueVerticalDepthMetric>
+	<DeviationAngleUS>0.00</DeviationAngleUS>
+	<DeviationAngleMetric>0.00</DeviationAngleMetric>
+  </record>
+</ESPTrajectoryData>
+	
+  

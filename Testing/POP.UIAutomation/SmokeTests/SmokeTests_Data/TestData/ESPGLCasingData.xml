@@ -1,0 +1,44 @@
+<?xml version="1.0" standalone="yes"?>
+<ESPCasingData>
+  <record>
+    <Name>Tubing 2</Name>
+	<StartPointMeasureUS>0.00</StartPointMeasureUS>
+	<StartPointMeasureMetric>0.000</StartPointMeasureMetric>
+	<EndPointMeasureUS>3,000.00</EndPointMeasureUS>
+	<EndPointMeasureMetric>914.400</EndPointMeasureMetric>
+	<ExternalDiameterUS>9.5130</ExternalDiameterUS>
+	<ExternalDiameterMetric>241.6308</ExternalDiameterMetric>
+	<InternalDiameterUS>8.6810</InternalDiameterUS>
+	<InternalDiameterMetric>220.4974</InternalDiameterMetric>
+	<RoughnessUS>0.0012</RoughnessUS>
+	<RoughnessMetric>0.0305</RoughnessMetric>
+  </record>
+  <record>
+    <Name>Tubing 1</Name>
+	<StartPointMeasureUS>3,000.00</StartPointMeasureUS>
+	<StartPointMeasureMetric>914.400</StartPointMeasureMetric>
+	<EndPointMeasureUS>8,000.00</EndPointMeasureUS>
+	<EndPointMeasureMetric>2,438.400</EndPointMeasureMetric>
+	<ExternalDiameterUS>6.9536</ExternalDiameterUS>
+	<ExternalDiameterMetric>176.6215</ExternalDiameterMetric>
+	<InternalDiameterUS>6.1840</InternalDiameterUS>
+	<InternalDiameterMetric>157.0736</InternalDiameterMetric>
+	<RoughnessUS>0.0012</RoughnessUS>
+	<RoughnessMetric>0.0305</RoughnessMetric>
+  </record>
+  <record>
+    <Name>Casing</Name>
+	<StartPointMeasureUS>8,000.00</StartPointMeasureUS>
+	<StartPointMeasureMetric>2,438.400</StartPointMeasureMetric>
+	<EndPointMeasureUS>8,500.00</EndPointMeasureUS>
+	<EndPointMeasureMetric>2,590.800</EndPointMeasureMetric>
+	<ExternalDiameterUS>7.0000</ExternalDiameterUS>
+	<ExternalDiameterMetric>177.8000</ExternalDiameterMetric>
+	<InternalDiameterUS>6.1840</InternalDiameterUS>
+	<InternalDiameterMetric>157.0736</InternalDiameterMetric>
+	<RoughnessUS>0.0012</RoughnessUS>
+	<RoughnessMetric>0.0305</RoughnessMetric>
+  </record>
+</ESPCasingData>
+	
+  

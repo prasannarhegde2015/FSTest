@@ -1,0 +1,6 @@
+C:\Workspace\Perforce\ForesiteTrunk\Testing\out\bin\Debug\CatalogServiceTests.dll.config
+C:\Workspace\Perforce\ForesiteTrunk\Testing\out\bin\Debug\CatalogServiceTests.dll
+C:\Workspace\Perforce\ForesiteTrunk\Testing\out\bin\Debug\CatalogServiceTests.pdb
+C:\Workspace\Perforce\ForesiteTrunk\Testing\Integration Tests\CatalogService.Tests\obj\Debug\CatalogServiceTests.csprojResolveAssemblyReference.cache
+C:\Workspace\Perforce\ForesiteTrunk\Testing\Integration Tests\CatalogService.Tests\obj\Debug\CatalogServiceTests.dll
+C:\Workspace\Perforce\ForesiteTrunk\Testing\Integration Tests\CatalogService.Tests\obj\Debug\CatalogServiceTests.pdb

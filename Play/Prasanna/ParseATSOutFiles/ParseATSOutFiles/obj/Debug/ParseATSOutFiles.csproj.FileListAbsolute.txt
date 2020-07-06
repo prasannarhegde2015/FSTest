@@ -1,0 +1,5 @@
+c:\users\e159279\documents\visual studio 2017\Projects\ParseATSOutFiles\ParseATSOutFiles\bin\Debug\ParseATSOutFiles.exe.config
+c:\users\e159279\documents\visual studio 2017\Projects\ParseATSOutFiles\ParseATSOutFiles\bin\Debug\ParseATSOutFiles.exe
+c:\users\e159279\documents\visual studio 2017\Projects\ParseATSOutFiles\ParseATSOutFiles\bin\Debug\ParseATSOutFiles.pdb
+c:\users\e159279\documents\visual studio 2017\Projects\ParseATSOutFiles\ParseATSOutFiles\obj\Debug\ParseATSOutFiles.exe
+c:\users\e159279\documents\visual studio 2017\Projects\ParseATSOutFiles\ParseATSOutFiles\obj\Debug\ParseATSOutFiles.pdb

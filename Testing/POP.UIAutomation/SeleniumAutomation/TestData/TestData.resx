@@ -1,0 +1,270 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<root>
+  <!-- 
+    Microsoft ResX Schema 
+    
+    Version 2.0
+    
+    The primary goals of this format is to allow a simple XML format 
+    that is mostly human readable. The generation and parsing of the 
+    various data types are done through the TypeConverter classes 
+    associated with the data types.
+    
+    Example:
+    
+    ... ado.net/XML headers & schema ...
+    <resheader name="resmimetype">text/microsoft-resx</resheader>
+    <resheader name="version">2.0</resheader>
+    <resheader name="reader">System.Resources.ResXResourceReader, System.Windows.Forms, ...</resheader>
+    <resheader name="writer">System.Resources.ResXResourceWriter, System.Windows.Forms, ...</resheader>
+    <data name="Name1"><value>this is my long string</value><comment>this is a comment</comment></data>
+    <data name="Color1" type="System.Drawing.Color, System.Drawing">Blue</data>
+    <data name="Bitmap1" mimetype="application/x-microsoft.net.object.binary.base64">
+        <value>[base64 mime encoded serialized .NET Framework object]</value>
+    </data>
+    <data name="Icon1" type="System.Drawing.Icon, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
+        <value>[base64 mime encoded string representing a byte array form of the .NET Framework object]</value>
+        <comment>This is a comment</comment>
+    </data>
+                
+    There are any number of "resheader" rows that contain simple 
+    name/value pairs.
+    
+    Each data row contains a name, and value. The row also contains a 
+    type or mimetype. Type corresponds to a .NET class that support 
+    text/value conversion through the TypeConverter architecture. 
+    Classes that don't support this are serialized and stored with the 
+    mimetype set.
+    
+    The mimetype is used for serialized objects, and tells the 
+    ResXResourceReader how to depersist the object. This is currently not 
+    extensible. For a given mimetype the value must be set accordingly:
+    
+    Note - application/x-microsoft.net.object.binary.base64 is the format 
+    that the ResXResourceWriter will generate, however the reader can 
+    read any of the formats listed below.
+    
+    mimetype: application/x-microsoft.net.object.binary.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Binary.BinaryFormatter
+            : and then encoded with base64 encoding.
+    
+    mimetype: application/x-microsoft.net.object.soap.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Soap.SoapFormatter
+            : and then encoded with base64 encoding.
+
+    mimetype: application/x-microsoft.net.object.bytearray.base64
+    value   : The object must be serialized into a byte array 
+            : using a System.ComponentModel.TypeConverter
+            : and then encoded with base64 encoding.
+    -->
+  <xsd:schema id="root" xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
+    <xsd:import namespace="http://www.w3.org/XML/1998/namespace" />
+    <xsd:element name="root" msdata:IsDataSet="true">
+      <xsd:complexType>
+        <xsd:choice maxOccurs="unbounded">
+          <xsd:element name="metadata">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" />
+              </xsd:sequence>
+              <xsd:attribute name="name" use="required" type="xsd:string" />
+              <xsd:attribute name="type" type="xsd:string" />
+              <xsd:attribute name="mimetype" type="xsd:string" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="assembly">
+            <xsd:complexType>
+              <xsd:attribute name="alias" type="xsd:string" />
+              <xsd:attribute name="name" type="xsd:string" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="data">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+                <xsd:element name="comment" type="xsd:string" minOccurs="0" msdata:Ordinal="2" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" msdata:Ordinal="1" />
+              <xsd:attribute name="type" type="xsd:string" msdata:Ordinal="3" />
+              <xsd:attribute name="mimetype" type="xsd:string" msdata:Ordinal="4" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="resheader">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" />
+            </xsd:complexType>
+          </xsd:element>
+        </xsd:choice>
+      </xsd:complexType>
+    </xsd:element>
+  </xsd:schema>
+  <resheader name="resmimetype">
+    <value>text/microsoft-resx</value>
+  </resheader>
+  <resheader name="version">
+    <value>2.0</value>
+  </resheader>
+  <resheader name="reader">
+    <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <resheader name="writer">
+    <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <data name="acidizeeventtype" xml:space="preserve">
+    <value>Acidize</value>
+    <comment>Acidize event type</comment>
+  </data>
+  <data name="American_serviceprovider" xml:space="preserve">
+    <value>American</value>
+    <comment>Service provider for an event</comment>
+  </data>
+  <data name="eventbegindate" xml:space="preserve">
+    <value>10012018</value>
+    <comment>Event Begin date</comment>
+  </data>
+  <data name="eventbegintime" xml:space="preserve">
+    <value>120000</value>
+    <comment>Event Begin time</comment>
+  </data>
+  <data name="eventchangebegindate" xml:space="preserve">
+    <value>10042018</value>
+    <comment>Event Begin date</comment>
+  </data>
+  <data name="eventenddate" xml:space="preserve">
+    <value>12252018</value>
+    <comment>Event ENd date</comment>
+  </data>
+  <data name="eventendtime" xml:space="preserve">
+    <value>120000</value>
+    <comment>Event End time</comment>
+  </data>
+  <data name="acidizecoileventtype" xml:space="preserve">
+    <value>Acidize - Coiled Tubing</value>
+    <comment>Acidize coil event</comment>
+  </data>
+  <data name="vendor" xml:space="preserve">
+    <value>Alten</value>
+    <comment>Vendor Name</comment>
+  </data>
+  <data name="jobcostdate" xml:space="preserve">
+    <value>04262019</value>
+    <comment>Job Cost Date</comment>
+  </data>
+  <data name="component" xml:space="preserve">
+    <value>Borehole</value>
+    <comment>Drilling area component</comment>
+  </data>
+  <data name="drillingreporttime" xml:space="preserve">
+    <value>1200</value>
+    <comment>TIme of Drilling report</comment>
+  </data>
+  <data name="parttype" xml:space="preserve">
+    <value>Wellbore Hole</value>
+    <comment>Drilling area parttype</comment>
+  </data>
+  <data name="catlgitemdesc" xml:space="preserve">
+    <value>Wellbore Hole OD- 2.0000</value>
+    <comment>Catalogue item description</comment>
+  </data>
+  <data name="compdepth" xml:space="preserve">
+    <value>100</value>
+  </data>
+  <data name="complength" xml:space="preserve">
+    <value>200</value>
+  </data>
+  <data name="compname" xml:space="preserve">
+    <value>comp1</value>
+    <comment>Component name of drilling </comment>
+  </data>
+  <data name="approved" xml:space="preserve">
+    <value>Approved</value>
+    <comment>Job Status type Approved</comment>
+  </data>
+  <data name="continuous" xml:space="preserve">
+    <value>Continuous</value>
+    <comment>Job Status type Continous</comment>
+  </data>
+  <data name="currentlysteaming" xml:space="preserve">
+    <value>Currently Steaming</value>
+    <comment>Job Status type Currently steaming</comment>
+  </data>
+  <data name="inprogress" xml:space="preserve">
+    <value>In Progress</value>
+    <comment>Job Status type In progress</comment>
+  </data>
+  <data name="planned" xml:space="preserve">
+    <value>Planned</value>
+    <comment>Job Status type Planned</comment>
+  </data>
+  <data name="scheduled" xml:space="preserve">
+    <value>Scheduled</value>
+    <comment>Job Status type In scheduled</comment>
+  </data>
+  <data name="steammidpoint" xml:space="preserve">
+    <value>Steam-Midpoint</value>
+    <comment>Job Status type In steam midpoint</comment>
+  </data>
+  <data name="steamputonproduction" xml:space="preserve">
+    <value>Steam-Put on Production</value>
+    <comment>Job Status type In steam put on production</comment>
+  </data>
+  <data name="steamsoak" xml:space="preserve">
+    <value>Steam-Soak</value>
+    <comment>Job Status type In steam soak</comment>
+  </data>
+  <data name="waitingafe" xml:space="preserve">
+    <value>Waiting on AFE</value>
+    <comment>Job Status type Waiting on AFE</comment>
+  </data>
+  <data name="waitingapproval" xml:space="preserve">
+    <value>Waiting on Approval</value>
+    <comment>Job Status type Waiting on Approval</comment>
+  </data>
+  <data name="waitingexternal" xml:space="preserve">
+    <value>Waiting on External System</value>
+    <comment>Job Status type Waiting on External System</comment>
+  </data>
+  <data name="waitingmaintenance" xml:space="preserve">
+    <value>Waiting on Maintenance</value>
+    <comment>Job Status type Waiting on Maintenance</comment>
+  </data>
+  <data name="cancelled" xml:space="preserve">
+    <value>Cancelled</value>
+    <comment>Job Status type Cancelled</comment>
+  </data>
+  <data name="completed" xml:space="preserve">
+    <value>Completed</value>
+    <comment>Job Status type Completed</comment>
+  </data>
+  <data name="toursheetcomplete" xml:space="preserve">
+    <value>Tour Sheet Complete</value>
+    <comment>Job Status type Tour Sheet Completed</comment>
+  </data>
+  <data name="waitingontoursheet" xml:space="preserve">
+    <value>Waiting on Tour Sheet</value>
+    <comment>Job Status type Tour Sheet WAITING</comment>
+  </data>
+  <data name="component1" xml:space="preserve">
+    <value>Conductor Casing</value>
+    <comment>Job status type conductor casing</comment>
+  </data>
+  <data name="parttype1" xml:space="preserve">
+    <value>Casing Hanger</value>
+    <comment>Part type Casing Hanger</comment>
+  </data>
+  <data name="futuredate" xml:space="preserve">
+    <value>11012018</value>
+    <comment>A Future date</comment>
+  </data>
+  <data name="compbottomdepth" xml:space="preserve">
+    <value>300</value>
+    <comment>Component bottom depth</comment>
+  </data>
+</root>

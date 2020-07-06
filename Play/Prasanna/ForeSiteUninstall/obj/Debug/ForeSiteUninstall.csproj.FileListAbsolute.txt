@@ -1,0 +1,11 @@
+C:\Users\E252234\source\repos\ForeSiteUninstall\bin\Debug\ForeSiteUninstall.dll
+C:\Users\E252234\source\repos\ForeSiteUninstall\bin\Debug\ForeSiteUninstall.pdb
+C:\Users\E252234\source\repos\ForeSiteUninstall\obj\Debug\ForeSiteUninstall.csproj.CoreCompileInputs.cache
+C:\Users\E252234\source\repos\ForeSiteUninstall\obj\Debug\ForeSiteUninstall.dll
+C:\Users\E252234\source\repos\ForeSiteUninstall\obj\Debug\ForeSiteUninstall.pdb
+C:\Users\E252234\source\repos\ForeSiteUninstall\obj\Debug\ForeSiteUninstall.csprojAssemblyReference.cache
+C:\Users\E159279\Documents\Visual Studio 2017\Projects\ForeSiteUninstall\bin\Debug\ForeSiteUninstall.dll
+C:\Users\E159279\Documents\Visual Studio 2017\Projects\ForeSiteUninstall\bin\Debug\ForeSiteUninstall.pdb
+C:\Users\E159279\Documents\Visual Studio 2017\Projects\ForeSiteUninstall\obj\Debug\ForeSiteUninstall.dll
+C:\Users\E159279\Documents\Visual Studio 2017\Projects\ForeSiteUninstall\obj\Debug\ForeSiteUninstall.pdb
+C:\Users\E159279\Documents\Visual Studio 2017\Projects\ForeSiteUninstall\obj\Debug\ForeSiteUninstall.csprojResolveAssemblyReference.cache

@@ -1,0 +1,6 @@
+c:\users\e159279\documents\visual studio 2017\Projects\ParseNotification\ParseNotification\bin\Debug\ParseNotification.exe.config
+c:\users\e159279\documents\visual studio 2017\Projects\ParseNotification\ParseNotification\bin\Debug\ParseNotification.exe
+c:\users\e159279\documents\visual studio 2017\Projects\ParseNotification\ParseNotification\bin\Debug\ParseNotification.pdb
+c:\users\e159279\documents\visual studio 2017\Projects\ParseNotification\ParseNotification\obj\Debug\ParseNotification.csprojResolveAssemblyReference.cache
+c:\users\e159279\documents\visual studio 2017\Projects\ParseNotification\ParseNotification\obj\Debug\ParseNotification.exe
+c:\users\e159279\documents\visual studio 2017\Projects\ParseNotification\ParseNotification\obj\Debug\ParseNotification.pdb
