@@ -1,7 +1,8 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Configuration;
 using System.Linq;
+using System.Net;
 using System.Net.Mail;
 using System.Text;
 using System.Threading.Tasks;
@@ -12,7 +13,8 @@ namespace SendAutoEmail
     {
         static void Main(string[] args)
         {
-            SendEmail();
+          //  SendEmail();
+            SendEmailFromGmail();
         }
         private static void sendemail(string ListTo, string fileName)
         {
@@ -27,7 +29,7 @@ namespace SendAutoEmail
                 }
                 message.Subject = "New build for  Automated Copy Process";
                 message.From = new System.Net.Mail.MailAddress("noreply@bugnet-vm1.com");
-                message.Body =  " downloaded @ location :" + fileName;
+                message.Body = " downloaded @ location :" + fileName;
                 System.Net.Mail.SmtpClient smtp = new System.Net.Mail.SmtpClient("smtp.office365.com");
                 smtp.Port = 25;
 
@@ -54,10 +56,10 @@ namespace SendAutoEmail
             MailMessage msg = new MailMessage("prasanna.hegde@weatherford.com", "prasanna.hegde@weatherford.com");
             msg.Subject = "Your Subject Name";
             StringBuilder sb = new StringBuilder();
-            sb.AppendLine("Name: " );
-            sb.AppendLine("Mobile Number: " );
-            sb.AppendLine("Email:" );
-            sb.AppendLine("Drop Downlist Name:" );
+            sb.AppendLine("Name: ");
+            sb.AppendLine("Mobile Number: ");
+            sb.AppendLine("Email:");
+            sb.AppendLine("Drop Downlist Name:");
             msg.Body = sb.ToString();
             //Attachment attach = new Attachment(Server.MapPath("folder/" + ImgName));
             //msg.Attachments.Add(attach);
@@ -67,6 +69,34 @@ namespace SendAutoEmail
             SmtpClient.Port = 587;
             SmtpClient.EnableSsl = true;
             SmtpClient.Send(msg);
+        }
+
+        private static void SendEmailFromGmail()
+        {
+
+            var fromAddress = new MailAddress("devopsuser2018@gmail.com", "DevOpsTestAccount");
+            var toAddress = new MailAddress("prasanna.hegde@weatherford.com", "Prasanna");
+            const string fromPassword = "DevOpsUser97bd916$";
+            const string subject = "Gmail SMTP MailKit test";
+            const string body = "Tracking Item <Subject> is approaching the designated Due Date. Please take appropriate action to Complete and/or Close this Tracking Item.";
+
+            var smtp = new SmtpClient
+            {
+                Host = "smtp.gmail.com",
+                Port = 587,
+                EnableSsl = true,
+                DeliveryMethod = SmtpDeliveryMethod.Network,
+                UseDefaultCredentials = false,
+                Credentials = new NetworkCredential(fromAddress.Address, fromPassword)
+            };
+            using (var message = new MailMessage(fromAddress, toAddress)
+            {
+                Subject = subject,
+                Body = body
+            })
+            {
+                smtp.Send(message);
+            }
         }
     }
 }
