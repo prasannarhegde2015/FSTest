@@ -42,6 +42,7 @@ namespace SeleniumAutomation.TestClasses
                 SeleniumActions.WaitForLoad();
                 SeleniumActions.waitClick(PageObjects.WellStatusPage.btnBasicSetpointGetvalues);
                 SeleniumActions.WaitForLoad();
+                Thread.Sleep(5000);
                 SeleniumActions.waitClick(PageObjects.WellStatusPage.btnCloseSetPointModal);
                 scancards(test);
                 Continuouscardcollection();
@@ -51,7 +52,8 @@ namespace SeleniumAutomation.TestClasses
                 CheckCalibration();
                 Verify_PumpFillPercentVSDToleranceShutDownLimitsFluidLoadLines(test);
                 SeleniumActions.WaitForLoad();
-                CardRangeSliderAndGenerateReportforeachcard(test);
+                //commenting the below method for the ag_grid RND
+                //CardRangeSliderAndGenerateReportforeachcard(test);
                 // CheckUnitBalancing();
                 config.DeleteWellByUI(TestData.WellConfigData.RRFACName, test);
                 test.Pass("RRL Well Creation Configuration Smoke Finished");
@@ -91,7 +93,7 @@ namespace SeleniumAutomation.TestClasses
         {
             SeleniumActions.WaitForLoad();
             Clickanalysis();
-            SeleniumActions.send_Text(PageObjects.WellAnalysisPage.txtstartdate, "01012008");
+            SeleniumActions.send_Text(PageObjects.WellAnalysisPage.txtstartdate, "01012018");
             PreCardCollectionCheck();
             PostCardCollectionCheck();
             test.Info("Cards verified before and after collection");
@@ -292,6 +294,8 @@ namespace SeleniumAutomation.TestClasses
                 }
                 verifycardadded:
                 {
+                    bool breakme = false;
+
                     foreach (IWebElement row in SeleniumActions.Gettotalrecordsinlist("xpath", PageObjects.WellAnalysisPage.patternmatchinglibrows))
                     {
                         System.Collections.ObjectModel.ReadOnlyCollection<IWebElement> rows = row.FindElements(By.TagName("td"));
@@ -306,7 +310,7 @@ namespace SeleniumAutomation.TestClasses
                             }
                         }
 
-
+                        if (breakme) break;
 
                     }
                 }
@@ -430,7 +434,7 @@ namespace SeleniumAutomation.TestClasses
             {
                 SeleniumActions.waitClickJS(PageObjects.WellAnalysisPage.tabwelltest);
                 SeleniumActions.waitClickJS(PageObjects.WellAnalysisPage.tabanalysis);
-                SeleniumActions.send_Text(PageObjects.WellAnalysisPage.txtstartdate, "1/1/2008");
+                SeleniumActions.send_Text(PageObjects.WellAnalysisPage.txtstartdate, "1/1/2019");
 
                 Thread.Sleep(2000);
                 SeleniumActions.WaitForLoad();
@@ -459,6 +463,7 @@ namespace SeleniumAutomation.TestClasses
                 string minirerpotDataAlarm = "L-C-912.00(88)-365(65)-168(90.0)@11.0 SPM w/1.66Stresses:D-1.000(100)D-0.750(149)D-0.875(77)RT (6.8)@769% PE96% PF";
                 string minirerpotDataFailure = "L-C-912.00(87)-365(64)-168(90.0)@11.0 SPM w/1.66Stresses:D-1.000(99)D-0.750(146)D-0.875(77)RT (6.8)@756% PE97% PF";
                 */
+                
                 string minirerpotDataCurrent = "L-C-912.00(135)-365(67)-168(90.0)@11.0 SPM w/1.66Stresses:EL-0.750(109)C-1.000(143)D-1.000(107)RT (6.8)@1010% PE3% PF";
                 string minirerpotDataFull = "L-C-912.00(132)-365(65)-168(90.0)@11.0 SPM w/1.66Stresses:EL-0.750(103)C-1.000(134)D-1.000(100)RT (6.8)@743% PE93% PF";
                 string minirerpotDataPumpOff = "L-C-912.00(136)-365(67)-168(90.0)@11.0 SPM w/1.66Stresses:EL-0.750(109)C-1.000(144)D-1.000(109)RT (6.8)@1122% PE3% PF";

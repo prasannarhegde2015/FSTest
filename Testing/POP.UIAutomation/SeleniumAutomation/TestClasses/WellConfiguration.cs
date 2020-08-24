@@ -148,16 +148,21 @@ namespace SeleniumAutomation.TestClasses
                 CreateRRLWellFullonBlankDB(test);
                 // Go to Well status and Scan
                 SeleniumActions.waitClick(PageObjects.WellConfigurationPage.SurveillaceTab);
+                SeleniumActions.WaitForLoad();
                 SeleniumActions.waitClick(PageObjects.WellConfigurationPage.WellStatusTab);
                 SeleniumActions.WaitForLoad();
+                Thread.Sleep(5000);
                 SeleniumActions.waitClick(PageObjects.WellStatusPage.btnScan);
                 SeleniumActions.WaitForLoad();
-                SeleniumActions.waitClick(PageObjects.WellStatusPage.btnConfirmSend);
+                // FRI-4624 :   SeleniumActions.waitClick(PageObjects.WellStatusPage.btnConfirmSend);
                 Toastercheck("Scan Commamnd", "Command Scan issued successfully.", test);
                 string statustext = SeleniumActions.getInnerText(PageObjects.WellStatusPage.lblCommStatusBy);
                 Assert.AreEqual("OK", statustext, "Communication is failed");
+                SeleniumActions.waitClick(PageObjects.WellConfigurationPage.SurveillaceTab);
+                SeleniumActions.WaitForLoad();
                 // Go to Well Analysis and Collect Cards
                 SeleniumActions.waitClick(PageObjects.DashboardPage.tabOptimization);
+                SeleniumActions.WaitForLoad();
                 SeleniumActions.waitClick(PageObjects.DashboardPage.tabAnalysis);
                 SeleniumActions.WaitForLoad();
                 SeleniumActions.waitClick(PageObjects.WellAnalysisPage.btnScanCards);
@@ -309,7 +314,6 @@ namespace SeleniumAutomation.TestClasses
 
                 SeleniumActions.waitClick(SeleniumAutomation.PageObjects.JobManagementPage.jobManagementTab);
                 SeleniumActions.WaitForLoad();
-
                 SeleniumActions.WaitForLoad();
                 //Adding job and components to well
                 string jobid = JobManagement.addjob(test);
@@ -750,13 +754,13 @@ namespace SeleniumAutomation.TestClasses
             }
         }
 
-        public void DashbordfilterVlidation()
+        public void DashbordfilterVlidation(string name = "TestAsset")
         {
             SeleniumActions.waitClick(PageObjects.WellConfigurationPage.dashbord_filter);
             Thread.Sleep(3000);
             if (SeleniumActions.Gettotalrecords(PageObjects.WellConfigurationPage.assets_validation) == 0)
             {
-                SeleniumActions.KendoTypeNSelect(PageObjects.WellConfigurationPage.assets_filter1, "TestAsset");
+                SeleniumActions.KendoTypeNSelect(PageObjects.WellConfigurationPage.assets_filter1, name);
                 Thread.Sleep(3000);
                 SeleniumActions.waitClick(PageObjects.WellConfigurationPage.applybtn);
             }
@@ -769,7 +773,6 @@ namespace SeleniumAutomation.TestClasses
 
         {
             string isruunisats = ConfigurationManager.AppSettings.Get("IsRunningATS");
-
             //   If non zero db
             if (SeleniumActions.IsElementDisplayedOnUI(PageObjects.WellConfigurationPage.wellconfigurationTab) == false)
             {
@@ -947,9 +950,9 @@ namespace SeleniumAutomation.TestClasses
 
                 decimal watertechnicallimit = Math.Round(Convert.ToDecimal(SeleniumActions.getText(PageObjects.WellConfigurationPage.txtwatertechnicallimit)));
                 decimal gastechnicallimit = Math.Round(Convert.ToDecimal(SeleniumActions.getText(PageObjects.WellConfigurationPage.txtgastechnicallimit)));
-                Assert.AreEqual(10000, oiltechnicallimit, "Oil Technical limit is not displayed correct");
-                Assert.AreEqual(10000, watertechnicallimit, "water Technical limit is not displayed correct");
-                Assert.AreEqual(100000, gastechnicallimit, "Gas Technical limit is not displayed correct");
+                Assert.AreEqual(50000, oiltechnicallimit, "Oil Technical limit is not displayed correct");
+                Assert.AreEqual(50000, watertechnicallimit, "water Technical limit is not displayed correct");
+                Assert.AreEqual(1000000, gastechnicallimit, "Gas Technical limit is not displayed correct");
                 SeleniumActions.waitClick(PageObjects.WellConfigurationPage.lnktargetsave);
                 SeleniumActions.Toastercheck("Save Target Configuration", "Saved successfully.", test);
                 SeleniumActions.waitClick(PageObjects.WellConfigurationPage.lnktargetclose);
@@ -1074,7 +1077,7 @@ namespace SeleniumAutomation.TestClasses
 
         public void SettingsCommon()
         {
-            Helper.CommonHelper.CreateESPWell();
+            CommonHelper.CreateESPWell();
             SeleniumActions.refreshBrowser();
             SeleniumActions.WaitForLoad();
             SeleniumActions.WaitforWellcountToBeNonZero();

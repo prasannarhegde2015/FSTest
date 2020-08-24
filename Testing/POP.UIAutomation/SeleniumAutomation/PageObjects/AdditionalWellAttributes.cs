@@ -20,8 +20,8 @@ namespace SeleniumAutomation.PageObjects
         public static By PTTaxRate { get { return SeleniumActions.getByLocator("Xpath", "//label[text()='PT Tax Rate']//../following-sibling::div//input", "PT Tax Rate"); } }
         public static By CTTaxRate { get { return SeleniumActions.getByLocator("Xpath", "//label[text()='CT Tax Rate']//../following-sibling::div//input", "CT Tax Rate"); } }
         public static By WTTaxRate { get { return SeleniumActions.getByLocator("Xpath", "//label[text()='WT Tax Rate']//../following-sibling::div//input", "WT Tax Rate"); } }
-        public static By EstimatedKWHCost { get { return SeleniumActions.getByLocator("Xpath", "//label[text()='Estimated KWH Cost']//../following-sibling::div//input", "Estimated KWH Cost"); } }
-        public static By EstimatedKWHPowerCost { get { return SeleniumActions.getByLocator("Xpath", "//label[text()='Estimated KWH Uninterruptible Power Cost']//../following-sibling::div//input", "Estimated KWH Uninterruptible Power Cost"); } }
+        public static By EstimatedKWHCost { get { return SeleniumActions.getByLocator("Xpath", "//label[text()='Estimated kWh Cost']//../following-sibling::div//input", "Estimated KWH Cost"); } }
+        public static By EstimatedKWHPowerCost { get { return SeleniumActions.getByLocator("Xpath", "//label[text()='Estimated kWh Uninterruptible Power Cost']//../following-sibling::div//input", "Estimated KWH Uninterruptible Power Cost"); } }
         public static By DefaultDecimalWorkingInterest { get { return SeleniumActions.getByLocator("Xpath", "//label[text()='Default Decimal Working Interest']//../following-sibling::div//input", "Default Decimal Working Interest"); } }
         public static By DefaultDecimalRoyaltyInterest { get { return SeleniumActions.getByLocator("Xpath", "//label[text()='Default Decimal Royalty Interest']//../following-sibling::div//input", "Default Decimal Royalty Interest"); } }
         public static By PlatformElevation { get { return SeleniumActions.getByLocator("Xpath", "//label[text()='Platform Elevation (from Mean Sea Level)']//../following-sibling::div//input", "Platform Elevation"); } }

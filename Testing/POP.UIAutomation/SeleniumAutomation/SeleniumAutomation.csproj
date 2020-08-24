@@ -53,6 +53,10 @@
       <HintPath>..\..\..\Libraries\Testing\Selenium\Interop.AutoItX3Lib.dll</HintPath>
       <EmbedInteropTypes>True</EmbedInteropTypes>
     </Reference>
+    <Reference Include="Microsoft.Edge.SeleniumTools, Version=3.141.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\..\Libraries\Testing\Selenium\Microsoft.Edge.SeleniumTools.dll</HintPath>
+    </Reference>
     <Reference Include="Microsoft.VisualStudio.QualityTools.UnitTestFramework, Version=10.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL" />
     <Reference Include="MongoDB.Bson, Version=2.7.2.0, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
@@ -117,7 +121,7 @@
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\..\..\Libraries\Weatherford\Weatherford.DynaCardLibrary.API.Interfaces.dll</HintPath>
     </Reference>
-    <Reference Include="WebDriver, Version=3.14.0.0, Culture=neutral, processorArchitecture=MSIL">
+    <Reference Include="WebDriver, Version=3.141.0.0, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\..\..\Libraries\Testing\Selenium\WebDriver.dll</HintPath>
     </Reference>
@@ -132,6 +136,7 @@
     <Compile Include="AGGridScreenDatas\TypeReadyJobsGrid.cs" />
     <Compile Include="AGGridScreenDatas\TypeMorningReportGrid.cs" />
     <Compile Include="AGGridScreenDatas\TypeJobCostDetailsGrid.cs" />
+    <Compile Include="AGGridScreenDatas\TypeTrackingItemMasterGrid.cs" />
     <Compile Include="AGGridScreenDatas\TypeWellboreReportGrid.cs" />
     <Compile Include="AGGridScreenDatas\TypeDrillingReportGrid.cs" />
     <Compile Include="AGGridScreenDatas\TypeJobManagementGeneralGrid.cs" />
@@ -150,6 +155,7 @@
     <Compile Include="PageObjects\FieldServicesPage.cs" />
     <Compile Include="PageObjects\GroupConfigurationPage.cs" />
     <Compile Include="PageObjects\JobManagementPage.cs" />
+    <Compile Include="PageObjects\TrackingItemPage.cs" />
     <Compile Include="PageObjects\WellAnalysisPage.cs" />
     <Compile Include="PageObjects\WellDesignPage.cs" />
     <Compile Include="PageObjects\WellStatusPage.cs" />
@@ -162,12 +168,15 @@
     <Compile Include="SeleniumObject\MorningReportDataProcess.cs" />
     <Compile Include="SeleniumObject\JobCostDetailsDataProcess.cs" />
     <Compile Include="SeleniumObject\ReadyJobDataProcess.cs" />
+    <Compile Include="SeleniumObject\TrackingItemMasterGridDataProcess.cs" />
     <Compile Include="SeleniumObject\WellboreReportDataProcess.cs" />
     <Compile Include="SeleniumObject\DrillingReportDataProcess.cs" />
     <Compile Include="SeleniumObject\JobManagementGeneralDataProcess.cs" />
     <Compile Include="SeleniumObject\GroupConfigurationDataProcess.cs" />
     <Compile Include="SeleniumObject\IGridScenarios.cs" />
     <Compile Include="SeleniumObject\WellTestDataProcess.cs" />
+    <Compile Include="SystemRailLinkVerificationTest.cs" />
+    <Compile Include="TestClasses\TrackingItem.cs" />
     <Compile Include="TestClasses\WellAnalysis.cs" />
     <Compile Include="TestClasses\WellDesign.cs" />
     <Compile Include="TestClasses\WellStatus.cs" />
@@ -185,6 +194,7 @@
     </Compile>
     <Compile Include="TestClasses\JobManagement.cs" />
     <Compile Include="TestClasses\PermissionVerification.cs" />
+    <Compile Include="TestData\TrackingItemData.cs" />
     <Compile Include="TestData\WaterInjTestData.cs" />
     <Compile Include="TestData\WellTestData.cs" />
     <Compile Include="UpgradeTests.cs" />

@@ -4,6 +4,7 @@ using Microsoft.VisualStudio.TestTools.UnitTesting;
 using SeleniumAutomation.Helper;
 using SeleniumAutomation.SeleniumObject;
 using SeleniumAutomation.TestClasses;
+using SeleniumAutomation.TestData;
 using System;
 using System.Configuration;
 
@@ -36,8 +37,9 @@ namespace SeleniumAutomation
         {
             // *********** Launch Browser *******************
             CommonHelper.ChangeUnitSystemUserSetting("US");
-            Helper.CommonHelper.createasset();
-
+            string assetuniuiename = "TestAsset_"+DateTime.Now.ToString("MMddyyyyhhmmss");
+            Helper.CommonHelper.createasset(assetuniuiename);
+            CommonHelper.AssetName = assetuniuiename;
             string isruunisats = ConfigurationManager.AppSettings.Get("isRunningATS");
             SeleniumActions.InitializeWebDriver();
             //Assert.AreEqual(SeleniumAutomation.TestData.WellConfigData.HomePageTitle, SeleniumActions.getBrowserTitle(), "Title is NOT matched ");
@@ -56,6 +58,7 @@ namespace SeleniumAutomation
             {
                 test = report.CreateTest("RRL Well Creation New");
                 config.CreateRRLWellFullonBlankDB(test);
+                config.DashbordfilterVlidation(CommonHelper.AssetName);
                 config.VerifyRRLWellFullonBlankDB(test);
                 config.EnterDataForAdditionalWellAttributes();
                 config.VerifyDataForAdditionalWellAttributes(test);
@@ -131,7 +134,7 @@ namespace SeleniumAutomation
             {
                 SeleniumActions.takeScreenshot("Error_ESPWell_creation");
                 test.Fail(e.ToString(), MediaEntityBuilder.CreateScreenCaptureFromPath((System.IO.Path.Combine("Screenshots", "Error_ESPWell_creation.png"))).Build());
-                Helper.CommonHelper.Deleteasset();
+               // Helper.CommonHelper.Deleteasset();
                 Assert.Fail(e.ToString());
             }
 

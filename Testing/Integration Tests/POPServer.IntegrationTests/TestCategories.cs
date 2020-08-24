@@ -6,6 +6,7 @@
         internal const string AlarmServiceTests = "AlarmServiceTests";
         internal const string AuthenticationServiceTests = "AuthenticationServiceTests";
         internal const string AuthorizationNegativeTests = "AuthorizationNegativeTests";
+        internal const string TrackingItemServiceTests = "TrackingItemServiceTests";
         internal const string CatalogServiceTests = "ForeSiteCatalogServiceTests";
         internal const string ComponentServiceTests = "ComponentServiceTests";
         internal const string DataConnectionServiceTests = "DataConnectionServiceTests";

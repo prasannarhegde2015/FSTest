@@ -120,6 +120,7 @@
     </Otherwise>
   </Choose>
   <ItemGroup>
+    <Compile Include="TrackingItemServiceTests.cs" />
     <Compile Include="AdministrationServiceTests.cs" />
     <Compile Include="AlarmServiceTests.cs" />
     <Compile Include="APIClientTestBase.cs" />
@@ -164,6 +165,10 @@
     <ProjectReference Include="..\..\..\Common\POP.Units\POP.Units.csproj">
       <Project>{46CF5D69-1F22-4490-89FA-E31B73ACDFCD}</Project>
       <Name>POP.Units</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\..\Common\POP.Utils\POP.Utils.csproj">
+      <Project>{D4EA5E02-9355-4B1C-9479-9E0D0F38F7F4}</Project>
+      <Name>POP.Utils</Name>
     </ProjectReference>
     <ProjectReference Include="..\..\..\Server\POP.Quantities\POP.Quantities.csproj">
       <Project>{c99c63b7-59a6-489e-8158-603584652e23}</Project>
@@ -374,6 +379,13 @@
     <EmbeddedResource Include="TestDocuments\Images\22Wells.reo">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </EmbeddedResource>
+    <EmbeddedResource Include="TestDocuments\PumpCurveResponse.json" />
+    <EmbeddedResource Include="TestDocuments\GP-1.wflx" />
+    <EmbeddedResource Include="TestDocuments\GP-2.wflx" />
+    <EmbeddedResource Include="TestDocuments\GP-3.wflx" />
+    <EmbeddedResource Include="TestDocuments\GP-4.wflx" />
+    <EmbeddedResource Include="TestDocuments\GI-1.wflx" />
+    <EmbeddedResource Include="TestDocuments\GI-2.wflx" />
   </ItemGroup>
   <ItemGroup>
     <COMReference Include="CxCvsLib">

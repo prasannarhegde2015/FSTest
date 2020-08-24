@@ -15,11 +15,11 @@ using System.Threading;
 using System.Xml;
 using Weatherford.POP.DTOs;
 using Weatherford.POP.Enums;
-using Weatherford.POP.Localization;
+
 
 namespace SeleniumAutomation.Helper
 {
-    public static class CommonHelper
+    public static class CommonHelper 
     {
         public static string IsRunningInATS = ConfigurationManager.AppSettings.Get("IsRunningInATS");
         public static string Exports = ConfigurationManager.AppSettings.Get("Exports");
@@ -31,6 +31,17 @@ namespace SeleniumAutomation.Helper
         public static string FilesLocation = ConfigurationManager.AppSettings.Get("FilesLocation");
         public static string WellName = ConfigurationManager.AppSettings.Get("WellName");
         public static APIUITestBase ApiUITestBase = new APIUITestBase();
+
+        private static long _reportId;
+
+        public static long reportId
+        {
+            get { return _reportId; }
+            set { _reportId = value; }
+        }
+
+        public static string AssetName { get; set; }
+
 
         public static void PrintScreen(string filename, int screenNum = 0)
         {
@@ -252,6 +263,78 @@ namespace SeleniumAutomation.Helper
             Thread.Sleep(3000);
         }
 
+
+        public static void ChangeLandingPageToBusniessIntelligence(string settingNameEnum)
+        {
+            ApiUITestBase.Authenticate();
+            string hiddensettingvalue = "BasicLandingPage:Default;ActionTracking:Visible;AllocationGroups:Visible;AuditLogs:Visible;BusinessIntelligence:Visible;CurrentWellbore:Visible;DowntimeHistory:Visible;DowntimeMaintenance:Visible;EnterTourSheet:Visible;FailureAnalysis:Visible;FieldServiceConfiguration:Visible;ForecastResult:Visible;ForecastScenario:Visible;GroupAlarmHistory:Visible;GroupAllocationStatus:Visible;GroupConfiguration:Visible;GroupStatus:Visible;JobManagement:Visible;JobPlanWizard:Visible;JobStatusView:Visible;MapView:Visible;MorningReport:Visible;NetworkConfiguration:Visible;ProductionDashboard:Visible;ProductionOverview:Visible;StickyNotes:Visible;SurfaceNetworkOptimization:Visible;VoidageReplacement:Visible;WellAllowables:Visible;WellAnalysis:Visible;WellConfiguration:Visible;WellDesign:Visible;WellStatus:Visible;WellTest:Visible;WellTrend:Visible;WellboreCorrection:Visible;WellboreHistory:Visible";
+            SettingType settingType = SettingType.System;
+            SettingDTO systemSettings = ApiUITestBase.SettingService.GetSettingsByType(settingType.ToString()).FirstOrDefault(x => x.Name == SettingServiceStringConstants.PAGE_CONFIGURATION);
+            SystemSettingDTO settingValue = ApiUITestBase.SettingService.GetSystemSettingByName(systemSettings.Name);
+            settingValue.StringValue = hiddensettingvalue;
+            ApiUITestBase.SettingService.SaveSystemSetting(settingValue);
+            settingValue = ApiUITestBase.SettingService.GetSystemSettingByName(systemSettings.Name);
+            string newsettingval = settingValue.StringValue.Replace("BasicLandingPage:Default", "BusinessIntelligence:Default");
+            settingValue.StringValue = newsettingval;
+            ApiUITestBase.SettingService.SaveSystemSetting(settingValue);
+            SetValuesInSystemSettings(SettingServiceStringConstants.EXTERNAL_REPORT_URI, "http://meinwesswks7:82");
+            //Add 1  Reoprt in toolbox
+            ExternalReportConfigurationDTO externalReportSpotfire = new ExternalReportConfigurationDTO();
+            externalReportSpotfire.ReportProvider = ExternalReportProvider.Spotfire;
+            externalReportSpotfire.ReportName = "All Well Status";
+            externalReportSpotfire.ReportId = "/ForeSiteSotfireReport";
+            externalReportSpotfire.WorkspaceId = "Well";
+            externalReportSpotfire.FilterColumnName = "welPrimaryKey";
+            externalReportSpotfire.FilterTableName = "Well";
+            externalReportSpotfire.IsClientReportFilterEnabled = true;
+            externalReportSpotfire.IsFilteredByWellSelection = true;
+            ApiUITestBase.ReportService.AddExternalReport(externalReportSpotfire);
+            reportId = ApiUITestBase.ReportService.GetAllExternalReports().FirstOrDefault(x => x.ReportName == "All Well Status").Id;
+
+        }
+
+        public static void RevertLandingPageToDefault(string settingNameEnum)
+        {
+            ApiUITestBase.Authenticate();
+            SettingType settingType = SettingType.System;
+            SettingDTO systemSettings = ApiUITestBase.SettingService.GetSettingsByType(settingType.ToString()).FirstOrDefault(x => x.Name == SettingServiceStringConstants.PAGE_CONFIGURATION);
+            SystemSettingDTO settingValue = ApiUITestBase.SettingService.GetSystemSettingByName(systemSettings.Name);
+            string newsettingval = settingValue.StringValue.Replace("BusinessIntelligence:Default", "BasicLandingPage:Default");
+            settingValue.StringValue = newsettingval;
+            ApiUITestBase.SettingService.SaveSystemSetting(settingValue);
+            SetValuesInSystemSettings(SettingServiceStringConstants.EXTERNAL_REPORT_URI, "");
+            ApiUITestBase.ReportService.RemoveExternalReport(reportId.ToString());
+
+        }
+
+        public static void SetValuesInSystemSettings(string settingName, string settingValue)
+        {
+            ApiUITestBase.Authenticate();
+            SystemSettingDTO systemSetting = ApiUITestBase.SettingService.GetSystemSettingByName(settingName);
+            SettingValueType settingValueType = systemSetting.Setting.SettingValueType;
+            switch (settingValueType)
+            {
+                case SettingValueType.DecimalNumber:
+                    if (!string.IsNullOrEmpty(settingValue))
+                    {
+                        systemSetting.NumericValue = Convert.ToDouble(decimal.Parse(settingValue));
+                        ApiUITestBase.SettingService.SaveSystemSetting(systemSetting);
+                    }
+                    break;
+                case SettingValueType.Number:
+                case SettingValueType.TrueOrFalse:
+                    systemSetting.NumericValue = int.Parse(settingValue);
+                    ApiUITestBase.SettingService.SaveSystemSetting(systemSetting);
+                    Assert.AreEqual(settingValue, systemSetting.NumericValue.ToString(), "Unable to Change the System Setting Value for : " + settingName);
+                    break;
+                default:
+                    systemSetting.StringValue = settingValue;
+                    ApiUITestBase.SettingService.SaveSystemSetting(systemSetting);
+                    Assert.AreEqual(settingValue, systemSetting.StringValue, "Unable to Change the System Setting Value for : " + settingName);
+                    break;
+            }
+        }
+
         public static void ChangeUnitSystemUserSetting(string type)
         {
             ApiUITestBase.Authenticate();
@@ -454,7 +537,7 @@ namespace SeleniumAutomation.Helper
                     SurfaceLatitude = (decimal?)random.Next(-90, 90),
                     SurfaceLongitude = (decimal?)random.Next(-180, 180),
                     WaterAllocationGroup = null,
-                    AssetId = ApiUITestBase.SurfaceNetworkService.GetAllAssets().FirstOrDefault(x => x.Name == "TestAsset").Id
+                    AssetId = ApiUITestBase.SurfaceNetworkService.GetAllAssets().FirstOrDefault(x => x.Name.Contains("TestAsset")).Id
                 };
                 Assert.IsNotNull(well);
                 WellConfigDTO wellConfig = new WellConfigDTO();
@@ -507,7 +590,13 @@ namespace SeleniumAutomation.Helper
             #endregion
         }
 
-
+        public static bool AreAsssetsPresent()
+        {
+            bool AreAsssetsPresent = true;
+            ApiUITestBase.Authenticate();
+            AreAsssetsPresent = ApiUITestBase.SurfaceNetworkService.GetAllAssets().Length == 0 ? false : true;
+            return AreAsssetsPresent;
+        }
 
 
         public static ModelConfigDTO ReturnUITestdataDTO()
@@ -695,17 +784,29 @@ namespace SeleniumAutomation.Helper
             WellDTO well = allWells?.FirstOrDefault(w => w.Name.Contains(wellname));
             ApiUITestBase.AddWellSettingWithDoubleValues(well.Id, settingName, value);
         }
-        public static void createasset()
+        public static void createasset(string name= "TestAsset")
         {
             UserDTO user = ApiUITestBase.AdministrationService.GetUser(ApiUITestBase.AuthenticatedUser.Id.ToString());
             AssetDTO[] assets = ApiUITestBase.SurfaceNetworkService.GetAllAssets();
             if (assets.Count() == 0)
             {
-                AssetDTO assetToAdd = new AssetDTO() { Name = "TestAsset", Description = "TestAsset" };
+                AssetDTO assetToAdd = new AssetDTO() { Name = name, Description = "TestAsset" };
                 AssetDTO asset = ApiUITestBase.AddAndGetAsset(assetToAdd);
                 user.Assets.Add(asset);
                 ApiUITestBase._assetsToRemove.Add(asset);
                 ApiUITestBase.AdministrationService.UpdateUser(user);
+            }
+            //Assume that Previous test did not clear Test assets
+            else if (assets.FirstOrDefault( x => x.Name == "TestAsset") != null)
+            {
+                if ( name != "TestAsset")
+                {
+                    AssetDTO assetToAdd = new AssetDTO() { Name = name, Description = "TestAsset" };
+                    AssetDTO asset = ApiUITestBase.AddAndGetAsset(assetToAdd);
+                    user.Assets.Add(asset);
+                    ApiUITestBase._assetsToRemove.Add(asset);
+                    ApiUITestBase.AdministrationService.UpdateUser(user);
+                }
             }
             else
             {
@@ -720,7 +821,7 @@ namespace SeleniumAutomation.Helper
                     }
                     else
                     {
-                        AssetDTO assetToAdd = new AssetDTO() { Name = "TestAsset", Description = "TestAsset" };
+                        AssetDTO assetToAdd = new AssetDTO() { Name = name, Description = "TestAsset" };
                         AssetDTO asset = ApiUITestBase.AddAndGetAsset(assetToAdd);
                         user.Assets.Add(asset);
                         ApiUITestBase._assetsToRemove.Add(asset);
@@ -740,7 +841,7 @@ namespace SeleniumAutomation.Helper
             AssetDTO[] assetDetails = ApiUITestBase.SurfaceNetworkService.GetAllAssets();
             foreach (AssetDTO assetDTO in assetDetails)
             {
-                if (assetDTO.Name == "TestAsset")
+                if (assetDTO.Name == "TestAsset" || assetDTO.Name == AssetName)
                 {
                     ApiUITestBase.SurfaceNetworkService.RemoveAsset(assetDTO.Id.ToString());
 
@@ -775,6 +876,7 @@ namespace SeleniumAutomation.Helper
         }
 
 
+      
         public static void CreateRole(string roleName)
         {
 
@@ -978,6 +1080,61 @@ namespace SeleniumAutomation.Helper
             sz = sz / 1.074;
             getSizeinGB = sz.ToString();
             return getSizeinGB;
+        }
+
+        public static void AddActionTrackingTypeSubType()
+        {
+            ApiUITestBase.Authenticate();
+            ReferenceDataMaintenanceEntityDTO[] dataEntities = ApiUITestBase.DBEntityService.GetReferenceDataMaintenanceEntities();
+            ReferenceDataMaintenanceEntityDTO refTrackingItemDTO = dataEntities.FirstOrDefault(x => x.EntityTitle == "Tracking Item Type");
+            MetaDataDTO[] addMetaDatas = ApiUITestBase.DBEntityService.GetRefereneceMetaDataEntityForAdd("r_TrackingItemType");
+            MetaDataDTO trackitem1 = addMetaDatas.FirstOrDefault(x => x.ColumnName == "tiyName");
+            string itemtype = "UIAType";
+            trackitem1.DataValue = itemtype;
+            EntityGridSettingDTO enty = new EntityGridSettingDTO();
+            enty.EntityName = "r_TrackingItemType";
+            enty.GridSetting = new GridSettingDTO { NumberOfPages = 100, PageSize =10000};
+            DBEntityDTO datas1 = ApiUITestBase.DBEntityService.GetTableData(enty);
+            bool valuepresnt = false;
+            string addeitendata = "";
+            foreach ( var objt in datas1.DataValues)
+            {
+               object objfound = objt.FirstOrDefault(x => x.ToString() == "UIAType");
+                if (objfound != null)
+                {
+                    valuepresnt = true;
+                    break;
+                }
+            }
+            if (valuepresnt == false) //Process for UIAType & subType
+            {
+                addeitendata = ApiUITestBase.DBEntityService.AddReferenceData(addMetaDatas);
+           
+            #endregion
+
+            #region  1.2 GetTrackingItemSubType from Reference Table 
+            ReferenceDataMaintenanceEntityDTO refTrackingItemsubtypeDTO = dataEntities.FirstOrDefault(x => x.EntityTitle == "Tracking Item Suntype");
+            MetaDataDTO[] addMetaDatas2 = ApiUITestBase.DBEntityService.GetRefereneceMetaDataEntityForAdd("r_TrackingItemSubtype");
+            MetaDataDTO trackitemsubype = addMetaDatas2.FirstOrDefault(x => x.ColumnName == "tisName");
+            string itemsubtype = "UIASubType";
+            trackitemsubype.DataValue = itemsubtype;
+            MetaDataDTO trackitemid = addMetaDatas2.FirstOrDefault(x => x.ColumnName == "tisFK_r_TrackingItemType");
+            trackitemid.DataValue = Int32.Parse(addeitendata);
+            addeitendata = ApiUITestBase.DBEntityService.AddReferenceData(addMetaDatas2);
+            }
+
+        }
+
+        public static string GetAuthuser()
+        {
+            ApiUITestBase.Authenticate();
+            return ApiUITestBase.TrackingItemService.GetTrackingItemUser().FirstOrDefault(x => x.ControlId == ApiUITestBase.AuthenticatedUser.Id).ControlText;
+        }
+
+        public static string GetAuthuserID()
+        {
+            ApiUITestBase.Authenticate();
+            return ApiUITestBase.AuthenticatedUser.Name;
         }
     }
     #endregion

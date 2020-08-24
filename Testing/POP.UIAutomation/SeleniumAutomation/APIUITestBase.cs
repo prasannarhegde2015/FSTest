@@ -195,8 +195,25 @@ namespace SeleniumAutomation
             get { return _heatMapService ?? (_heatMapService = _serviceFactory.GetService<IHeatMapService>()); }
         }
 
-        #endregion Services
+        private IReportService _reportService;
 
+        public IReportService ReportService
+        {
+            get { return _reportService ?? (_reportService = _serviceFactory.GetService<IReportService>()); }
+        }
+
+        private IDBEntityService _dbEntityService;
+
+        public IDBEntityService DBEntityService
+        {
+            get { return _dbEntityService ?? (_dbEntityService = _serviceFactory.GetService<IDBEntityService>()); }
+        }
+        #endregion Services
+        protected ITrackingItemService _trackingItemService;
+        public ITrackingItemService TrackingItemService
+        {
+            get { return _trackingItemService ?? (_trackingItemService = _serviceFactory.GetService<ITrackingItemService>()); }
+        }
         public AuthenticatedUserDTO AuthenticatedUser { get; private set; }
 
         public void Authenticate()

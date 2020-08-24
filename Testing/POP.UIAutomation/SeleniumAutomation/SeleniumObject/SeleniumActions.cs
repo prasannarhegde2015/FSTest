@@ -11,6 +11,7 @@ using System.Text;
 using System.Threading;
 using AventStack.ExtentReports;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
+using Microsoft.Edge.SeleniumTools;
 using OpenQA.Selenium;
 using OpenQA.Selenium.Chrome;
 using OpenQA.Selenium.Edge;
@@ -85,26 +86,13 @@ namespace SeleniumAutomation.SeleniumObject
                 case "edge":
                     {
 
-                        driver = new EdgeDriver(@"C:\Driver");
+                        
+                        var options = new Microsoft.Edge.SeleniumTools.EdgeOptions();
+                        options.UseChromium = true;
+                        driver = new Microsoft.Edge.SeleniumTools.EdgeDriver(options);
                         ngDriver = new NgWebDriver(driver);
                         ngDriver.Navigate().GoToUrl(starturl);
                         ngDriver.Manage().Window.Maximize();
-                        var AutoIT = new AutoItX3Lib.AutoItX3();
-                        if (AutoIT.WinExists("Microsoft Edge") == 1)
-                        {
-                            AutoIT.WinWait("Microsoft Edge");
-                            AutoIT.WinActivate("Microsoft Edge");
-                            Thread.Sleep(2000);
-                            AutoIT.Send("e159279");
-                            AutoIT.Send("{TAB}");
-                            Thread.Sleep(2000);
-                            AutoIT.Send("Lowis2019JAN;");
-                            Thread.Sleep(2000);
-                            AutoIT.Send("{ENTER}");
-                            Thread.Sleep(5000);
-                        }
-
-
                         CommonHelper.TraceLine("Launched browser with url: " + starturl);
                         wait = new WebDriverWait(ngDriver, TimeSpan.FromSeconds(sectimeout));
                         break;
@@ -1277,6 +1265,39 @@ namespace SeleniumAutomation.SeleniumObject
             catch (Exception)
             {
                 CommonHelper.TraceLine($"The Element defintion for {elem}  was not found: Probably the Column header definition was updated ");
+                return null;
+            }
+        }
+
+        public static List<string> Gettotalrecordsinlistelemnevisisble(By elem)
+        {
+            try
+
+            {
+                List<string> textsinelement = new List<string>();
+                WebDriverWait wait = new WebDriverWait(ngDriver, TimeSpan.FromSeconds(5));
+                wait.Until(ExpectedConditions.ElementExists(elem));
+                // Thread.Sleep(4000);
+                IList<IWebElement> elems;
+                    elems = driver.FindElements(elem);
+                if (elems.Count > 0)
+                {
+                    foreach (var el in elems)
+                    {
+                        textsinelement.Add(el.Text);
+                    }
+                }
+
+                else
+                {
+                    CommonHelper.TraceLine($"The Element defintion for {elem}  was not found: Probably the Column header definition was updated ");
+                    elems = null;
+                }
+                return textsinelement;
+            }
+            catch (Exception e)
+            {
+                CommonHelper.TraceLine($"Error finding colunn header {e.ToString()}");
                 return null;
             }
         }

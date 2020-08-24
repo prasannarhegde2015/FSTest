@@ -109,28 +109,30 @@ namespace Weatherford.POP.Server.IntegrationTests
             AesCryptoServiceProvider aes = new AesCryptoServiceProvider();
             aes.BlockSize = 128;
             aes.KeySize = 256;
-            aes.IV = UTF8Encoding.UTF8.GetBytes(IV);
-            aes.Key = UTF8Encoding.UTF8.GetBytes(Key);
+            aes.IV = Encoding.UTF8.GetBytes(IV);
+            aes.Key = Encoding.UTF8.GetBytes(Key);
             aes.Mode = CipherMode.CBC;
             aes.Padding = PaddingMode.PKCS7;
-            ICryptoTransform decryptTransform = aes.CreateDecryptor();
             byte[] encryptedByte;
             byte[] resultStr;
             Assert.AreEqual(6, documentGroupings.Count(), "Default Document Groupings are not matching");
             string filePath = "";
             foreach (DocumentGroupingDTO dg in documentGroupings)
             {
-                Assert.AreEqual("20", dg.DocMaxFileSize.ToString());
-                Assert.IsNotNull(dg.GroupingName);
-                Assert.AreEqual(".exe, .zip, .js", dg.RestrictedFileTypes);
-                encryptedByte = Convert.FromBase64String(dg.FilePath);
-                resultStr = decryptTransform.TransformFinalBlock(encryptedByte, 0, encryptedByte.Length);
-                dg.FilePath = UnicodeEncoding.UTF8.GetString(resultStr);
-                Assert.IsTrue(dg.FilePath.Contains("Attachments"));
-                Assert.AreEqual(0, dg.DocumentsCount);
-                Assert.AreEqual(0, dg.Documents.Count());
-                if (filePath == "")
-                    filePath = dg.FilePath;
+                using (ICryptoTransform decryptTransform = aes.CreateDecryptor())
+                {
+                    Assert.AreEqual("20", dg.DocMaxFileSize.ToString());
+                    Assert.IsNotNull(dg.GroupingName);
+                    Assert.AreEqual(".exe, .zip, .js", dg.RestrictedFileTypes);
+                    encryptedByte = Convert.FromBase64String(dg.FilePath);
+                    resultStr = decryptTransform.TransformFinalBlock(encryptedByte, 0, encryptedByte.Length);
+                    dg.FilePath = Encoding.UTF8.GetString(resultStr);
+                    Assert.IsTrue(dg.FilePath.Contains("Attachments"), $"Path for {dg.GroupingName}: \"{dg.FilePath}\" does not contain \"Attachments\"");
+                    Assert.AreEqual(0, dg.DocumentsCount);
+                    Assert.AreEqual(0, dg.Documents.Count());
+                    if (filePath == "")
+                        filePath = dg.FilePath;
+                }
             }
             //Add
             DocumentGroupingDTO dgpng = new DocumentGroupingDTO();
@@ -149,12 +151,15 @@ namespace Weatherford.POP.Server.IntegrationTests
             Assert.AreEqual("UserAddedGroup", dgpng.GroupingName);
             Assert.AreEqual(".exe", dgpng.RestrictedFileTypes);
             encryptedByte = Convert.FromBase64String(dgpng.FilePath);
-            resultStr = decryptTransform.TransformFinalBlock(encryptedByte, 0, encryptedByte.Length);
-            dgpng.FilePath = UnicodeEncoding.UTF8.GetString(resultStr);
-            Assert.IsTrue(dgpng.FilePath.Contains("AddedGrouping"));
-            Assert.AreEqual(0, dgpng.DocumentsCount);
-            Assert.AreEqual(0, dgpng.Documents.Count());
-            Assert.IsTrue(dgpng.IsDeletable);
+            using (ICryptoTransform decryptTransform = aes.CreateDecryptor())
+            {
+                resultStr = decryptTransform.TransformFinalBlock(encryptedByte, 0, encryptedByte.Length);
+                dgpng.FilePath = Encoding.UTF8.GetString(resultStr);
+                Assert.IsTrue(dgpng.FilePath.Contains("AddedGrouping"));
+                Assert.AreEqual(0, dgpng.DocumentsCount);
+                Assert.AreEqual(0, dgpng.Documents.Count());
+                Assert.IsTrue(dgpng.IsDeletable);
+            }
             //Update
             DocumentGroupingDTO dgpng2 = new DocumentGroupingDTO();
             dgpng2.DocMaxFileSize = 300;
@@ -173,12 +178,15 @@ namespace Weatherford.POP.Server.IntegrationTests
             Assert.AreEqual("UserAddedGroupDocuments", dgpng.GroupingName);
             Assert.AreEqual(".exe, .js", dgpng.RestrictedFileTypes);
             encryptedByte = Convert.FromBase64String(dgpng.FilePath);
-            resultStr = decryptTransform.TransformFinalBlock(encryptedByte, 0, encryptedByte.Length);
-            dgpng.FilePath = UnicodeEncoding.UTF8.GetString(resultStr);
-            Assert.IsTrue(dgpng.FilePath.Contains("Attachments"));
-            Assert.AreEqual(0, dgpng.DocumentsCount);
-            Assert.AreEqual(0, dgpng.Documents.Count());
-            //Assert.IsTrue(dgpng.IsDeletable);//No option available on UI
+            using (ICryptoTransform decryptTransform = aes.CreateDecryptor())
+            {
+                resultStr = decryptTransform.TransformFinalBlock(encryptedByte, 0, encryptedByte.Length);
+                dgpng.FilePath = Encoding.UTF8.GetString(resultStr);
+                Assert.IsTrue(dgpng.FilePath.Contains("Attachments"));
+                Assert.AreEqual(0, dgpng.DocumentsCount);
+                Assert.AreEqual(0, dgpng.Documents.Count());
+                //Assert.IsTrue(dgpng.IsDeletable);//No option available on UI
+            }
             //Delete
             List<string> arrDgIds = new List<string>();
             arrDgIds.Add(dgpng.GroupingId.ToString());
@@ -205,40 +213,42 @@ namespace Weatherford.POP.Server.IntegrationTests
             AesCryptoServiceProvider aes = new AesCryptoServiceProvider();
             aes.BlockSize = 128;
             aes.KeySize = 256;
-            aes.IV = UTF8Encoding.UTF8.GetBytes(IV);
-            aes.Key = UTF8Encoding.UTF8.GetBytes(Key);
+            aes.IV = Encoding.UTF8.GetBytes(IV);
+            aes.Key = Encoding.UTF8.GetBytes(Key);
             aes.Mode = CipherMode.CBC;
             aes.Padding = PaddingMode.PKCS7;
             ds.SectionId = Convert.ToInt64(jobId);
             ds.SectionName = "Job";
-            ICryptoTransform decryptTransform = aes.CreateDecryptor();
-
             DocumentGroupingDTO[] allDocuments = DocumentService.GetAllDocuments(ds);
-            Assert.AreEqual(6, allDocuments.Count(), "Default Document Groupings are not matching");
+            Assert.AreEqual(5, allDocuments.Count(), "Default Document Groupings are not matching");
             string filePath = "";
             foreach (DocumentGroupingDTO dg in allDocuments)
             {
-                Assert.AreEqual("20", dg.DocMaxFileSize.ToString());
-                Assert.IsNotNull(dg.GroupingName);
-                Assert.AreEqual(".exe, .zip, .js", dg.RestrictedFileTypes);
-                byte[] encryptedByte = Convert.FromBase64String(dg.FilePath);
-                byte[] resultStr = decryptTransform.TransformFinalBlock(encryptedByte, 0, encryptedByte.Length);
-                dg.FilePath = UnicodeEncoding.UTF8.GetString(resultStr);
-                Assert.IsTrue(dg.FilePath.Contains("Attachments"));
-                Assert.AreEqual(0, dg.DocumentsCount);
-                Assert.AreEqual(0, dg.Documents.Count());
-                if (filePath == "")
-                    filePath = dg.FilePath;
+                using (ICryptoTransform decryptTransform = aes.CreateDecryptor())
+                {
+                    Assert.AreEqual("20", dg.DocMaxFileSize.ToString());
+                    Assert.IsNotNull(dg.GroupingName);
+                    Assert.AreEqual(".exe, .zip, .js", dg.RestrictedFileTypes);
+                    byte[] encryptedByte = Convert.FromBase64String(dg.FilePath);
+                    byte[] resultStr = decryptTransform.TransformFinalBlock(encryptedByte, 0, encryptedByte.Length);
+                    dg.FilePath = Encoding.UTF8.GetString(resultStr);
+                    Assert.IsTrue(dg.FilePath.Contains("Attachments"), $"\"{dg.FilePath}\" does not contain \"Attachments\"");
+                    Assert.AreEqual(0, dg.DocumentsCount);
+                    Assert.AreEqual(0, dg.Documents.Count());
+                    if (filePath == "")
+                        filePath = dg.FilePath;
+                }
             }
             DocumentGroupingDTO dgpng = new DocumentGroupingDTO();
             dgpng.DocMaxFileSize = 200;
+            dgpng.Category = DocumentCategory.Job;
             dgpng.FilePath = filePath + "AddedGrouping";
             dgpng.GroupingName = "UserAddedGroup";
             dgpng.RestrictedFileTypes = ".exe";
             string addDG = DocumentService.AddUpdateDocumentGrouping(dgpng);
             Assert.IsNotNull(addDG, "Document Group not added");
             allDocuments = DocumentService.GetAllDocuments(ds);
-            Assert.AreEqual(7, allDocuments.Count(), "Default Document Groupings are not matching");
+            Assert.AreEqual(6, allDocuments.Count(), "Default Document Groupings are not matching");
             DocumentGroupingDTO[] documentGroupings = DocumentService.GetDocumentGroupings();
             Assert.IsNotNull(documentGroupings);
             Assert.AreEqual(7, documentGroupings.Count(), "Document Groupings are not matching");
@@ -252,7 +262,7 @@ namespace Weatherford.POP.Server.IntegrationTests
             bool check = DocumentService.DeleteDocumentGrouping(arrDgIds.ToArray());
             Assert.IsTrue(check, "Failed to delte document grouping");
             allDocuments = DocumentService.GetAllDocuments(ds);
-            Assert.AreEqual(6, allDocuments.Count(), "Default Document Groupings are not matching");
+            Assert.AreEqual(5, allDocuments.Count(), "Default Document Groupings are not matching");
         }
 
         [TestCategory(TestCategories.DocumentServiceTests), TestMethod]
@@ -269,7 +279,7 @@ namespace Weatherford.POP.Server.IntegrationTests
             ds.SectionKey = Convert.ToInt64(JobId);
             ds.SectionName = "Job";
             DocumentGroupingDTO[] allDocuments = DocumentService.GetAllDocuments(ds);
-            Assert.AreEqual(6, allDocuments.Count(), "Default Document Groupings are not matching");
+            Assert.AreEqual(5, allDocuments.Count(), "Default Document Groupings are not matching");
             DocumentDTO doc = new DocumentDTO();
             doc.SectionName = "Job";
             doc.SectionKey = Convert.ToInt64(JobId);

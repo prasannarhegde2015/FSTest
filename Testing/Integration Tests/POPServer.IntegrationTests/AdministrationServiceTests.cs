@@ -503,7 +503,7 @@ namespace Weatherford.POP.Server.IntegrationTests
                             break;
                         }
                     }
-                    if (userForTesting != null)
+                    if (userForTesting != null && userForTesting.GivenName != null && userForTesting.SamAccountName != null && userForTesting.SamAccountName != null && userForTesting.Surname != null)
                     {
                         groupForTesting = result;
                         break;

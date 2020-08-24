@@ -34,7 +34,7 @@ namespace SeleniumAutomation.TestData
         public static string ScadaType { get { return "CygNet"; } }
         public static string FluidType { get { return "Black Oil"; } }
         public static string PGLFluidType { get { return "Dry Gas"; } }
-        public static string AssetName { get { return "TestAsset"; } }
+        public static string AssetName { get { return CommonHelper.AssetName ; } }
         public static string NFFluidType { get { return "Dry Gas"; } }
         public static string RRFACName { get { return ConfigurationManager.AppSettings.Get("CygNetFacility"); } }
         public static string CygNetSite { get { return ConfigurationManager.AppSettings.Get("CygNetSite"); } }

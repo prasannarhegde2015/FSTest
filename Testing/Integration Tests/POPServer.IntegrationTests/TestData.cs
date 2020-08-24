@@ -485,7 +485,7 @@ namespace Weatherford.POP.Server.IntegrationTests
                 case WellTypeId.WInj:
                     {
                         fileAsByteArray = GetByteArray(Path, "WellfloWaterInjectionExample1.wflx");
-                        options.CalibrationMethod = CalibrationMethodId.LFactor;
+                        options.CalibrationMethod = tuningMethod;
                         options.Comment = "WInj";
                         options.OptionalUpdate = new long[] { ((long)OptionalUpdates.UpdateWCT_WGR), ((long)OptionalUpdates.UpdateGOR_CGR) };
                         modelFile.Base64Contents = Convert.ToBase64String(fileAsByteArray);
@@ -516,7 +516,7 @@ namespace Weatherford.POP.Server.IntegrationTests
                 case WellTypeId.GInj:
                     {
                         fileAsByteArray = GetByteArray(Path, "WellfloGasInjectionExample1.wflx");
-                        options.CalibrationMethod = CalibrationMethodId.LFactor;
+                        options.CalibrationMethod = tuningMethod;
                         options.Comment = "GInj";
                         options.OptionalUpdate = new long[] { ((long)OptionalUpdates.UpdateWCT_WGR), ((long)OptionalUpdates.UpdateGOR_CGR) };
                         modelFile.Base64Contents = Convert.ToBase64String(fileAsByteArray);
@@ -1426,6 +1426,11 @@ namespace Weatherford.POP.Server.IntegrationTests
                 FSScheduler.StartInfo.Verb = "runas";
                 Console.WriteLine($"ForeSite Scheduler Path: {strCommand}");
                 FSScheduler.Start();
+                if (args.Contains("runVRR"))
+                {
+                    System.Threading.Thread.Sleep(TimeSpan.FromSeconds(15));
+                    return;
+                }
                 if (FSScheduler.Responding)
                 {
                     Console.WriteLine("FSScheduler " + FSScheduler.ProcessName + " is running at process id  " + FSScheduler.Id + ". ");
@@ -1445,8 +1450,14 @@ namespace Weatherford.POP.Server.IntegrationTests
             object rettype = null;
             SettingType settingType = SettingType.System;
             SettingDTO systemSettings = null;
+            SystemSettingDTO settingValue = null;
+
             systemSettings = SettingService.GetSettingsByType(settingType.ToString()).FirstOrDefault(x => x.Name.ToUpper() == settingNameEnum.ToUpper());
-            SystemSettingDTO settingValue = SettingService.GetSystemSettingByName(systemSettings.Name);
+            if (systemSettings != null)
+            {
+                 settingValue = SettingService.GetSystemSettingByName(systemSettings.Name);
+            }
+            
             if (settingValue == null)
             {
                 settingValue = SettingService.GetSystemSettingByName(settingNameEnum);
@@ -2119,29 +2130,517 @@ namespace Weatherford.POP.Server.IntegrationTests
 
         }
 
-        public void CreateVRRHierarchy(int NoOfAsset, int NoOfResPerAsset, int NoOfZonePerRes, int NoOfPatternPerZone)
+        /// <summary>
+        /// This API is specifically build for ADNOC configuration.
+        /// </summary>
+        /// <param name="assetId"></param>
+        /// <param name="productionWellCount"></param>
+        /// <param name="injectionWellCount"></param>
+        public void ADNOC_Well_With_WellTest_Configuration(long assetId, long productionWellCount = 0, long injectionWellCount = 0)
         {
-            List<AssetDTO> assets = CreateAsset(NoOfAsset);
+            ChangeUnitSystem("US");
+            ChangeUnitSystemUserSetting("US");
+            try
+            {
+                #region create Production and Injection Wells with Asset
+                List<String> ProductionModelFileName = new List<String> { "GP-1.wflx", "GP-2.wflx", "GP-3.wflx", "GP-4.wflx" };
+                List<String> InjectionModelFileName = new List<String> { "GI-1.wflx", "GI-2.wflx" };
 
-            for (int j = 0; j < NoOfAsset; j++)
+                //NFW Condennsate wells creation
+                var options_cond = new ModelFileOptionDTO
+                {
+                    CalibrationMethod = CalibrationMethodId.ReservoirPressure,
+                    OptionalUpdate = new long[]
+                      {
+                            (long) OptionalUpdates.UpdateWCT_WGR,
+                            (long) OptionalUpdates.UpdateGOR_CGR
+                      }
+                };
+
+                //Gas Injection wells creation
+                var options_Injection = new ModelFileOptionDTO
+                {
+                    CalibrationMethod = CalibrationMethodId.ReservoirPressure,
+                    OptionalUpdate = new long[]
+                      {
+                            (long) OptionalUpdates.UpdateWCT_WGR,
+                            (long) OptionalUpdates.UpdateGOR_CGR
+                      }
+                };
+
+                List<WellDTO> NFW_Con = new List<WellDTO>();
+                List<WellDTO> Gas_Injection = new List<WellDTO>();
+
+                int j = 0;  // Model Files
+                int k = 0;  // Model data
+                for (int i = 1; i <= productionWellCount; i++)
+                {
+                    WellDTO NFWell_Con = AddNonRRLWellGeneral("PTW" + (i), GetFacilityId("NFWWELL_", (i)), WellTypeId.NF, WellFluidType.Condensate, WellFluidPhase.None, "1", assetId);
+
+                    var modelFileName_cond = ProductionModelFileName.ElementAt(j);
+                    AddNonRRLModelFile(NFWell_Con, modelFileName_cond, options_cond.CalibrationMethod, options_cond.OptionalUpdate);
+
+                    WellTestUnitsDTO units = WellTestDataService.GetWellTestDefaults(NFWell_Con.Id.ToString()).Units;
+                    WellTestDTO testData = new WellTestDTO();
+                    if (k == 0)
+                    {
+                        AddWellSettingWithDoubleValues(NFWell_Con.Id, SettingServiceStringConstants.RESERVOIR_PRESSURE_MIN_AL, 2500);
+                        AddWellSettingWithDoubleValues(NFWell_Con.Id, SettingServiceStringConstants.RESERVOIR_PRESSURE_MIN_AL, 3000);
+                        AddWellSettingWithDoubleValues(NFWell_Con.Id, SettingServiceStringConstants.LFACTOR_MIN_AL, 0.6);
+                        AddWellSettingWithDoubleValues(NFWell_Con.Id, SettingServiceStringConstants.LFACTOR_MAX_AL, 1);
+                        AddWellSettingWithDoubleValues(NFWell_Con.Id, SettingServiceStringConstants.WATER_GAS_RATIO_MIN_AL, 0.6);
+                        AddWellSettingWithDoubleValues(NFWell_Con.Id, SettingServiceStringConstants.WATER_GAS_RATIO_MAX_AL, 10);
+                        AddWellSettingWithDoubleValues(NFWell_Con.Id, SettingServiceStringConstants.CONDENSATE_GAS_RATIO_MIN_AL, 1.5);
+                        AddWellSettingWithDoubleValues(NFWell_Con.Id, SettingServiceStringConstants.CONDENSATE_GAS_RATIO_MAX_AL, 300);
+
+                        testData.WellId = NFWell_Con.Id;
+                        testData.SPTCodeDescription = "AllocatableTest";
+                        testData.WellTestType = WellTestType.WellTest;
+                        testData.AverageTubingPressure = 1566;
+                        testData.AverageTubingTemperature = 100;
+                        testData.Gas = 45312;
+                        testData.Water = 206;
+                        testData.Oil = 118.9m;
+                        testData.ChokeSize = 50;
+                        testData.GaugePressure = 5800;
+                        testData.SeparatorPressure = 10000;
+                        testData.TestDuration = 24;
+                        testData.SampleDate = DateTime.Today.AddDays(-5).ToUniversalTime();
+
+                        WellTestDataService.SaveWellTest(new WellTestAndUnitsDTO(units, testData));
+                        WellTestDTO latestTestData_NF = WellTestDataService.GetLatestWellTestDataByWellId(NFWell_Con.Id.ToString());
+                        Assert.AreEqual("TUNING_SUCCEEDED", latestTestData_NF.Status.ToString(), "Well Test Status is not Success");
+                    }
+                    if (k == 1)
+                    {
+                        AddWellSettingWithDoubleValues(NFWell_Con.Id, SettingServiceStringConstants.WATER_GAS_RATIO_MIN_AL, 0.4);
+                        AddWellSettingWithDoubleValues(NFWell_Con.Id, SettingServiceStringConstants.WATER_GAS_RATIO_MAX_AL, 10);
+                        AddWellSettingWithDoubleValues(NFWell_Con.Id, SettingServiceStringConstants.CONDENSATE_GAS_RATIO_MIN_AL, 15);
+                        AddWellSettingWithDoubleValues(NFWell_Con.Id, SettingServiceStringConstants.CONDENSATE_GAS_RATIO_MAX_AL, 300);
+                        AddWellSettingWithDoubleValues(NFWell_Con.Id, SettingServiceStringConstants.LFACTOR_MIN_AL, 0.88);
+                        AddWellSettingWithDoubleValues(NFWell_Con.Id, SettingServiceStringConstants.LFACTOR_MAX_AL, 1.28);
+
+                        testData.WellId = NFWell_Con.Id;
+                        testData.SPTCodeDescription = "AllocatableTest";
+                        testData.WellTestType = WellTestType.WellTest;
+                        testData.AverageTubingPressure = 2920;
+                        testData.AverageTubingTemperature = 100;
+                        testData.Gas = 53657.60m;
+                        testData.Water = 63.4m;
+                        testData.Oil = 2820.8m;
+                        testData.ChokeSize = 50;
+                        testData.GaugePressure = 5800;
+                        testData.SeparatorPressure = 10000;
+                        testData.FlowLinePressure = 50;
+                        testData.TestDuration = 24;
+                        testData.SampleDate = DateTime.Today.AddDays(-5).ToUniversalTime();
+
+                        WellTestDataService.SaveWellTest(new WellTestAndUnitsDTO(units, testData));
+                        WellTestDTO latestTestData_NF = WellTestDataService.GetLatestWellTestDataByWellId(NFWell_Con.Id.ToString());
+                        Assert.AreEqual("TUNING_SUCCEEDED", latestTestData_NF.Status.ToString(), "Well Test Status is not Success");
+
+                    }
+                    if (k == 2)
+                    {
+                        AddWellSettingWithDoubleValues(NFWell_Con.Id, SettingServiceStringConstants.WATER_GAS_RATIO_MIN_AL, 0.002);
+                        AddWellSettingWithDoubleValues(NFWell_Con.Id, SettingServiceStringConstants.WATER_GAS_RATIO_MAX_AL, 10);
+                        AddWellSettingWithDoubleValues(NFWell_Con.Id, SettingServiceStringConstants.CONDENSATE_GAS_RATIO_MIN_AL, 15);
+                        AddWellSettingWithDoubleValues(NFWell_Con.Id, SettingServiceStringConstants.CONDENSATE_GAS_RATIO_MAX_AL, 300);
+                        AddWellSettingWithDoubleValues(NFWell_Con.Id, SettingServiceStringConstants.LFACTOR_MIN_AL, 0.88);
+                        AddWellSettingWithDoubleValues(NFWell_Con.Id, SettingServiceStringConstants.LFACTOR_MAX_AL, 1.28);
+                        AddWellSettingWithDoubleValues(NFWell_Con.Id, SettingServiceStringConstants.RESERVOIR_PRESSURE_MIN_AL, 3000);
+                        AddWellSettingWithDoubleValues(NFWell_Con.Id, SettingServiceStringConstants.RESERVOIR_PRESSURE_MAX_AL, 4000);
+
+                        testData.WellId = NFWell_Con.Id;
+                        testData.SPTCodeDescription = "AllocatableTest";
+                        testData.WellTestType = WellTestType.WellTest;
+                        testData.AverageTubingPressure = 1559;
+                        testData.AverageTubingTemperature = 100;
+                        testData.Gas = 26982.40m;
+                        testData.Water = 0.1m;
+                        testData.Oil = 2103.3m;
+                        testData.ChokeSize = 50;
+                        testData.GaugePressure = 5800;
+                        testData.SeparatorPressure = 10000;
+                        testData.FlowLinePressure = 50;
+                        testData.TestDuration = 24;
+                        testData.SampleDate = DateTime.Today.AddDays(-5).ToUniversalTime();
+
+                        WellTestDataService.SaveWellTest(new WellTestAndUnitsDTO(units, testData));
+                        WellTestDTO latestTestData_NF = WellTestDataService.GetLatestWellTestDataByWellId(NFWell_Con.Id.ToString());
+                        Assert.AreEqual("TUNING_SUCCEEDED", latestTestData_NF.Status.ToString(), "Well Test Status is not Success");
+
+                    }
+                    if (k == 3)
+                    {
+                        AddWellSettingWithDoubleValues(NFWell_Con.Id, SettingServiceStringConstants.WATER_GAS_RATIO_MIN_AL, 0.4);
+                        AddWellSettingWithDoubleValues(NFWell_Con.Id, SettingServiceStringConstants.WATER_GAS_RATIO_MAX_AL, 10);
+                        AddWellSettingWithDoubleValues(NFWell_Con.Id, SettingServiceStringConstants.CONDENSATE_GAS_RATIO_MIN_AL, 15);
+                        AddWellSettingWithDoubleValues(NFWell_Con.Id, SettingServiceStringConstants.CONDENSATE_GAS_RATIO_MAX_AL, 300);
+                        AddWellSettingWithDoubleValues(NFWell_Con.Id, SettingServiceStringConstants.LFACTOR_MIN_AL, 0.88);
+                        AddWellSettingWithDoubleValues(NFWell_Con.Id, SettingServiceStringConstants.LFACTOR_MAX_AL, 1.28);
+                        AddWellSettingWithDoubleValues(NFWell_Con.Id, SettingServiceStringConstants.RESERVOIR_PRESSURE_MIN_AL, 2500);
+                        AddWellSettingWithDoubleValues(NFWell_Con.Id, SettingServiceStringConstants.RESERVOIR_PRESSURE_MAX_AL, 3000);
+
+                        testData.WellId = NFWell_Con.Id;
+                        testData.SPTCodeDescription = "AllocatableTest";
+                        testData.WellTestType = WellTestType.WellTest;
+                        testData.AverageTubingPressure = 1800;
+                        testData.AverageTubingTemperature = 100;
+                        testData.Gas = 49612.80m;
+                        testData.Water = 53.8m;
+                        testData.Oil = 1564.4m;
+                        testData.ChokeSize = 50;
+                        testData.GaugePressure = 5800;
+                        testData.SeparatorPressure = 10000;
+                        testData.FlowLinePressure = 50;
+                        testData.TestDuration = 24;
+                        testData.SampleDate = DateTime.Today.AddDays(-5).ToUniversalTime();
+
+                        WellTestDataService.SaveWellTest(new WellTestAndUnitsDTO(units, testData));
+                        WellTestDTO latestTestData_NF = WellTestDataService.GetLatestWellTestDataByWellId(NFWell_Con.Id.ToString());
+                        Assert.AreEqual("TUNING_SUCCEEDED", latestTestData_NF.Status.ToString(), "Well Test Status is not Success");
+                    }
+
+                    if (j == 3)
+                    {
+                        j = 0;
+                        k = 0;
+                    }
+                    else
+                    {
+                        j = j + 1;
+                        k = k + 1;
+                    }
+
+                    NFW_Con.Add(NFWell_Con);
+                }
+                Trace.WriteLine("Added total no of Production wells : " + NFW_Con.Count().ToString());
+                j = 0;
+                k = 0;
+                for (int i = 1; i <= injectionWellCount; i++)
+                {
+                    WellDTO GasInjection_Con = AddNonRRLWellGeneral("ITW" + (i), GetFacilityId("INJWELL_", (i)), WellTypeId.GInj, WellFluidType.None, WellFluidPhase.None, "1", assetId);
+
+                    var modelFileName_cond = InjectionModelFileName.ElementAt(j);
+                    AddNonRRLModelFile(GasInjection_Con, modelFileName_cond, options_Injection.CalibrationMethod, options_Injection.OptionalUpdate);
+
+                    WellTestUnitsDTO units = WellTestDataService.GetWellTestDefaults(GasInjection_Con.Id.ToString()).Units;
+                    WellTestDTO testData = new WellTestDTO();
+                    if (k == 0)
+                    {
+                        AddWellSettingWithDoubleValues(GasInjection_Con.Id, SettingServiceStringConstants.LFACTOR_MIN_AL, 0.51);
+                        AddWellSettingWithDoubleValues(GasInjection_Con.Id, SettingServiceStringConstants.LFACTOR_MAX_AL, 1.28);
+                        AddWellSettingWithDoubleValues(GasInjection_Con.Id, SettingServiceStringConstants.RESERVOIR_PRESSURE_MIN_AL, 4500);
+                        AddWellSettingWithDoubleValues(GasInjection_Con.Id, SettingServiceStringConstants.RESERVOIR_PRESSURE_MAX_AL, 5000);
+
+                        testData.WellId = GasInjection_Con.Id;
+                        testData.SPTCodeDescription = "AllocatableTest";
+                        testData.WellTestType = WellTestType.WellTest;
+                        testData.AverageTubingPressure = 4277;
+                        testData.AverageTubingTemperature = 0;
+                        testData.Gas = 32400;
+                        testData.Water = 0;
+                        testData.Oil = 0;
+                        testData.FlowLinePressure = 1366;
+                        testData.GaugePressure = 1567;
+                        testData.TestDuration = 24;
+                        testData.SampleDate = DateTime.Today.AddDays(-5).ToUniversalTime();
+
+                        WellTestDataService.SaveWellTest(new WellTestAndUnitsDTO(units, testData));
+                        WellTestDTO latestTestData_GI = WellTestDataService.GetLatestWellTestDataByWellId(GasInjection_Con.Id.ToString());
+                        Assert.AreEqual("TUNING_SUCCEEDED", latestTestData_GI.Status.ToString(), "Well Test Status is not Success");
+                    }
+                    if (k == 1)
+                    {
+                        AddWellSettingWithDoubleValues(GasInjection_Con.Id, SettingServiceStringConstants.LFACTOR_MIN_AL, 0.51);
+                        AddWellSettingWithDoubleValues(GasInjection_Con.Id, SettingServiceStringConstants.LFACTOR_MAX_AL, 1.70);
+
+                        testData.WellId = GasInjection_Con.Id;
+                        testData.SPTCodeDescription = "AllocatableTest";
+                        testData.WellTestType = WellTestType.WellTest;
+                        testData.AverageTubingPressure = 4290;
+                        testData.AverageTubingTemperature = 0;
+                        testData.Gas = 46180;
+                        testData.Water = 0;
+                        testData.Oil = 0;
+                        testData.GaugePressure = 1567;
+                        testData.FlowLinePressure = 50;
+                        testData.TestDuration = 24;
+                        testData.SampleDate = DateTime.Today.AddDays(-5).ToUniversalTime();
+
+                        WellTestDataService.SaveWellTest(new WellTestAndUnitsDTO(units, testData));
+                        WellTestDTO latestTestData_GI = WellTestDataService.GetLatestWellTestDataByWellId(GasInjection_Con.Id.ToString());
+                        Assert.AreEqual("TUNING_SUCCEEDED", latestTestData_GI.Status.ToString(), "Well Test Status is not Success");
+                    }
+
+                    if (j == 1)
+                    {
+                        j = 0;
+                        k = 0;
+                    }
+                    else
+                    {
+                        j = j + 1;
+                        k = k + 1;
+                    }
+
+                    Gas_Injection.Add(GasInjection_Con);
+                }
+                Trace.WriteLine("Added total no of Injection wells : " + Gas_Injection.Count().ToString());
+                #endregion create Production Wells with Asset
+            }
+            finally
+            {
+                ChangeUnitSystem("US");
+                ChangeUnitSystemUserSetting("US");
+            }
+        }
+
+        /// <summary>
+        /// This method is developed for preparing ADNOC DB
+        /// </summary>
+        /// <param name="assetId"></param>
+        /// <param name="productionWellCount"></param>
+        /// <param name="injectionWellCount"></param>
+        public void ADNOC_Well_DailyAverageData_Configuration(long assetId, long productionWellCount = 0, long injectionWellCount = 0)
+        {
+            // Add Daily Average data for those wells 
+            DateTime day1ago = DateTime.Today.ToUniversalTime();
+            DateTime day2ago = DateTime.Today.ToUniversalTime().AddDays(-1);
+            DateTime day3ago = DateTime.Today.ToUniversalTime().AddDays(-2);
+            DateTime day4ago = DateTime.Today.ToUniversalTime().AddDays(-3);
+            DateTime end = DateTime.Today.ToUniversalTime().AddDays(1);
+
+            int k = 0;
+            for (int i = 1; i <= productionWellCount; i++)
+            {
+
+                WellDTO getNFWWellId = WellService.GetAllWells().FirstOrDefault(w => w.Name.Contains("PTW" + i));
+                var welltestdata = WellTestDataService.GetWellTestDataByWellId(getNFWWellId.Id.ToString());
+                if (k == 0)
+                {
+                    // GP1 well Daily Average Values
+                    AddDailyAvergeDataForADNOCWells(getNFWWellId.Id, day4ago, day3ago, welltestdata.Values[0].Id, welltestdata.Values[0].LastChangedDT, 12, 0.92, 59.465, 103, 22656);
+                    AddDailyAvergeDataForADNOCWells(getNFWWellId.Id, day3ago, day2ago, welltestdata.Values[0].Id, welltestdata.Values[0].LastChangedDT, 16, 0.92, 79.286, 137.333, 30208);
+                    AddDailyAvergeDataForADNOCWells(getNFWWellId.Id, day2ago, day1ago, welltestdata.Values[0].Id, welltestdata.Values[0].LastChangedDT, 20, 0.92, 99.108, 171.666, 37760);
+                    AddDailyAvergeDataForADNOCWells(getNFWWellId.Id, day1ago, end, welltestdata.Values[0].Id, welltestdata.Values[0].LastChangedDT, 24, 0.92, 118.93, 206, 45312);
+                }
+                if (k == 1)
+                {
+                    // GP2 well Daily Average Values
+                    AddDailyAvergeDataForADNOCWells(getNFWWellId.Id, day4ago, day3ago, welltestdata.Values[0].Id, welltestdata.Values[0].LastChangedDT, 12, 0.94, 1524.55, 31.685, 29000);
+                    AddDailyAvergeDataForADNOCWells(getNFWWellId.Id, day3ago, day2ago, welltestdata.Values[0].Id, welltestdata.Values[0].LastChangedDT, 16, 0.94, 2032.73, 42.246, 38666.666);
+                    AddDailyAvergeDataForADNOCWells(getNFWWellId.Id, day2ago, day1ago, welltestdata.Values[0].Id, welltestdata.Values[0].LastChangedDT, 22, 0.94, 2795.01, 58.089, 53166.666);
+                    AddDailyAvergeDataForADNOCWells(getNFWWellId.Id, day1ago, end, welltestdata.Values[0].Id, welltestdata.Values[0].LastChangedDT, 24, 0.94, 2820.82, 63.37, 58000);
+
+                }
+                if (k == 2)
+                {
+                    // GP3 well Daily Average Values
+                    AddDailyAvergeDataForADNOCWells(getNFWWellId.Id, day4ago, day3ago, welltestdata.Values[0].Id, welltestdata.Values[0].LastChangedDT, 16, 0.96, 2338.57, 0.0666666666666667, 30000);
+                    AddDailyAvergeDataForADNOCWells(getNFWWellId.Id, day3ago, day2ago, welltestdata.Values[0].Id, welltestdata.Values[0].LastChangedDT, 20, 0.96, 2923.22, 0.0833333333333333, 37500);
+                    AddDailyAvergeDataForADNOCWells(getNFWWellId.Id, day2ago, day1ago, welltestdata.Values[0].Id, welltestdata.Values[0].LastChangedDT, 22, 0.96, 3215.54, 0.0916666666666667, 41250);
+                    AddDailyAvergeDataForADNOCWells(getNFWWellId.Id, day1ago, end, welltestdata.Values[0].Id, welltestdata.Values[0].LastChangedDT, 24, 0.96, 2103.35, 0.1, 45000);
+                }
+                if (k == 3)
+                {
+                    // GP4 well Daily Average Values
+                    AddDailyAvergeDataForADNOCWells(getNFWWellId.Id, day4ago, day3ago, welltestdata.Values[0].Id, welltestdata.Values[0].LastChangedDT, 12, 0.98, 772.523, 26.92, 24500);
+                    AddDailyAvergeDataForADNOCWells(getNFWWellId.Id, day3ago, day2ago, welltestdata.Values[0].Id, welltestdata.Values[0].LastChangedDT, 16, 0.98, 1030.031, 35.89333, 32666.6666);
+                    AddDailyAvergeDataForADNOCWells(getNFWWellId.Id, day2ago, day1ago, welltestdata.Values[0].Id, welltestdata.Values[0].LastChangedDT, 24, 0.98, 1545.047, 53.84, 49000);
+                    AddDailyAvergeDataForADNOCWells(getNFWWellId.Id, day1ago, end, welltestdata.Values[0].Id, welltestdata.Values[0].LastChangedDT, 24, 0.98, 1564.37, 53.84, 49000);
+                }
+                if (k == 3)
+                    k = 0;
+                else
+                    k = k + 1;
+            }
+
+            k = 0;
+            for (int i = 1; i <= injectionWellCount; i++)
+            {
+
+                WellDTO getGIWellId = WellService.GetAllWells().FirstOrDefault(w => w.Name.Contains("ITW" + i));
+                var welltestdata = WellTestDataService.GetWellTestDataByWellId(getGIWellId.Id.ToString());
+                if (k == 0)
+                {
+                    // GI1 well Daily Average Values
+                    AddDailyAvergeDataForADNOCWells(getGIWellId.Id, day4ago, day3ago, welltestdata.Values[0].Id, welltestdata.Values[0].LastChangedDT, 12, null, 0, 0, 34525);
+                    AddDailyAvergeDataForADNOCWells(getGIWellId.Id, day3ago, day2ago, welltestdata.Values[0].Id, welltestdata.Values[0].LastChangedDT, 24, null, 0, 0, 69050);
+                    AddDailyAvergeDataForADNOCWells(getGIWellId.Id, day2ago, day1ago, welltestdata.Values[0].Id, welltestdata.Values[0].LastChangedDT, 24, null, 0, 0, 69050);
+                    AddDailyAvergeDataForADNOCWells(getGIWellId.Id, day1ago, end, welltestdata.Values[0].Id, welltestdata.Values[0].LastChangedDT, 24, null, 0, 0, 69050);
+                }
+                if (k == 1)
+                {
+                    // GI2 well Daily Average Values
+                    AddDailyAvergeDataForADNOCWells(getGIWellId.Id, day4ago, day3ago, welltestdata.Values[0].Id, welltestdata.Values[0].LastChangedDT, 12, null, 0, 0, 13860);
+                    AddDailyAvergeDataForADNOCWells(getGIWellId.Id, day3ago, day2ago, welltestdata.Values[0].Id, welltestdata.Values[0].LastChangedDT, 24, null, 0, 0, 27720);
+                    AddDailyAvergeDataForADNOCWells(getGIWellId.Id, day2ago, day1ago, welltestdata.Values[0].Id, welltestdata.Values[0].LastChangedDT, 24, null, 0, 0, 27720);
+                    AddDailyAvergeDataForADNOCWells(getGIWellId.Id, day1ago, end, welltestdata.Values[0].Id, welltestdata.Values[0].LastChangedDT, 24, null, 0, 0, 27720);
+                }
+                if (k == 1)
+                    k = 0;
+                else
+                    k = k + 1;
+            }
+        }
+
+        /// <summary>
+        /// This API is specifically build for ADNOC configuration.
+        /// 1 Reservoir contains 10 Zones. Each Zone will contain 5 patterns.
+        /// </summary>
+        /// <param name="NoOfResPerAsset"></param>
+        /// <param name="NoOfZonePerRes"></param>
+        /// <param name="NoOfPatternPerZone"></param>
+        /// <param name="existingAsset"></param>
+        /// <param name="NoOfAsset"></param>
+        public void CreateVRRHierarchy(int NoOfResPerAsset, int NoOfZonePerRes, int NoOfPatternPerZone, List<AssetDTO> existingAsset = null, int NoOfAsset = 0)
+        {
+            List<AssetDTO> assets = new List<AssetDTO>();
+            long getReservoirId=0, getZoneId = 0;
+            if (existingAsset != null)
+                assets = existingAsset;
+
+            if (NoOfAsset !=0)
+                assets = CreateAsset(NoOfAsset);
+
+            for (int j = 0; j <= NoOfAsset; j++)
             {
                 for (int k = 0; k < NoOfResPerAsset; k++)
                 {
-                    AddReservoirToAsset("R" + (k + 1) + "A" + (j + 1), assets.ElementAt(j).Id);
+                    AddReservoirToAsset("Reservoir" + (k + 1), assets.ElementAt(j).Id);
                     ReservoirArrayAndUnitsDTO ReservoirIDsOfAsset = WellAllocationService.GetReservoirsByAssetId(assets.ElementAt(j).Id.ToString());
-
+                    foreach (ReservoirDTO reservoir in ReservoirIDsOfAsset.Values)
+                    {
+                        if (reservoir.Name.Contains("Reservoir" + (k+1)))
+                        {
+                            getReservoirId = reservoir.Id;
+                            break;
+                        }
+                    }
                     for (int l = 0; l < NoOfZonePerRes; l++)
                     {
-                        AddZoneToReservoir("Z" + (l + 1) + "R" + (k + 1) + "A" + (j + 1), ReservoirIDsOfAsset.Values[k].Id);
-                        ZoneArrayAndUnitsDTO ZoneIDs = WellAllocationService.GetZonesByReservoirId(ReservoirIDsOfAsset.Values[k].Id.ToString());
-
+                        AddZoneToReservoir("Zone" + (l + 1), getReservoirId);
+                        ZoneArrayAndUnitsDTO ZoneIDs = WellAllocationService.GetZonesByReservoirId(getReservoirId.ToString());
+                        foreach (ZoneDTO zone in ZoneIDs.Values)
+                        {
+                            if (zone.Name.Contains("Zone" + (l+1)))
+                            {
+                                getZoneId = zone.Id;
+                                break;
+                            }
+                        }
                         for (int m = 0; m < NoOfPatternPerZone; m++)
                         {
-                            AddPatternToZoneOfReservoir("P" + (m + 1) + "Z" + (l + 1) + "R" + (k + 1) + "A" + (j + 1), ZoneIDs.Values[l].Id);
+                            AddPatternToZoneOfReservoir("Z"+(l+1) + "Pattern" + (m + 1), getZoneId);
                         }
                     }
                 }
                 _vrrHierarchyToRemove.Add(assets[j]);
+            }
+        }
+
+        public void VRR_TargetConfiguration(List<AssetDTO> existingAsset)
+        {
+            foreach (AssetDTO asset in existingAsset)
+            {
+                // GetReservoir IDs
+                ReservoirArrayAndUnitsDTO getReservoirByAsset = WellAllocationService.GetReservoirsByAssetId(asset.Id.ToString());
+
+                foreach (ReservoirDTO reservoir in getReservoirByAsset.Values)
+                {
+                    // Reservoir Value DTO
+                    SubsurfaceEntityTargetBoundDTO reservoirTargetBoundValueDTO = new SubsurfaceEntityTargetBoundDTO
+                    {
+                        ReservoirId = reservoir.Id,
+                        ZoneId = null,
+                        PatternId = null,
+                        StartDate = reservoir.StartDate,
+                        EndDate = null,
+                        BoundPreference = SubsurfaceEntityTargetType.FixedValue,
+                        TargetValue = 1,
+                        FixedLowerBoundTolerance = (decimal)0.50,
+                        FixedUpperBoundTolerance = 1,
+                        PercentageLowerBoundTolerance = null,
+                        PercentageUpperBoundTolerance = null
+                    };
+                    reservoir.ApplicableDate = reservoir.StartDate;
+                    // Get Units for Reservoir Target 
+                    SubsurfaceEntityTargetBoundAndUnitsDTO addReservoirTargets = WellAllocationService.GetSubsurfaceEntityByEntityId(reservoir.Id.ToString(), SubsurfaceResultEntityType.Reservoir.ToString(), reservoir.ApplicableDate.ToISO8601Date());
+                    addReservoirTargets.Value = reservoirTargetBoundValueDTO;
+                    // Add Targets for Reservoir
+                    WellAllocationService.AddOrUpdateReservoirTargetBound(addReservoirTargets);
+                    Trace.WriteLine("Added Targets for Reservoir");
+
+                    // Verify that all the added Targets for Reservoir
+                    SubsurfaceEntityTargetBoundAndUnitsDTO verifyReservoirTargets = WellAllocationService.GetSubsurfaceEntityByEntityId(reservoir.Id.ToString(), SubsurfaceResultEntityType.Reservoir.ToString(), reservoir.ApplicableDate.ToISO8601Date());
+                    Assert.IsNotNull(verifyReservoirTargets);
+
+                    // Get Zone IDs based on reservoir
+                    ZoneArrayAndUnitsDTO getZoneByReservoir = WellAllocationService.GetZonesByReservoirId(reservoir.Id.ToString());
+
+                    foreach (ZoneDTO zone in getZoneByReservoir.Values)
+                    {
+                        // Zone Value DTO
+                        SubsurfaceEntityTargetBoundDTO zoneTargetBoundValueDTO = new SubsurfaceEntityTargetBoundDTO
+                        {
+                            ReservoirId = null,
+                            ZoneId = zone.Id,
+                            PatternId = null,
+                            StartDate = zone.StartDate,
+                            EndDate = null,
+                            BoundPreference = SubsurfaceEntityTargetType.FixedValue,
+                            TargetValue = 1,
+                            FixedLowerBoundTolerance = (decimal)0.40,
+                            FixedUpperBoundTolerance = 1,
+                            PercentageLowerBoundTolerance = null,
+                            PercentageUpperBoundTolerance = null
+                        };
+                        zone.ApplicableDate = zone.StartDate;
+                        // Get Units for Zone Target 
+                        SubsurfaceEntityTargetBoundAndUnitsDTO addZoneTargets = WellAllocationService.GetSubsurfaceEntityByEntityId(zone.Id.ToString(), SubsurfaceResultEntityType.Zone.ToString(), zone.ApplicableDate.ToISO8601Date());
+                        addZoneTargets.Value = zoneTargetBoundValueDTO;
+                        // Add Targets for Zone
+                        WellAllocationService.AddOrUpdateZoneTargetBound(addZoneTargets);
+                        Trace.WriteLine("Added Targets for Zone");
+                        // Verify that all the added Targets for Zone
+                        SubsurfaceEntityTargetBoundAndUnitsDTO verifyZoneTargets = WellAllocationService.GetSubsurfaceEntityByEntityId(zone.Id.ToString(), SubsurfaceResultEntityType.Zone.ToString(), zone.ApplicableDate.ToISO8601Date());
+                        Assert.IsNotNull(verifyZoneTargets);
+
+                        // Get Pattern Ids based on reservoir            
+                        List<PatternDTO> getPatternByZoneOfReservoir = WellAllocationService.GetPatternsByZoneId(zone.Id.ToString());
+
+                        foreach (PatternDTO pat in getPatternByZoneOfReservoir)
+                        {
+                            // Pattern Value DTO
+                            SubsurfaceEntityTargetBoundDTO patternTargetBoundValueDTO = new SubsurfaceEntityTargetBoundDTO
+                            {
+                                ReservoirId = null,
+                                ZoneId = null,
+                                PatternId = pat.Id,
+                                StartDate = pat.StartDate,
+                                EndDate = null,
+                                BoundPreference = SubsurfaceEntityTargetType.FixedValue,
+                                TargetValue = 1,
+                                FixedLowerBoundTolerance = (decimal)0.30,
+                                FixedUpperBoundTolerance = 1,
+                                PercentageLowerBoundTolerance = null,
+                                PercentageUpperBoundTolerance = null
+                            };
+                            // Get Units for Pattern Target 
+                            SubsurfaceEntityTargetBoundAndUnitsDTO addPatternTargets = WellAllocationService.GetSubsurfaceEntityByEntityId(pat.Id.ToString(), SubsurfaceResultEntityType.Pattern.ToString(), zone.ApplicableDate.ToISO8601Date());
+                            addPatternTargets.Value = patternTargetBoundValueDTO;
+                            // Add Targets for Pattern
+                            WellAllocationService.AddOrUpdatePatternTargetBound(addPatternTargets);
+                            Trace.WriteLine("Added Targets for Pattern");
+
+                            // Verify that all the added Targets for Pattern
+                            SubsurfaceEntityTargetBoundAndUnitsDTO verifyPatternTargets = WellAllocationService.GetSubsurfaceEntityByEntityId(pat.Id.ToString(), SubsurfaceResultEntityType.Pattern.ToString(), zone.ApplicableDate.ToISO8601Date());
+                            Assert.IsNotNull(verifyPatternTargets);
+                        }
+                    }
+                }
             }
         }
 
@@ -2171,13 +2670,13 @@ namespace Weatherford.POP.Server.IntegrationTests
                 Name = resName,
                 AssetId = assetId,
                 Description = resName + " reservoir testing",
-                ApplicableDate = DateTime.Today.ToUniversalTime(),
-                StartDate = DateTime.Today.ToLocalTime(),
+                ApplicableDate = DateTime.Today.AddDays(-2).ToLocalTime().Date,
+                StartDate = DateTime.Today.AddDays(-2).ToLocalTime().Date,
                 EndDate = null,
-                InitialOilProductionVolume = 100,
-                InitialWaterInjectionVolume = 200,
-                InitialWaterProductionVolume = 300,
-                InitialGasInjectionVolume = 100,
+                InitialOilProductionVolume = 50,
+                InitialWaterInjectionVolume = 0,
+                InitialWaterProductionVolume = 50,
+                InitialGasInjectionVolume = 700,
                 InitialGasProductionVolume = 100
             };
 
@@ -2197,13 +2696,13 @@ namespace Weatherford.POP.Server.IntegrationTests
                 Name = zoneName,
                 ReservoirId = reservorId,
                 Description = zoneName + " zone testing",
-                ApplicableDate = DateTime.Today.ToUniversalTime(),
-                StartDate = DateTime.Today.ToLocalTime(),
+                ApplicableDate = DateTime.Today.AddDays(-2).ToLocalTime().Date,
+                StartDate = DateTime.Today.AddDays(-2).ToLocalTime().Date,
                 EndDate = null,
-                InitialOilProductionVolume = 100,
-                InitialWaterInjectionVolume = 200,
-                InitialWaterProductionVolume = 300,
-                InitialGasInjectionVolume = 100,
+                InitialOilProductionVolume = 50,
+                InitialWaterInjectionVolume = 0,
+                InitialWaterProductionVolume = 50,
+                InitialGasInjectionVolume = 700,
                 InitialGasProductionVolume = 100
             };
 
@@ -2222,7 +2721,7 @@ namespace Weatherford.POP.Server.IntegrationTests
             {
                 Name = patName,
                 ZoneId = zoneId,
-                StartDate = DateTime.Today.ToLocalTime(),
+                StartDate = DateTime.Today.AddDays(-2).ToLocalTime(),
                 EndDate = null
             };
 
@@ -2239,7 +2738,7 @@ namespace Weatherford.POP.Server.IntegrationTests
                 ZoneId = zoneId,
                 WellId = wellID,
                 EndDate = null,
-                StartDate = DateTime.Today.ToLocalTime()
+                StartDate = DateTime.Today.AddDays(-2).ToLocalTime()
             };
             WellAllocationService.AddWellToZone(well);
             Trace.WriteLine("Well Added to Zone Successfully");
@@ -2254,7 +2753,7 @@ namespace Weatherford.POP.Server.IntegrationTests
                 PatternId = patternId,
                 WellId = wellId,
                 EndDate = null,
-                StartDate = DateTime.Today.ToLocalTime()
+                StartDate = DateTime.Today.AddDays(-2).ToLocalTime()
             };
             WellAllocationService.AddWellToPattern(well);
             Trace.WriteLine("Well Added to Pattern Successfully");
@@ -2519,6 +3018,30 @@ namespace Weatherford.POP.Server.IntegrationTests
                 addedWellConfig1 = WellConfigurationService.GetWellConfig(addedWellConfig1.Well.Id.ToString());
                 _wellsToRemove.Add(addedWellConfig1.Well);
             }
+        }
+
+        //This method will get SWA WellBound records for specific Asset Settings  
+        public SWAWellBasedDTO getWellBoundRecordsForSnapshot(long SnapshotID, long AssetID, WellTypeCategory WellCategory, WellAllowablePhase Phase)
+        {
+            SWAWellBasedDTO getWellBasedDTO = new SWAWellBasedDTO();
+            getWellBasedDTO.SnapshotId = SnapshotID;
+            getWellBasedDTO.AssetId = AssetID;
+            getWellBasedDTO.WellCategory = WellCategory;
+            getWellBasedDTO.FluidPhase = Phase;
+
+            return getWellBasedDTO;
+        }
+
+        //This method will get SWA AssetBound records for specific Asset Settings  
+        public SWAAssetBasedRequestDTO getAssetBoundRecordsForSnapshot(long SnapshotID, long AssetID, WellTypeCategory WellCategory, WellAllowablePhase Phase)
+        {
+            SWAAssetBasedRequestDTO getAssetBasedDTO = new SWAAssetBasedRequestDTO();
+            getAssetBasedDTO.SnapshotId = SnapshotID;
+            getAssetBasedDTO.AssetId = AssetID;
+            getAssetBasedDTO.WellCategory = WellCategory;
+            getAssetBasedDTO.FluidPhase = Phase;
+
+            return getAssetBasedDTO;
         }
     }
 }

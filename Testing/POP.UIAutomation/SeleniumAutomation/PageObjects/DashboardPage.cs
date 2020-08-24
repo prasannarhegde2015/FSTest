@@ -27,5 +27,7 @@ namespace SeleniumAutomation.PageObjects
         public static By lblWelCount { get { return SeleniumActions.getByLocator("Xpath", "//label[@id='lblWellCount']", "Well Count"); } }
         //span[text()='BJ_PGL_Well_00003']
         public static By lstWellName { get { return SeleniumActions.getByLocator("Xpath", "(//span[text()='" + Dynatext + "'])[2]", "Well List with well name" + Dynatext); } }
+        public static By frmSpotFireLogin { get { return SeleniumActions.getByLocator("Xpath", "//iframe[@id='spotfire-auth']", "SpotFire Frame"); } }
+        public static By btnSpotFireLogin { get { return SeleniumActions.getByLocator("Xpath", "//div[@id='launch_spotfire_login']", "SpotFire Login button"); } }
     }
 }

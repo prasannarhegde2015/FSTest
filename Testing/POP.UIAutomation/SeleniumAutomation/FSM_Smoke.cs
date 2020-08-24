@@ -66,7 +66,19 @@ namespace SeleniumAutomation
             SeleniumActions.WaitForLoad();
             SeleniumActions.waitForElement(SeleniumAutomation.PageObjects.WellConfigurationPage.pedashboard);
             SeleniumActions.WaitForLoad();
-
+            ///
+            SeleniumActions.waitClick(PageObjects.WellConfigurationPage.dashbord_filter);
+            Thread.Sleep(3000);
+            if (CommonHelper.AreAsssetsPresent())
+            {
+                SeleniumActions.KendoTypeNSelect(PageObjects.WellConfigurationPage.assets_filter1, "Not Mapped");
+                Thread.Sleep(3000);
+                SeleniumActions.waitClick(PageObjects.WellConfigurationPage.applybtn);
+            }
+            else
+            {
+                SeleniumActions.waitClick(PageObjects.WellConfigurationPage.lnktargetclose);
+            }
 
         }
 

@@ -20,6 +20,7 @@ namespace SeleniumAutomation.PageObjects
         public static By btnIdle { get { return SeleniumActions.getByLocator("Xpath", "//button[@id='Idle']", "Idle Button"); } }
         public static By btnStop { get { return SeleniumActions.getByLocator("Xpath", "//button[@id='stopAndLeaveDown']", "Stop Button"); } }
         public static By btnSoftwaretimer { get { return SeleniumActions.getByLocator("Xpath", "//button[@id='SW_TIMER']", "Softwaretimer Button"); } }
+        public static By btnControlTrasnfer { get { return SeleniumActions.getByLocator("Xpath", "//button[@id='controlTransfer']", "Control Tasnfer Button"); } }
         public static By btnDowntime { get { return SeleniumActions.getByLocator("Xpath", "//button[@id='turnOnOffWell']", "Downtime Button"); } }
         public static By btnSetPoints { get { return SeleniumActions.getByLocator("Xpath", "//button[@id='setPoint']", "Set Points"); } }
         public static By btnBasicSetpointGetvalues { get { return SeleniumActions.getByLocator("Xpath", "//button[text()=' Get Values ']", "BasicSetpointGetvalues"); } }

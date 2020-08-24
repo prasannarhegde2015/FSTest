@@ -13577,7 +13577,7 @@ namespace Weatherford.POP.Server.IntegrationTests
 
             Assert.IsNotNull(allwellgroupstatusdto, "All Well Group Status returned no records");
             string[] unitkeys = SurveillanceService.GetUnitKeys();
-            Assert.AreEqual(105, unitkeys.Length, "Unit Keys Length was not:  105 ");
+            Assert.AreEqual(106, unitkeys.Length, "Unit Keys Length was not:  106 ");
             // Assert.AreEqual(10, allwellgroupstatusdto.Count, "All Well group status does not have all Well Types in it");
             foreach (var wellgroupstatusdto in allwellgroupstatusdto)
             {
@@ -13797,7 +13797,16 @@ namespace Weatherford.POP.Server.IntegrationTests
                 afterSaveResult.FirstOrDefault(x => x.Name == "PCPUDCAddedByAPITest").LoLimit = 200;
                 afterSaveResult.FirstOrDefault(x => x.Name == "PCPUDCAddedByAPITest").HiLimit = 300;
                 afterSaveResult.FirstOrDefault(x => x.Name == "PCPUDCAddedByAPITest").HiHiLimit = 400;
+
+                afterSaveResult.FirstOrDefault(x => x.Quantity.ToString() == "CasingPressure").LoLoLimit = 100;
+                afterSaveResult.FirstOrDefault(x => x.Quantity.ToString() == "CasingPressure").LoLimit = 200;
+                afterSaveResult.FirstOrDefault(x => x.Quantity.ToString() == "CasingPressure").HiLimit = 300;
+                afterSaveResult.FirstOrDefault(x => x.Quantity.ToString() == "CasingPressure").HiHiLimit = 400;
+
                 Assert.IsTrue(SurveillanceService.SavePointsAlarmConfig(pcpwell.Id.ToString(), afterSaveResult));
+                afterSaveResult = SurveillanceService.GetPointsAlarmConfig(pcpwell.Id.ToString());
+                Assert.AreEqual(400, afterSaveResult.FirstOrDefault(x => x.Name == "PCPUDCAddedByAPITest").HiHiLimit, "Mismatch in value for HiHi Limit for Additional UDC");
+                Assert.AreEqual(400, afterSaveResult.FirstOrDefault(x => x.Quantity.ToString() == "CasingPressure").HiHiLimit, "Mismatch in value for HiHi Limit for Casing Pressure");
 
                 // Remove the saved point alarm config from db.
                 Assert.IsTrue(SurveillanceService.RemovePointsAlarmConfig(pcpwell.Id.ToString(), afterSaveResult));
@@ -14143,6 +14152,7 @@ namespace Weatherford.POP.Server.IntegrationTests
         public void VerifyPEdashboardWithWellStatusProductionKPI(DateTime endtime, string unitsys, double precisioncheck)
         {
             // From Production Overview ;
+            Authenticate();
             WellDTO[] allwells = WellService.GetAllWells();
             List<double> oiltodayvalyes = new List<double>();
             List<double> watertodayvalyes = new List<double>();
@@ -14273,16 +14283,16 @@ namespace Weatherford.POP.Server.IntegrationTests
 
 
 
-            Assert.AreEqual(oiltodayvalyes.Sum(), (double)oiltodyval, 0.1, "Oil Today Mismatch in PE Dashboard Trends Chart value");
-            Assert.AreEqual(watertodayvalyes.Sum(), (double)wttodyval, 0.1, "Water Today Mismatch in PE Dashboard Trends Chart value");
-            Assert.AreEqual(gastodayvalyes.Sum(), (double)gstodyval, 0.1, "Gas Today Mismatch in PE Dashboard Trends Chart value");
+            Assert.AreEqual(oiltodayvalyes.Sum(), (double)oiltodyval, precisioncheck, "Oil Today Mismatch in PE Dashboard Trends Chart value");
+            Assert.AreEqual(watertodayvalyes.Sum(), (double)wttodyval, precisioncheck, "Water Today Mismatch in PE Dashboard Trends Chart value");
+            Assert.AreEqual(gastodayvalyes.Sum(), (double)gstodyval, precisioncheck, "Gas Today Mismatch in PE Dashboard Trends Chart value");
             Assert.AreEqual(oiltodyval + wttodyval, lqtodyval, "Liquid != Oil + Water !!! in PE dashboard KPI");
-            Assert.AreEqual(liquidtodayvalyes.Sum(), (double)lqtodyval, 0.1, "Liquid Today Mismatch in PE Dashboard Trends Chart value");
+            Assert.AreEqual(liquidtodayvalyes.Sum(), (double)lqtodyval, precisioncheck, "Liquid Today Mismatch in PE Dashboard Trends Chart value");
 
-            Assert.AreEqual(oilyestvalyes.Sum(), (double)oilyestday, 0.1, "Oil Yesterday  Mismatch");
-            Assert.AreEqual(wateryestyvalyes.Sum(), (double)wtqyestday, 0.1, "Water Yesterday Mismatch");
-            Assert.AreEqual(gasyestvalyes.Sum(), (double)gsyestday, 0.1, "Gas Yesterday Mismatch");
-            Assert.AreEqual(liquidyestvalyes.Sum(), (double)lqyestday, 0.1, "Liquid Yesterday Mismatch");
+            Assert.AreEqual(oilyestvalyes.Sum(), (double)oilyestday, precisioncheck, "Oil Yesterday  Mismatch");
+            Assert.AreEqual(wateryestyvalyes.Sum(), (double)wtqyestday, precisioncheck, "Water Yesterday Mismatch");
+            Assert.AreEqual(gasyestvalyes.Sum(), (double)gsyestday, precisioncheck, "Gas Yesterday Mismatch");
+            Assert.AreEqual(liquidyestvalyes.Sum(), (double)lqyestday, precisioncheck, "Liquid Yesterday Mismatch");
 
             Trace.WriteLine($"Verification Done for {unitsys} with precision of {precisioncheck}");
 
@@ -14399,17 +14409,17 @@ namespace Weatherford.POP.Server.IntegrationTests
                             try
                             {
                                 CreateAdditionalUDCAnalogPoint(SettingServiceStringConstants.GL_GROUP_STATUS_EXTRA_UDCS, AddUDCName, AddUDC, out origadditionaludcstringvalue);
-                                WellDTO espWell = AddNonRRLWell(facid, WellTypeId.GLift);
-                                _wellsToRemove.Add(espWell);
+                                WellDTO glWell = AddNonRRLWell(facid, WellTypeId.GLift);
+                                _wellsToRemove.Add(glWell);
                                 //Set Point Alarms Config For GL :
                                 Trace.WriteLine($"Verifying the Point Config Alarm for Well Type : {welltype.ToString()}");
                                 ChangeUnitSystemUserSetting("Metric");
-                                SetClearPointAlarmConfig(espWell, "TubingPressure", (decimal?)UnitsConversion("psia", 50), (decimal?)UnitsConversion("psia", 100), (decimal?)UnitsConversion("psia", 200), (decimal?)UnitsConversion("psia", 250), true);
+                                SetClearPointAlarmConfig(glWell, "TubingPressure", (decimal?)UnitsConversion("psia", 50), (decimal?)UnitsConversion("psia", 100), (decimal?)UnitsConversion("psia", 200), (decimal?)UnitsConversion("psia", 250), true);
                                 SetPointValue(new FacilityTag(s_site, s_cvsService, facid), "PRTUBXIN", "45", DateTime.Now);
                                 // Change or Inactive
                                 //Scan for RESET
-                                SurveillanceService.IssueCommandForSingleWell(espWell.Id, WellCommand.DemandScan.ToString());
-                                var rrlwellstatusdata = SurveillanceService.GetWellStatusData(espWell.Id.ToString());
+                                SurveillanceService.IssueCommandForSingleWell(glWell.Id, WellCommand.DemandScan.ToString());
+                                var rrlwellstatusdata = SurveillanceService.GetWellStatusData(glWell.Id.ToString());
                                 GLWellStatusValueDTO espvalue = (GLWellStatusValueDTO)rrlwellstatusdata.Value;
                                 IntelligentAlarmsServiceTests ialmtest = new IntelligentAlarmsServiceTests();
                                 List<string> expalams = new List<string>();
@@ -14419,17 +14429,18 @@ namespace Weatherford.POP.Server.IntegrationTests
                                 Trace.WriteLine($"Verifying If Alarm is Set on Well Status Page , Alarm History ");
                                 //Verify If Set
                                 ialmtest.VerifyForeSiteAlarmsOnWellStatusPage(espvalue.IntelligentAlarmMessage, expalams, true);
-                                ialmtest.VerifyAlarmsOnAllAlarmsHistoryPage(espWell, expalams, start_date, end_date, true);
-                                ialmtest.VerifyAlarmsOnForesiteAlarmsHistoryPage(espWell, expalams, start_date, end_date, true);
+                                
+                                ialmtest.VerifyAlarmsOnAllAlarmsHistoryPage(glWell, expalams, start_date, end_date, true);
+                                ialmtest.VerifyAlarmsOnForesiteAlarmsHistoryPage(glWell, expalams, start_date, end_date, true, "45");
                                 //Verify If Clear
                                 Trace.WriteLine($"Verifying If Alarm is Cleared on Well Status Page , Alarm History ");
-                                SetClearPointAlarmConfig(espWell, "TubingPressure", (decimal?)UnitsConversion("psia", 30), (decimal?)UnitsConversion("psia", 40), (decimal?)UnitsConversion("psia", 200), (decimal?)UnitsConversion("psia", 250), true);
-                                SurveillanceService.IssueCommandForSingleWell(espWell.Id, WellCommand.DemandScan.ToString());
-                                rrlwellstatusdata = SurveillanceService.GetWellStatusData(espWell.Id.ToString());
+                                SetClearPointAlarmConfig(glWell, "TubingPressure", (decimal?)UnitsConversion("psia", 30), (decimal?)UnitsConversion("psia", 40), (decimal?)UnitsConversion("psia", 200), (decimal?)UnitsConversion("psia", 250), true);
+                                SurveillanceService.IssueCommandForSingleWell(glWell.Id, WellCommand.DemandScan.ToString());
+                                rrlwellstatusdata = SurveillanceService.GetWellStatusData(glWell.Id.ToString());
                                 espvalue = (GLWellStatusValueDTO)rrlwellstatusdata.Value;
                                 ialmtest.VerifyForeSiteAlarmsOnWellStatusPage(espvalue.IntelligentAlarmMessage, expalams, false);
-                                ialmtest.VerifyAlarmsOnAllAlarmsHistoryPage(espWell, expalams, start_date, end_date, false);
-                                ialmtest.VerifyAlarmsOnForesiteAlarmsHistoryPage(espWell, expalams, start_date, end_date, false);
+                                ialmtest.VerifyAlarmsOnAllAlarmsHistoryPage(glWell, expalams, start_date, end_date, false);
+                                ialmtest.VerifyAlarmsOnForesiteAlarmsHistoryPage(glWell, expalams, start_date, end_date, false);
                             }
                             finally
                             {
@@ -14443,16 +14454,16 @@ namespace Weatherford.POP.Server.IntegrationTests
                             try
                             {
                                 CreateAdditionalUDCAnalogPoint(SettingServiceStringConstants.NF_GROUP_STATUS_EXTRA_UDCS, AddUDCName, AddUDC, out origadditionaludcstringvalue);
-                                WellDTO espWell = AddNonRRLWell(facid, WellTypeId.NF);
-                                _wellsToRemove.Add(espWell);
+                                WellDTO nfWell = AddNonRRLWell(facid, WellTypeId.NF);
+                                _wellsToRemove.Add(nfWell);
                                 //Set Point Alarms Config For NF :
                                 Trace.WriteLine($"Verifying the Point Config Alarm for Well Type : {welltype.ToString()}");
-                                SetClearPointAlarmConfig(espWell, "TubingPressure", 50, 100, 200, 250, true);
+                                SetClearPointAlarmConfig(nfWell, "TubingPressure", 50, 100, 200, 250, true);
                                 SetPointValue(new FacilityTag(s_site, s_cvsService, facid), "PRTUBXIN", "260", DateTime.Now);
                                 // Change or Inactive
                                 //Scan for RESET
-                                SurveillanceService.IssueCommandForSingleWell(espWell.Id, WellCommand.DemandScan.ToString());
-                                var rrlwellstatusdata = SurveillanceService.GetWellStatusData(espWell.Id.ToString());
+                                SurveillanceService.IssueCommandForSingleWell(nfWell.Id, WellCommand.DemandScan.ToString());
+                                var rrlwellstatusdata = SurveillanceService.GetWellStatusData(nfWell.Id.ToString());
                                 NFWellStatusValueDTO espvalue = (NFWellStatusValueDTO)rrlwellstatusdata.Value;
                                 IntelligentAlarmsServiceTests ialmtest = new IntelligentAlarmsServiceTests();
                                 List<string> expalams = new List<string>();
@@ -14462,17 +14473,17 @@ namespace Weatherford.POP.Server.IntegrationTests
                                 Trace.WriteLine($"Verifying If Alarm is Set on Well Status Page , Alarm History ");
                                 //Verify If Set
                                 ialmtest.VerifyForeSiteAlarmsOnWellStatusPage(espvalue.IntelligentAlarmMessage, expalams, true);
-                                ialmtest.VerifyAlarmsOnAllAlarmsHistoryPage(espWell, expalams, start_date, end_date, true);
-                                ialmtest.VerifyAlarmsOnForesiteAlarmsHistoryPage(espWell, expalams, start_date, end_date, true);
+                                ialmtest.VerifyAlarmsOnAllAlarmsHistoryPage(nfWell, expalams, start_date, end_date, true);
+                                ialmtest.VerifyAlarmsOnForesiteAlarmsHistoryPage(nfWell, expalams, start_date, end_date, true);
                                 //Verify If Clear
                                 Trace.WriteLine($"Verifying If Alarm is Cleared on Well Status Page , Alarm History ");
-                                SetClearPointAlarmConfig(espWell, "TubingPressure", 50, 100, 200, 250, false);
-                                SurveillanceService.IssueCommandForSingleWell(espWell.Id, WellCommand.DemandScan.ToString());
-                                rrlwellstatusdata = SurveillanceService.GetWellStatusData(espWell.Id.ToString());
+                                SetClearPointAlarmConfig(nfWell, "TubingPressure", 50, 100, 200, 250, false);
+                                SurveillanceService.IssueCommandForSingleWell(nfWell.Id, WellCommand.DemandScan.ToString());
+                                rrlwellstatusdata = SurveillanceService.GetWellStatusData(nfWell.Id.ToString());
                                 espvalue = (NFWellStatusValueDTO)rrlwellstatusdata.Value;
                                 ialmtest.VerifyForeSiteAlarmsOnWellStatusPage(espvalue.IntelligentAlarmMessage, expalams, false);
-                                ialmtest.VerifyAlarmsOnAllAlarmsHistoryPage(espWell, expalams, start_date, end_date, false);
-                                ialmtest.VerifyAlarmsOnForesiteAlarmsHistoryPage(espWell, expalams, start_date, end_date, false);
+                                ialmtest.VerifyAlarmsOnAllAlarmsHistoryPage(nfWell, expalams, start_date, end_date, false);
+                                ialmtest.VerifyAlarmsOnForesiteAlarmsHistoryPage(nfWell, expalams, start_date, end_date, false);
                             }
                             finally
                             {
@@ -14485,17 +14496,17 @@ namespace Weatherford.POP.Server.IntegrationTests
                             try
                             {
                                 CreateAdditionalUDCAnalogPoint(SettingServiceStringConstants.GI_GROUP_STATUS_EXTRA_UDCS, AddUDCName, AddUDC, out origadditionaludcstringvalue);
-                                WellDTO espWell = AddNonRRLWell(facid, WellTypeId.GInj);
-                                _wellsToRemove.Add(espWell);
+                                WellDTO gInjWell = AddNonRRLWell(facid, WellTypeId.GInj);
+                                _wellsToRemove.Add(gInjWell);
                                 //Set Point Alarms Config For Gas Injection :
                                 Trace.WriteLine($"Verifying the Point Config Alarm for Well Type : {welltype.ToString()}");
-                                SetClearPointAlarmConfig(espWell, "TubingPressure", 50, 100, 200, 250, true);
+                                SetClearPointAlarmConfig(gInjWell, "TubingPressure", 50, 100, 200, 250, true);
                                 SetPointValue(new FacilityTag(s_site, s_cvsService, facid), "PRTUBXIN", "40", DateTime.Now);
 
                                 // Change or Inactive
                                 //Scan for RESET
-                                SurveillanceService.IssueCommandForSingleWell(espWell.Id, WellCommand.DemandScan.ToString());
-                                var rrlwellstatusdata = SurveillanceService.GetWellStatusData(espWell.Id.ToString());
+                                SurveillanceService.IssueCommandForSingleWell(gInjWell.Id, WellCommand.DemandScan.ToString());
+                                var rrlwellstatusdata = SurveillanceService.GetWellStatusData(gInjWell.Id.ToString());
                                 GIWellStatusValueDTO espvalue = (GIWellStatusValueDTO)rrlwellstatusdata.Value;
                                 IntelligentAlarmsServiceTests ialmtest = new IntelligentAlarmsServiceTests();
                                 List<string> expalams = new List<string>();
@@ -14505,18 +14516,18 @@ namespace Weatherford.POP.Server.IntegrationTests
                                 Trace.WriteLine($"Verifying If Alarm is Set on Well Status Page , Alarm History ");
                                 //Verify If Set
                                 ialmtest.VerifyForeSiteAlarmsOnWellStatusPage(espvalue.IntelligentAlarmMessage, expalams, true);
-                                ialmtest.VerifyAlarmsOnAllAlarmsHistoryPage(espWell, expalams, start_date, end_date, true);
-                                ialmtest.VerifyAlarmsOnForesiteAlarmsHistoryPage(espWell, expalams, start_date, end_date, true);
+                                ialmtest.VerifyAlarmsOnAllAlarmsHistoryPage(gInjWell, expalams, start_date, end_date, true);
+                                ialmtest.VerifyAlarmsOnForesiteAlarmsHistoryPage(gInjWell, expalams, start_date, end_date, true);
                                 //Verify If Clear
                                 Trace.WriteLine($"Verifying If Alarm is Cleared on Well Status Page , Alarm History ");
                                 //Clear by Deactiviang the flag
-                                SetClearPointAlarmConfig(espWell, "TubingPressure", 50, 100, 200, 250, false);
-                                SurveillanceService.IssueCommandForSingleWell(espWell.Id, WellCommand.DemandScan.ToString());
-                                rrlwellstatusdata = SurveillanceService.GetWellStatusData(espWell.Id.ToString());
+                                SetClearPointAlarmConfig(gInjWell, "TubingPressure", 50, 100, 200, 250, false);
+                                SurveillanceService.IssueCommandForSingleWell(gInjWell.Id, WellCommand.DemandScan.ToString());
+                                rrlwellstatusdata = SurveillanceService.GetWellStatusData(gInjWell.Id.ToString());
                                 espvalue = (GIWellStatusValueDTO)rrlwellstatusdata.Value;
                                 ialmtest.VerifyForeSiteAlarmsOnWellStatusPage(espvalue.IntelligentAlarmMessage, expalams, false);
-                                ialmtest.VerifyAlarmsOnAllAlarmsHistoryPage(espWell, expalams, start_date, end_date, false);
-                                ialmtest.VerifyAlarmsOnForesiteAlarmsHistoryPage(espWell, expalams, start_date, end_date, false);
+                                ialmtest.VerifyAlarmsOnAllAlarmsHistoryPage(gInjWell, expalams, start_date, end_date, false);
+                                ialmtest.VerifyAlarmsOnForesiteAlarmsHistoryPage(gInjWell, expalams, start_date, end_date, false);
                             }
                             finally
                             {
@@ -14529,16 +14540,16 @@ namespace Weatherford.POP.Server.IntegrationTests
                             try
                             {
                                 CreateAdditionalUDCAnalogPoint(SettingServiceStringConstants.WI_GROUP_STATUS_EXTRA_UDCS, AddUDCName, AddUDC, out origadditionaludcstringvalue);
-                                WellDTO espWell = AddNonRRLWell(facid, WellTypeId.WInj);
-                                _wellsToRemove.Add(espWell);
+                                WellDTO wInjWell = AddNonRRLWell(facid, WellTypeId.WInj);
+                                _wellsToRemove.Add(wInjWell);
                                 //Set Point Alarms Config For Water Injection :
                                 Trace.WriteLine($"Verifying the Point Config Alarm for Well Type : {welltype.ToString()}");
-                                SetClearPointAlarmConfig(espWell, "TubingPressure", 50, 100, 200, 250, true);
+                                SetClearPointAlarmConfig(wInjWell, "TubingPressure", 50, 100, 200, 250, true);
                                 SetPointValue(new FacilityTag(s_site, s_cvsService, facid), "PRTUBXIN", "40", DateTime.Now);
                                 // Change or Inactive
                                 //Scan for RESET
-                                SurveillanceService.IssueCommandForSingleWell(espWell.Id, WellCommand.DemandScan.ToString());
-                                var rrlwellstatusdata = SurveillanceService.GetWellStatusData(espWell.Id.ToString());
+                                SurveillanceService.IssueCommandForSingleWell(wInjWell.Id, WellCommand.DemandScan.ToString());
+                                var rrlwellstatusdata = SurveillanceService.GetWellStatusData(wInjWell.Id.ToString());
                                 WIWellStatusValueDTO espvalue = (WIWellStatusValueDTO)rrlwellstatusdata.Value;
                                 IntelligentAlarmsServiceTests ialmtest = new IntelligentAlarmsServiceTests();
                                 List<string> expalams = new List<string>();
@@ -14548,18 +14559,18 @@ namespace Weatherford.POP.Server.IntegrationTests
                                 Trace.WriteLine($"Verifying If Alarm is Set on Well Status Page , Alarm History ");
                                 //Verify If Set
                                 ialmtest.VerifyForeSiteAlarmsOnWellStatusPage(espvalue.IntelligentAlarmMessage, expalams, true);
-                                ialmtest.VerifyAlarmsOnAllAlarmsHistoryPage(espWell, expalams, start_date, end_date, true);
-                                ialmtest.VerifyAlarmsOnForesiteAlarmsHistoryPage(espWell, expalams, start_date, end_date, true);
+                                ialmtest.VerifyAlarmsOnAllAlarmsHistoryPage(wInjWell, expalams, start_date, end_date, true);
+                                ialmtest.VerifyAlarmsOnForesiteAlarmsHistoryPage(wInjWell, expalams, start_date, end_date, true);
                                 //Verify If Clear
                                 SetPointValue(new FacilityTag(s_site, s_cvsService, facid), "PRTUBXIN", "150", DateTime.Now);
                                 Trace.WriteLine($"Verifying If Alarm is Cleared on Well Status Page , Alarm History ");
-                                SurveillanceService.IssueCommandForSingleWell(espWell.Id, WellCommand.DemandScan.ToString());
-                                rrlwellstatusdata = SurveillanceService.GetWellStatusData(espWell.Id.ToString());
+                                SurveillanceService.IssueCommandForSingleWell(wInjWell.Id, WellCommand.DemandScan.ToString());
+                                rrlwellstatusdata = SurveillanceService.GetWellStatusData(wInjWell.Id.ToString());
                                 espvalue = (WIWellStatusValueDTO)rrlwellstatusdata.Value;
 
                                 ialmtest.VerifyForeSiteAlarmsOnWellStatusPage(espvalue.IntelligentAlarmMessage, expalams, false);
-                                ialmtest.VerifyAlarmsOnAllAlarmsHistoryPage(espWell, expalams, start_date, end_date, false);
-                                ialmtest.VerifyAlarmsOnForesiteAlarmsHistoryPage(espWell, expalams, start_date, end_date, false);
+                                ialmtest.VerifyAlarmsOnAllAlarmsHistoryPage(wInjWell, expalams, start_date, end_date, false);
+                                ialmtest.VerifyAlarmsOnForesiteAlarmsHistoryPage(wInjWell, expalams, start_date, end_date, false);
                             }
                             finally
                             {
@@ -14572,22 +14583,22 @@ namespace Weatherford.POP.Server.IntegrationTests
                             try
                             {
                                 CreateAdditionalUDCAnalogPoint(SettingServiceStringConstants.WAG_GROUP_STATUS_EXTRA_UDCS, AddUDCName, AddUDC, out origadditionaludcstringvalue);
-                                WellDTO espWell = AddNonRRLWell(facid, WellTypeId.WGInj);
-                                _wellsToRemove.Add(espWell);
+                                WellDTO wagWell = AddNonRRLWell(facid, WellTypeId.WGInj);
+                                _wellsToRemove.Add(wagWell);
                                 //Set Point Alarms Config For WAG Injection :
                                 Trace.WriteLine($"Verifying the Point Config Alarm for Well Type : {welltype.ToString()}");
                                 //Default is 180 or could be 0 ( If totaly not initilzed as in ATS)
-                                SurveillanceService.IssueCommandForSingleWell(espWell.Id, WellCommand.DemandScan.ToString());
-                                var rrlwellstatusdata = SurveillanceService.GetWellStatusData(espWell.Id.ToString());
+                                SurveillanceService.IssueCommandForSingleWell(wagWell.Id, WellCommand.DemandScan.ToString());
+                                var rrlwellstatusdata = SurveillanceService.GetWellStatusData(wagWell.Id.ToString());
                                 WAGWellStatusValueDTO espvalue = (WAGWellStatusValueDTO)rrlwellstatusdata.Value;
                                 var originjpressure = espvalue.InjectionPressure;
-                                SetClearPointAlarmConfig(espWell, "InjectionPressure", 50, 100, 150, 250, true);
-                                SetClearPointAlarmConfig(espWell, AddUDCName, 50, 100, 150, 250, true);
+                                SetClearPointAlarmConfig(wagWell, "InjectionPressure", 50, 100, 150, 250, true);
+                                SetClearPointAlarmConfig(wagWell, AddUDCName, 50, 100, 150, 250, true);
                                 //   SetPointValue(new FacilityTag(s_site, s_cvsService, facid), "PRESINJ", "240", DateTime.Now);
                                 // Change or Inactive
                                 //Scan for RESET
-                                SurveillanceService.IssueCommandForSingleWell(espWell.Id, WellCommand.DemandScan.ToString());
-                                rrlwellstatusdata = SurveillanceService.GetWellStatusData(espWell.Id.ToString());
+                                SurveillanceService.IssueCommandForSingleWell(wagWell.Id, WellCommand.DemandScan.ToString());
+                                rrlwellstatusdata = SurveillanceService.GetWellStatusData(wagWell.Id.ToString());
                                 espvalue = (WAGWellStatusValueDTO)rrlwellstatusdata.Value;
                                 IntelligentAlarmsServiceTests ialmtest = new IntelligentAlarmsServiceTests();
                                 List<string> expalams = new List<string>();
@@ -14607,18 +14618,18 @@ namespace Weatherford.POP.Server.IntegrationTests
                                 Trace.WriteLine($"Verifying If Alarm is Set on Well Status Page , Alarm History ");
                                 //Verify If Set
                                 ialmtest.VerifyForeSiteAlarmsOnWellStatusPage(espvalue.IntelligentAlarmMessage, expalams, true);
-                                ialmtest.VerifyAlarmsOnAllAlarmsHistoryPage(espWell, expalams, start_date, end_date, true);
-                                ialmtest.VerifyAlarmsOnForesiteAlarmsHistoryPage(espWell, expalams, start_date, end_date, true);
+                                ialmtest.VerifyAlarmsOnAllAlarmsHistoryPage(wagWell, expalams, start_date, end_date, true);
+                                ialmtest.VerifyAlarmsOnForesiteAlarmsHistoryPage(wagWell, expalams, start_date, end_date, true);
                                 //Verify If Clear
                                 Trace.WriteLine($"Verifying If Alarm is Cleared on Well Status Page , Alarm History ");
-                                SetClearPointAlarmConfig(espWell, "InjectionPressure", 30, 38, 242, 250, false);
-                                SetClearPointAlarmConfig(espWell, AddUDCName, 50, 100, 200, 230, false);
-                                SurveillanceService.IssueCommandForSingleWell(espWell.Id, WellCommand.DemandScan.ToString());
-                                rrlwellstatusdata = SurveillanceService.GetWellStatusData(espWell.Id.ToString());
+                                SetClearPointAlarmConfig(wagWell, "InjectionPressure", 30, 38, 242, 250, false);
+                                SetClearPointAlarmConfig(wagWell, AddUDCName, 50, 100, 200, 230, false);
+                                SurveillanceService.IssueCommandForSingleWell(wagWell.Id, WellCommand.DemandScan.ToString());
+                                rrlwellstatusdata = SurveillanceService.GetWellStatusData(wagWell.Id.ToString());
                                 espvalue = (WAGWellStatusValueDTO)rrlwellstatusdata.Value;
                                 ialmtest.VerifyForeSiteAlarmsOnWellStatusPage(espvalue.IntelligentAlarmMessage, expalams, false);
-                                ialmtest.VerifyAlarmsOnAllAlarmsHistoryPage(espWell, expalams, start_date, end_date, false);
-                                ialmtest.VerifyAlarmsOnForesiteAlarmsHistoryPage(espWell, expalams, start_date, end_date, false);
+                                ialmtest.VerifyAlarmsOnAllAlarmsHistoryPage(wagWell, expalams, start_date, end_date, false);
+                                ialmtest.VerifyAlarmsOnForesiteAlarmsHistoryPage(wagWell, expalams, start_date, end_date, false);
                             }
                             finally
                             {
@@ -14631,16 +14642,16 @@ namespace Weatherford.POP.Server.IntegrationTests
                             try
                             {
                                 CreateAdditionalUDCAnalogPoint(SettingServiceStringConstants.PL_GROUP_STATUS_EXTRA_UDCS, AddUDCName, AddUDC, out origadditionaludcstringvalue);
-                                WellDTO espWell = AddNonRRLWell(facid, WellTypeId.PLift);
-                                _wellsToRemove.Add(espWell);
+                                WellDTO plWell = AddNonRRLWell(facid, WellTypeId.PLift);
+                                _wellsToRemove.Add(plWell);
                                 //Set Point Alarms Config For Plunger Lift :
                                 Trace.WriteLine($"Verifying the Point Config Alarm for Well Type : {welltype.ToString()}");
-                                SetClearPointAlarmConfig(espWell, "TubingPressure", 50, 100, 200, 250, true);
+                                SetClearPointAlarmConfig(plWell, "TubingPressure", 50, 100, 200, 250, true);
                                 SetPointValue(new FacilityTag(s_site, s_cvsService, facid), "PRTUBXIN", "240", DateTime.Now);
                                 // Change or Inactive
                                 //Scan for RESET
-                                SurveillanceService.IssueCommandForSingleWell(espWell.Id, WellCommand.DemandScan.ToString());
-                                var rrlwellstatusdata = SurveillanceService.GetWellStatusData(espWell.Id.ToString());
+                                SurveillanceService.IssueCommandForSingleWell(plWell.Id, WellCommand.DemandScan.ToString());
+                                var rrlwellstatusdata = SurveillanceService.GetWellStatusData(plWell.Id.ToString());
                                 PGLWellStatusValueDTO espvalue = (PGLWellStatusValueDTO)rrlwellstatusdata.Value;
                                 IntelligentAlarmsServiceTests ialmtest = new IntelligentAlarmsServiceTests();
                                 List<string> expalams = new List<string>();
@@ -14650,17 +14661,17 @@ namespace Weatherford.POP.Server.IntegrationTests
                                 Trace.WriteLine($"Verifying If Alarm is Set on Well Status Page , Alarm History ");
                                 //Verify If Set
                                 ialmtest.VerifyForeSiteAlarmsOnWellStatusPage(espvalue.IntelligentAlarmMessage, expalams, true);
-                                ialmtest.VerifyAlarmsOnAllAlarmsHistoryPage(espWell, expalams, start_date, end_date, true);
-                                ialmtest.VerifyAlarmsOnForesiteAlarmsHistoryPage(espWell, expalams, start_date, end_date, true);
+                                ialmtest.VerifyAlarmsOnAllAlarmsHistoryPage(plWell, expalams, start_date, end_date, true);
+                                ialmtest.VerifyAlarmsOnForesiteAlarmsHistoryPage(plWell, expalams, start_date, end_date, true);
                                 //Verify If Clear
                                 Trace.WriteLine($"Verifying If Alarm is Cleared on Well Status Page , Alarm History ");
-                                SetClearPointAlarmConfig(espWell, "TubingPressure", 50, 100, 300, 350, true);
-                                SurveillanceService.IssueCommandForSingleWell(espWell.Id, WellCommand.DemandScan.ToString());
-                                rrlwellstatusdata = SurveillanceService.GetWellStatusData(espWell.Id.ToString());
+                                SetClearPointAlarmConfig(plWell, "TubingPressure", 50, 100, 300, 350, true);
+                                SurveillanceService.IssueCommandForSingleWell(plWell.Id, WellCommand.DemandScan.ToString());
+                                rrlwellstatusdata = SurveillanceService.GetWellStatusData(plWell.Id.ToString());
                                 espvalue = (PGLWellStatusValueDTO)rrlwellstatusdata.Value;
                                 ialmtest.VerifyForeSiteAlarmsOnWellStatusPage(espvalue.IntelligentAlarmMessage, expalams, false);
-                                ialmtest.VerifyAlarmsOnAllAlarmsHistoryPage(espWell, expalams, start_date, end_date, false);
-                                ialmtest.VerifyAlarmsOnForesiteAlarmsHistoryPage(espWell, expalams, start_date, end_date, false);
+                                ialmtest.VerifyAlarmsOnAllAlarmsHistoryPage(plWell, expalams, start_date, end_date, false);
+                                ialmtest.VerifyAlarmsOnForesiteAlarmsHistoryPage(plWell, expalams, start_date, end_date, false);
                             }
                             finally
                             {
@@ -14673,15 +14684,15 @@ namespace Weatherford.POP.Server.IntegrationTests
                             try
                             {
                                 CreateAdditionalUDCAnalogPoint(SettingServiceStringConstants.PCP_GROUP_STATUS_EXTRA_UDCS, AddUDCName, AddUDC, out origadditionaludcstringvalue);
-                                WellDTO espWell = AddNonRRLWell(facid, WellTypeId.PCP);
-                                _wellsToRemove.Add(espWell);
+                                WellDTO pcpWell = AddNonRRLWell(facid, WellTypeId.PCP);
+                                _wellsToRemove.Add(pcpWell);
                                 //Set Point Alarms Config For PCP :
                                 Trace.WriteLine($"Verifying the Point Config Alarm for Well Type : {welltype.ToString()}");
-                                SetClearPointAlarmConfig(espWell, "TubingPressure", 50, 60, 75, 90, true);
+                                SetClearPointAlarmConfig(pcpWell, "TubingPressure", 50, 60, 75, 90, true);
                                 // Change or Inactive
                                 //Scan for RESET
-                                SurveillanceService.IssueCommandForSingleWell(espWell.Id, WellCommand.DemandScan.ToString());
-                                var rrlwellstatusdata = SurveillanceService.GetWellStatusData(espWell.Id.ToString());
+                                SurveillanceService.IssueCommandForSingleWell(pcpWell.Id, WellCommand.DemandScan.ToString());
+                                var rrlwellstatusdata = SurveillanceService.GetWellStatusData(pcpWell.Id.ToString());
                                 PCPWellStatusValueDTO espvalue = (PCPWellStatusValueDTO)rrlwellstatusdata.Value;
                                 IntelligentAlarmsServiceTests ialmtest = new IntelligentAlarmsServiceTests();
                                 List<string> expalams = new List<string>();
@@ -14691,17 +14702,17 @@ namespace Weatherford.POP.Server.IntegrationTests
                                 Trace.WriteLine($"Verifying If Alarm is Set on Well Status Page , Alarm History ");
                                 //Verify If Set
                                 ialmtest.VerifyForeSiteAlarmsOnWellStatusPage(espvalue.IntelligentAlarmMessage, expalams, true);
-                                ialmtest.VerifyAlarmsOnAllAlarmsHistoryPage(espWell, expalams, start_date, end_date, true);
-                                ialmtest.VerifyAlarmsOnForesiteAlarmsHistoryPage(espWell, expalams, start_date, end_date, true);
+                                ialmtest.VerifyAlarmsOnAllAlarmsHistoryPage(pcpWell, expalams, start_date, end_date, true);
+                                ialmtest.VerifyAlarmsOnForesiteAlarmsHistoryPage(pcpWell, expalams, start_date, end_date, true);
                                 //Verify If Clear
                                 Trace.WriteLine($"Verifying If Alarm is Cleared on Well Status Page , Alarm History ");
-                                SetClearPointAlarmConfig(espWell, "TubingPressure", 50, 60, 175, 190, true);
-                                SurveillanceService.IssueCommandForSingleWell(espWell.Id, WellCommand.DemandScan.ToString());
-                                rrlwellstatusdata = SurveillanceService.GetWellStatusData(espWell.Id.ToString());
+                                SetClearPointAlarmConfig(pcpWell, "TubingPressure", 50, 60, 175, 190, true);
+                                SurveillanceService.IssueCommandForSingleWell(pcpWell.Id, WellCommand.DemandScan.ToString());
+                                rrlwellstatusdata = SurveillanceService.GetWellStatusData(pcpWell.Id.ToString());
                                 espvalue = (PCPWellStatusValueDTO)rrlwellstatusdata.Value;
                                 ialmtest.VerifyForeSiteAlarmsOnWellStatusPage(espvalue.IntelligentAlarmMessage, expalams, false);
-                                ialmtest.VerifyAlarmsOnAllAlarmsHistoryPage(espWell, expalams, start_date, end_date, false);
-                                ialmtest.VerifyAlarmsOnForesiteAlarmsHistoryPage(espWell, expalams, start_date, end_date, false);
+                                ialmtest.VerifyAlarmsOnAllAlarmsHistoryPage(pcpWell, expalams, start_date, end_date, false);
+                                ialmtest.VerifyAlarmsOnForesiteAlarmsHistoryPage(pcpWell, expalams, start_date, end_date, false);
                             }
                             finally
                             {
@@ -14714,17 +14725,17 @@ namespace Weatherford.POP.Server.IntegrationTests
                             try
                             {
                                 CreateAdditionalUDCAnalogPoint(SettingServiceStringConstants.OT_GROUP_STATUS_EXTRA_UDCS, AddUDCName, AddUDC, out origadditionaludcstringvalue);
-                                WellDTO espWell = AddNonRRLWell(facid, WellTypeId.OT);
-                                _wellsToRemove.Add(espWell);
+                                WellDTO otWell = AddNonRRLWell(facid, WellTypeId.OT);
+                                _wellsToRemove.Add(otWell);
                                 //Set Point Alarms Config For OT :
                                 Trace.WriteLine($"Verifying the Point Config Alarm for Well Type : {welltype.ToString()}");
                                 // No default UDCs are avaialble for OT Well Type we have to use Ational UDC onnly
-                                SetClearPointAlarmConfig(espWell, AddUDCName, 50, 100, 200, 250, true);
+                                SetClearPointAlarmConfig(otWell, AddUDCName, 50, 100, 200, 250, true);
                                 SetPointValue(new FacilityTag(s_site, s_cvsService, facid), "PRTUBXIN", "40", DateTime.Now);
                                 // Change or Inactive
                                 //Scan for RESET
-                                SurveillanceService.IssueCommandForSingleWell(espWell.Id, WellCommand.DemandScan.ToString());
-                                var rrlwellstatusdata = SurveillanceService.GetWellStatusData(espWell.Id.ToString());
+                                SurveillanceService.IssueCommandForSingleWell(otWell.Id, WellCommand.DemandScan.ToString());
+                                var rrlwellstatusdata = SurveillanceService.GetWellStatusData(otWell.Id.ToString());
                                 OTWellStatusValueDTO espvalue = (OTWellStatusValueDTO)rrlwellstatusdata.Value;
                                 IntelligentAlarmsServiceTests ialmtest = new IntelligentAlarmsServiceTests();
                                 List<string> expalams = new List<string>();
@@ -14734,17 +14745,17 @@ namespace Weatherford.POP.Server.IntegrationTests
                                 Trace.WriteLine($"Verifying If Alarm is Set on Well Status Page , Alarm History ");
                                 //Verify If Set
                                 ialmtest.VerifyForeSiteAlarmsOnWellStatusPage(espvalue.IntelligentAlarmMessage, expalams, true);
-                                ialmtest.VerifyAlarmsOnAllAlarmsHistoryPage(espWell, expalams, start_date, end_date, true);
-                                ialmtest.VerifyAlarmsOnForesiteAlarmsHistoryPage(espWell, expalams, start_date, end_date, true);
+                                ialmtest.VerifyAlarmsOnAllAlarmsHistoryPage(otWell, expalams, start_date, end_date, true);
+                                ialmtest.VerifyAlarmsOnForesiteAlarmsHistoryPage(otWell, expalams, start_date, end_date, true);
                                 //Verify If Clear
                                 Trace.WriteLine($"Verifying If Alarm is Cleared on Well Status Page , Alarm History ");
-                                SetClearPointAlarmConfig(espWell, AddUDCName, 50, 100, 200, 250, false);
-                                SurveillanceService.IssueCommandForSingleWell(espWell.Id, WellCommand.DemandScan.ToString());
-                                rrlwellstatusdata = SurveillanceService.GetWellStatusData(espWell.Id.ToString());
+                                SetClearPointAlarmConfig(otWell, AddUDCName, 50, 100, 200, 250, false);
+                                SurveillanceService.IssueCommandForSingleWell(otWell.Id, WellCommand.DemandScan.ToString());
+                                rrlwellstatusdata = SurveillanceService.GetWellStatusData(otWell.Id.ToString());
                                 espvalue = (OTWellStatusValueDTO)rrlwellstatusdata.Value;
                                 ialmtest.VerifyForeSiteAlarmsOnWellStatusPage(espvalue.IntelligentAlarmMessage, expalams, false);
-                                ialmtest.VerifyAlarmsOnAllAlarmsHistoryPage(espWell, expalams, start_date, end_date, false);
-                                ialmtest.VerifyAlarmsOnForesiteAlarmsHistoryPage(espWell, expalams, start_date, end_date, false);
+                                ialmtest.VerifyAlarmsOnAllAlarmsHistoryPage(otWell, expalams, start_date, end_date, false);
+                                ialmtest.VerifyAlarmsOnForesiteAlarmsHistoryPage(otWell, expalams, start_date, end_date, false);
                             }
                             finally
                             {

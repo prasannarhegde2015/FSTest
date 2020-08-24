@@ -125,7 +125,8 @@ namespace Weatherford.POP.Server.IntegrationTests
                         ReferenceTable.EntityName.Equals("r_StickyNoteStatus") ||
                         ReferenceTable.EntityName.Equals("r_ServiceLocation_RM") ||
                         ReferenceTable.EntityName.Equals("UserServiceLocation_RM") ||
-                        ReferenceTable.EntityName.Equals("UserBusinessOrganization_RM"))
+                        ReferenceTable.EntityName.Equals("UserBusinessOrganization_RM") ||
+                        ReferenceTable.EntityName.Equals("r_TrackingItemSubtype"))
                     {
                         //A separate method is required to check uniqueness for adding r_JobTypeEventType
                         //The adding ConstantId method inside the function of GenerateInsertQueryForReferenceTable

@@ -11,6 +11,7 @@ using Weatherford.ReoService.Enums;
 using System.Diagnostics;
 using System.Text.RegularExpressions;
 using System.Reflection;
+using System.Configuration;
 
 namespace Weatherford.POP.Server.IntegrationTests
 {
@@ -274,6 +275,80 @@ namespace Weatherford.POP.Server.IntegrationTests
             //Check that there are 0 ModelFiles
             SNModelFileDTO[] modelFileCount4 = SurfaceNetworkService.GetSNModelFilesByModelId(newModel.Id.ToString());
             Assert.AreEqual(0, modelFileCount4.Count());
+        }
+
+        [TestCategory(TestCategories.SurfaceNetworkServiceTests), TestMethod]
+        public void AddGetSNModelFile()
+        {
+            string path = "Weatherford.POP.Server.IntegrationTests.TestDocuments.";
+            string model = "22Wells.reo";
+            string assetName = "Asset Test";
+            string modelName = "SNModel Test";
+
+            try
+            {
+                SurfaceNetworkService.AddAsset(new AssetDTO() { Name = assetName, Description = "Test Description" });
+                var allAssets = SurfaceNetworkService.GetAllAssets().ToList();
+                AssetDTO asset = allAssets?.FirstOrDefault(a => a.Name.Equals(assetName));
+                Assert.IsNotNull(asset);
+                _assetsToRemove.Add(asset);
+
+                SNModelAndModelFileDTO modelAndFile = new SNModelAndModelFileDTO();
+                modelAndFile.SNModel = new SNModelDTO() { Name = modelName, AssetId = asset.Id };
+
+                SNModelFileDTO modelFile = new SNModelFileDTO();
+                modelFile.Comments = "Test Base Model File;";
+                modelFile.UpdateFluidModel = true;
+
+                byte[] fileAsByteArray = GetByteArray(path, model);
+                Assert.IsNotNull(fileAsByteArray);
+                modelFile.Base64Contents = Convert.ToBase64String(fileAsByteArray);
+                modelAndFile.SNModelFile = modelFile;
+
+                //Create Initial Model And ModelFile
+                SurfaceNetworkService.AddSNModelAndFile(modelAndFile);
+                long[] userAssets = new long[1]; userAssets[0] = asset.Id;
+                var allModels = SurfaceNetworkService.GetSNModelsByAssetIds(userAssets);
+                SNModelDTO newModel = allModels?.FirstOrDefault(m => m.Name.Equals(modelName));
+                SNModelAndModelFileDTO newModelAndFile = SurfaceNetworkService.GetBaseSNModelFile(newModel.Id.ToString());
+                SNModelFileDTO snModelFileRead;
+                SNModelDTO snModelRead;
+
+                if (newModelAndFile != null)
+                {
+                    snModelFileRead = newModelAndFile.SNModelFile;
+                    snModelRead = newModelAndFile.SNModel;
+                }
+
+                //Check that there is 1 ModelFile
+                SNModelFileDTO[] modelFileCount1 = SurfaceNetworkService.GetSNModelFilesByModelId(newModel.Id.ToString());
+                Assert.AreEqual(1, modelFileCount1.Count());
+
+                // Use the ModelFileHeaders variant and verify still only get 1 count
+                SNModelFileHeaderDTO[] modelFileHeadersCount = SurfaceNetworkService.GetSNModelFileHeadersByModelId(newModel.Id.ToString());
+                Assert.AreEqual(1, modelFileHeadersCount.Count());
+
+                // Use the above to test GetSNModelFile since we now have the ID
+                SNModelFileDTO modelFileT2 = SurfaceNetworkService.GetSNModelFile(modelFileHeadersCount[0].Id.ToString());
+                Assert.IsNotNull(modelFileT2);
+                Assert.AreEqual(modelFileT2.Id, modelFileHeadersCount[0].Id);
+                Assert.AreEqual(modelFileT2.SNModelId, modelFileHeadersCount[0].SNModelId);
+
+                // Use the above to test GetSNModelFileHeader since we now have the ID
+                SNModelFileHeaderDTO modelFileHeaderT2 = SurfaceNetworkService.GetSNModelFileHeader(modelFileHeadersCount[0].Id.ToString());
+                Assert.IsNotNull(modelFileHeaderT2);
+                Assert.AreEqual(modelFileHeaderT2.Id, modelFileHeadersCount[0].Id);
+                Assert.AreEqual(modelFileHeaderT2.SNModelId, modelFileHeadersCount[0].SNModelId);
+
+                // Clean up created models
+                SurfaceNetworkService.RemoveSNModel(newModel.Id.ToString());
+                SNModelDTO modelRemoved = SurfaceNetworkService.GetSNModel(newModel.Id.ToString());
+                Assert.IsNull(modelRemoved);
+            }
+            catch (Exception ex)
+            {
+                throw new Exception(ex.Message);
+            }
         }
 
         [TestCategory(TestCategories.SurfaceNetworkServiceTests), TestMethod]
@@ -1462,6 +1537,165 @@ namespace Weatherford.POP.Server.IntegrationTests
         }
 
         [TestCategory(TestCategories.SurfaceNetworkServiceTests), TestMethod]
+        public void GetSNOptimizationResultsBySNOptimizationRunIdAndNameTest()
+        {
+            WellDTO well1 = new WellDTO();
+            var asset = new AssetDTO();
+            string chokeName = "Choke 1";
+            string wellName = "Well1";
+            string sinkName = "Gas Sales";
+            try
+            {
+                #region Change unit system to US
+                ChangeUnitSystem("US");
+                ChangeUnitSystemUserSetting("US");
+
+                #endregion Change unit system to US
+
+                #region Configure new Asset
+                string assetName = "AssetSN";
+                asset = AddAsset(assetName);
+                Assert.IsNotNull(asset);
+                # endregion Configure new Asset
+
+                #region Well Creation 
+                WellConfigurationService.AddWellConfig(new WellConfigDTO()
+                {
+                    Well = SetDefaultFluidTypeAndPhase(new WellDTO()
+                    {
+                        Name = "well1",
+                        CommissionDate = (DateTime.Today - TimeSpan.FromDays(100)),
+                        WellType = WellTypeId.NF,
+                        AssemblyAPI = "NFWWELL_00001",
+                        SubAssemblyAPI = "NFWWELL_00001",
+                        IntervalAPI = "NFWWELL_00001",
+                        DepthCorrectionFactor = 2,
+                        WellDepthDatumElevation = 1,
+                        WellDepthDatumId = 2,
+                        AssetId = asset.Id
+                    })
+                });
+                well1 = WellService.GetWellByName("well1");
+                Assert.IsNotNull(well1);
+                _wellsToRemove.Add(well1);
+                #endregion Well Creation
+
+                #region model file 
+                string Path = "Weatherford.POP.Server.IntegrationTests.TestDocuments.";
+                byte[] fileAsByteArray;
+                ModelFileValidationDataDTO ModelFileValidationData;
+                AssemblyDTO assembly = WellboreComponentService.GetAssemblyByWellId(well1.Id.ToString());
+                ModelFileOptionDTO options = new ModelFileOptionDTO();
+                ModelFileBase64DTO modelFile = new ModelFileBase64DTO() { };
+                modelFile.ApplicableDate = well1.CommissionDate.Value.AddDays(1).ToUniversalTime();
+                modelFile.WellId = well1.Id;
+                fileAsByteArray = GetByteArray(Path, "WellfloNFWExample1.wflx");
+                options.CalibrationMethod = CalibrationMethodId.LFactor;
+                options.Comment = "NF";
+                options.OptionalUpdate = new long[]
+                { ((long)OptionalUpdates.UpdateWCT_WGR),
+                   ((long)OptionalUpdates.UpdateGOR_CGR),
+                   ((long)OptionalUpdates.CalculateChokeD_Factor) 
+                };
+                modelFile.Base64Contents = Convert.ToBase64String(fileAsByteArray);
+                modelFile.Options = options;
+                ModelFileValidationData = ModelFileService.GetModelFileValidation(modelFile);
+                if (ModelFileValidationData != null)
+                    ModelFileService.AddWellModelFile(modelFile);
+                else
+                    Trace.WriteLine(string.Format("Failed to validate NF model file"));
+                ModelFileDTO modelAdded = ModelFileService.GetCurrentModelFile(well1.Id.ToString());
+                _modelFilesToRemove.Add(modelAdded.Id.ToString());
+                #endregion model file with Choke D Factor Option
+
+
+                #region Add a surface network model.
+                string path = "Weatherford.POP.Server.IntegrationTests.TestDocuments.";
+                SNModelAndModelFileDTO modelAndFile = new SNModelAndModelFileDTO();
+                modelAndFile.SNModel = new SNModelDTO() { Name = "Recycle Network", AssetId = asset.Id };
+                SNModelFileDTO ReOmodelFile = new SNModelFileDTO();
+                ReOmodelFile.Comments = "Test Model File;";
+                byte[] fileAsByteArrayReO = GetByteArray(path, "TutorialExample2.reo");
+                Assert.IsNotNull(fileAsByteArrayReO);
+                ReOmodelFile.Base64Contents = Convert.ToBase64String(fileAsByteArrayReO);
+                modelAndFile.SNModelFile = ReOmodelFile;
+                SurfaceNetworkService.SaveReOFile(modelAndFile);
+                var allModels = SurfaceNetworkService.GetSNModelsByAssetIds(new long[] { asset.Id });
+                SNModelDTO model = allModels?.FirstOrDefault(m => m.Name.Equals("Recycle Network"));
+                _snModelsToRemove.Add(model);
+                #endregion Add a surface network model.
+
+                #region Map the ForeSite wells to the Reo wells within the surface network model.
+                WellDTO[] wells = WellService.GetWellsByUserAssetIds(new long[] { asset.Id });
+                SNWellMappingDTO[] wellmappings = SurfaceNetworkService.GetSNWellMappingsByAssetIds(new long[] { asset.Id });
+                wellmappings[0].Well = well1;
+                wellmappings[0].WellId = well1.Id;
+                Assert.IsNotNull(model);
+                SurfaceNetworkService.UpdateSNWellMappings(wellmappings);
+                #endregion Map the ForeSite wells to the Reo wells within the surface network model.
+
+                #region Scenario  
+
+                #region Create SN scenario and run 
+                SNScenarioDTO addScenarioObj = new SNScenarioDTO()
+                {
+                    Name = "SNScenario1",
+                    Description = "SNScenario1 Description",
+                    SNModelId = model.Id,
+                    ColorCode = "#FF0000",
+                    AllowableScenario = true,
+                    Implementable = false,
+                    ModelMatch = false,
+                    OptimumScenario = false,
+                    IsForecastScenario = true
+                };
+                SurfaceNetworkService.AddSNScenario(addScenarioObj);
+                var allScenarios = SurfaceNetworkService.GetSNScenariosBySNModel(model.Id.ToString());
+                SNScenarioDTO scenario = allScenarios?.FirstOrDefault(sn => sn.Name.Equals("SNScenario1"));
+                Assert.IsNotNull(scenario);
+                _snScenariosToRemove.Add(scenario);
+                 
+                SNScenarioSectionDefaultsDTO insertedScenarioDefaults = SurfaceNetworkService.GetSNScenarioSectionDefaultsBySNScenario(scenario.Id.ToString());
+                SurfaceNetworkService.SaveSNScenarioSectionDefaults(insertedScenarioDefaults);
+                SurfaceNetworkService.InsertSNScenarioScheduleManualRun(scenario.Id.ToString());
+                SurfaceNetworkService.RunScheduledOptimizationJobs();
+                #endregion   Create SN scenario and run 
+
+                #region Check scenario 
+                SNOptimizationRunHeaderDTO[] data = SurfaceNetworkService.GetSNOptimizationRunHeaderArrayByScenarioId(scenario.Id.ToString());
+                SNOptimizationSinkResultsAndUnitsDTO sinks = SurfaceNetworkService.GetSNOptimizationSinkResultsBySNOptimizationRunIdAndName(data[0].Id.ToString(), sinkName);
+                Assert.IsNotNull(sinks.Value.SinkName);
+                Assert.IsNotNull(sinks.Value.Temperature);
+                Assert.IsNotNull(sinks.Value.Pressure);
+                Assert.IsNotNull(sinks.Value.WaterRate);
+                Assert.AreEqual("Gas Sales", sinks.Value.SinkName, "Mismatched in values of sink names");
+
+
+                SNOptimizationChokeResultsAndUnitsDTO chokes = SurfaceNetworkService.GetSNOptimizationChokeResultsByRunIdAndName(data[0].Id.ToString(), chokeName);
+                Assert.IsNotNull(chokes.Value.socChokeName);
+                Assert.IsNotNull(chokes.Value.socIsCritical);
+                Assert.IsNotNull(chokes.Value.socChokeType);
+                Assert.AreEqual("Choke 1", chokes.Value.socChokeName, "Mismatched in values of choke names");
+
+                SNOptimizationWellResultsAndUnitsDTO wellheads = SurfaceNetworkService.GetSNOptimizationWellResultsBySNOptimizationRunIdAndName(data[0].Id.ToString(), wellName);
+                Assert.IsNotNull(wellheads.Value.WellName);
+                Assert.IsNotNull(wellheads.Value.WellheadPressure);
+                Assert.IsNotNull(wellheads.Value.ProducedGasRate);
+                Assert.IsNotNull(wellheads.Value.ProducedOilRate);
+                Assert.IsNotNull(wellheads.Value.ProducedWaterRate);
+                Assert.AreEqual("Well1", wellheads.Value.WellName, "Mismatched in value of wellheads");
+
+                #endregion Check scenario 
+
+                #endregion Scenario 
+            }
+            catch (Exception ex)
+            {
+                throw new Exception(ex.Message);
+            }
+        }
+
+        [TestCategory(TestCategories.SurfaceNetworkServiceTests), TestMethod]
         //FRWM-308- Testing of Well Test Validation - Choke (ADNOC)
         public void NetworkResultChokeDFactorCheckdependingOnConfiguation()
         {
@@ -2222,6 +2456,15 @@ namespace Weatherford.POP.Server.IntegrationTests
             string scenarioName = "Scenario Test Network";
             string assemblyFolder = Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location);
             string sTargetFolderPath = System.IO.Path.GetDirectoryName(System.Reflection.Assembly.GetExecutingAssembly().Location) + "\\TestDocuments\\Images";
+
+            if (s_isRunningInATS)
+            {
+                string FilesLocation = ConfigurationManager.AppSettings.Get("FilesLocation");
+                string assemblypath = sTargetFolderPath.Replace("\\TestDocuments\\Images", "\\Images");
+                string UADTokenPath = FilesLocation + @"\Images";
+                Trace.WriteLine($" FilesLocation for ATS :{UADTokenPath}");
+                sTargetFolderPath = Directory.Exists(assemblypath) == true ? assemblypath : UADTokenPath;
+            }
 
             //Configure new Asset
             var asset = AddAsset(assetName);

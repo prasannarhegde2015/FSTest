@@ -2204,7 +2204,7 @@ namespace Weatherford.POP.Server.IntegrationTests
                 }
             }
         }
-        public void VerifyAlarmsOnForesiteAlarmsHistoryPage(WellDTO well, List<string> icollection, string startdate, string enddate, bool alarmON)
+        public void VerifyAlarmsOnForesiteAlarmsHistoryPage(WellDTO well, List<string> icollection, string startdate, string enddate, bool alarmON ,string almvalue = null)
         {
 
             String result = new String(' ', 50);
@@ -2223,6 +2223,8 @@ namespace Weatherford.POP.Server.IntegrationTests
                 }
                 DateTime alstarttime = alamdto.StartedTime;
                 DateTime? alclearttime = alamdto.ClearedTime;
+                string alarmvalue = alamdto.AlarmValue;
+
 
                 Trace.WriteLine($"{fsalm} {new String(' ', alarmstring_length - fsalm.Length)} | {alstarttime}{new String(' ', alarmstring_length - alstarttime.ToString().Length)} |{alclearttime} {new String(' ', alarmstring_length - alclearttime.ToString().Length)}|");
 
@@ -2239,6 +2241,10 @@ namespace Weatherford.POP.Server.IntegrationTests
                     if (alarmON)
                     {
                         Assert.IsNull(alclearttime, $" Expected Intelligent Alarm {fsalm.ToString()} Clear Date time stamp is NOT NULL");
+                        if (almvalue != null)
+                        {
+                            Assert.AreEqual(almvalue, alarmvalue, $" Expected Intelligent Alarm value {almvalue}  Actual Value {alarmvalue}");
+                        }
                     }
                     else
                     {

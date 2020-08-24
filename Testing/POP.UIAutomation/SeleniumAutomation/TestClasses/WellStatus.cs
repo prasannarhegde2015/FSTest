@@ -32,18 +32,22 @@ namespace SeleniumAutomation.TestClasses
             VerifyCommandType(PageObjects.WellStatusPage.btnStop, "Stop and Leave Down", toolboxSingleLockout, test);
             VerifyCommandType(PageObjects.WellStatusPage.btnClearErrors, "Clear Errors", toolboxSingleLockout, test);
             VerifyCommandType(PageObjects.WellStatusPage.btnSoftwaretimer, "Software Timer", toolboxSingleLockout, test);
+            VerifyCommandType(PageObjects.WellStatusPage.btnControlTrasnfer, "Control Transfer", toolboxSingleLockout, test);
 
         }
 
 
-        public void VerifyCommandLockoutToasterUI(By ctlCommand, double lockoutval, ExtentTest test)
+        public void VerifyCommandLockoutToasterUI(By ctlCommand, double lockoutval, ExtentTest test ,bool highrisk=true)
         {
             for (int i = 0; i < 2; i++)
             {
                 SeleniumActions.waitClick(ctlCommand);
                 SeleniumActions.WaitForLoad();
-                SeleniumActions.waitClick(PageObjects.WellStatusPage.btnConfirmSend);
-                SeleniumActions.WaitForLoad();
+                if (highrisk)
+                {
+                    SeleniumActions.waitClick(PageObjects.WellStatusPage.btnConfirmSend);
+                    SeleniumActions.WaitForLoad();
+                }
                 string cmdLockToasttext = SeleniumActions.getInnerText(PageObjects.WellConfigurationPage.Toaseter);
                 CommonHelper.TraceLine("Comamnd Lockout Toaster Message " + cmdLockToasttext);
                 string prefixLockoutToExecuteCommand = "User cannot issue commands for";
@@ -62,10 +66,21 @@ namespace SeleniumAutomation.TestClasses
         {
             SeleniumActions.waitClick(ctlCommand);
             SeleniumActions.WaitForLoad();
-            SeleniumActions.waitClick(PageObjects.WellStatusPage.btnConfirmSend);
-            SeleniumActions.WaitForLoad();
+            // *********** FRI-4624 : Improve the usability by reducing clicks on a no-risk functionality of 'scanning' a well
+            if (commandname.ToLower() != "scan")
+            {
+                SeleniumActions.waitClick(PageObjects.WellStatusPage.btnConfirmSend);
+                SeleniumActions.WaitForLoad();
+            }
             SeleniumActions.Toastercheck("Well " + commandname + " Command Toaster", "Command " + commandname + " issued successfully.", test);
-            VerifyCommandLockoutToasterUI(ctlCommand, locktime, test);
+            if (commandname.ToLower() != "scan")
+            {
+                VerifyCommandLockoutToasterUI(ctlCommand, locktime, test);
+            }
+            else
+            {
+                VerifyCommandLockoutToasterUI(ctlCommand, locktime, test,false);
+            }
             Thread.Sleep(5000);
         }
 

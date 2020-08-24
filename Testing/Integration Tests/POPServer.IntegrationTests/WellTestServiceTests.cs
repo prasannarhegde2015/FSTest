@@ -4065,110 +4065,44 @@ namespace Weatherford.POP.Server.IntegrationTests
             //****Verify Base Operating Frequency for 60 Hz , ie For Given Well Test without Performance  Frequencies Used
 
             Assert.AreEqual(60, vsdperformancedto.BasePumpCurve.OperatingFrequency.Value, "Base Operating Frequency Mismatch");
-            #region Pump Curve 
-            //Verify Head for Base Frequencies
-            Assert.AreEqual(8549.48, vsdperformancedto.BasePumpCurve.PumpCurve.Values[0].Head, 0.5, "Head [0] Mismatch");
-            Assert.AreEqual(7845.35, vsdperformancedto.BasePumpCurve.PumpCurve.Values[1].Head, 0.5, "Head [1] Mismatch");
-            Assert.AreEqual(7111.15, vsdperformancedto.BasePumpCurve.PumpCurve.Values[2].Head, 0.5, "Head [2] Mismatch");
-            Assert.AreEqual(6141.45, vsdperformancedto.BasePumpCurve.PumpCurve.Values[3].Head, 0.5, "Head [3] Mismatch");
-            //Verify In Situ Flow rates for Base Frequencies
-            Assert.AreEqual(592.7, vsdperformancedto.BasePumpCurve.PumpCurve.Values[0].InsituFlowRate, 0.5, "InsituFlowRate [0] Mismatch");
-            Assert.AreEqual(1623.4, vsdperformancedto.BasePumpCurve.PumpCurve.Values[1].InsituFlowRate, 0.5, "InsituFlowRate [1] Mismatch");
-            Assert.AreEqual(2645.1, vsdperformancedto.BasePumpCurve.PumpCurve.Values[2].InsituFlowRate, 0.5, "InsituFlowRate [2] Mismatch");
-            Assert.AreEqual(3658.5, vsdperformancedto.BasePumpCurve.PumpCurve.Values[3].InsituFlowRate, 0.5, "InsituFlowRate [3] Mismatch");
+          
 
-            //Verify Horse Power  for Base Frequencies
-            Assert.AreEqual(167.26, vsdperformancedto.BasePumpCurve.PumpCurve.Values[0].HorsePower, 0.5, "HorsePower [0] Mismatch");
-            Assert.AreEqual(185.3, vsdperformancedto.BasePumpCurve.PumpCurve.Values[1].HorsePower, 0.5, "HorsePower [1] Mismatch");
-            Assert.AreEqual(200.36, vsdperformancedto.BasePumpCurve.PumpCurve.Values[2].HorsePower, 0.5, "HorsePower [2] Mismatch");
-            Assert.AreEqual(209.32, vsdperformancedto.BasePumpCurve.PumpCurve.Values[3].HorsePower, 0.5, "HorsePower [3] Mismatch");
+            #region Compare Object from JOSN
+            string Path = "Weatherford.POP.Server.IntegrationTests.TestDocuments.";
+            string FileName = "PumpCurveResponse.json";
+            ESPVSDPerformanceCurvesAndUnitsDTO expectedCurveDTO = JsonConvert.DeserializeObject<ESPVSDPerformanceCurvesAndUnitsDTO>(GetJsonString(Path + FileName));
+            //  expectedCurveDTO
+            //  vsdperformancedto.VSDPumpCurve
+            // BasePumpCurve.PumpCurve
 
-            //Verify Efficiency   for Base Frequencies
-
-            Assert.AreEqual(0.1838, vsdperformancedto.BasePumpCurve.PumpCurve.Values[0].Efficiency, 0.5, "Efficiency [0] Mismatch");
-            Assert.AreEqual(0.4254, vsdperformancedto.BasePumpCurve.PumpCurve.Values[1].Efficiency, 0.5, "Efficiency [1] Mismatch");
-            Assert.AreEqual(0.5847, vsdperformancedto.BasePumpCurve.PumpCurve.Values[2].Efficiency, 0.5, "Efficiency [2] Mismatch");
-            Assert.AreEqual(0.6711, vsdperformancedto.BasePumpCurve.PumpCurve.Values[3].Efficiency, 0.5, "Efficiency [3] Mismatch");
-            #endregion
-
-
-            //Verify VSD Curves for each Frequency
-
-            #region VSDCURVES
-            Assert.AreEqual(50, vsdperformancedto.VSDPumpCurves[0].OperatingFrequency.Value, "Frequucny [0] Mismatch");
-            Assert.AreEqual(55, vsdperformancedto.VSDPumpCurves[1].OperatingFrequency.Value, "Frequucny [1] Mismatch");
-            Assert.AreEqual(60, vsdperformancedto.VSDPumpCurves[2].OperatingFrequency.Value, "Frequucny [2] Mismatch");
-            Assert.AreEqual(65, vsdperformancedto.VSDPumpCurves[3].OperatingFrequency.Value, "Frequucny [3] Mismatch");
-
-            Dictionary<string, double[]> dicifrearray = new Dictionary<string, double[]>();
-            //Veify the First and Last Values for Pump Curve for all Frequency
-            // 50 Hz 
-            double[] Frequency0InSituRate = new double[] { 587.8, 5224.7 };
-            dicifrearray.Add("Frequency0InSituRate", Frequency0InSituRate);
-            double[] Frequency0Head = new double[] { 5883.86, 196.35 };
-            dicifrearray.Add("Frequency0Head", Frequency0Head);
-            double[] Frequency0Efficiency = new double[] { 0.2147, 0.0662 };
-            dicifrearray.Add("Frequency0Efficiency", Frequency0Efficiency);
-            double[] Frequency0Power = new double[] { 98.51, 92.23 };
-            dicifrearray.Add("Frequency0Power", Frequency0Power);
-            // 55 Hz 
-            double[] Frequency1InSituRate = new double[] { 589.9, 5658.6 };
-            double[] Frequency1Head = new double[] { 7154.77, 479.73 };
-            double[] Frequency1Efficiency = new double[] { 0.1979, 0.1295 };
-            double[] Frequency1Power = new double[] { 129.98, 125.06 };
-
-            dicifrearray.Add("Frequency1InSituRate", Frequency1InSituRate);
-            dicifrearray.Add("Frequency1Head", Frequency1Head);
-            dicifrearray.Add("Frequency1Efficiency", Frequency1Efficiency);
-            dicifrearray.Add("Frequency1Power", Frequency1Power);
-            // 60 Hz 
-
-            double[] Frequency2InSituRate = new double[] { 592.7, 6095.3 };
-            double[] Frequency2Head = new double[] { 8549.48, 789.64 };
-            double[] Frequency2Efficiency = new double[] { 0.1838, 0.1748 };
-            double[] Frequency2Power = new double[] { 167.26, 164.59 };
-
-            dicifrearray.Add("Frequency2InSituRate", Frequency2InSituRate);
-            dicifrearray.Add("Frequency2Head", Frequency2Head);
-            dicifrearray.Add("Frequency2Efficiency", Frequency2Efficiency);
-            dicifrearray.Add("Frequency2Power", Frequency2Power);
-            // 65 Hz 
-            double[] Frequency3InSituRate = new double[] { 596, 6532.5 };
-            double[] Frequency3Head = new double[] { 10066.78, 1122.26 };
-            double[] Frequency3Efficiency = new double[] { 0.1718, 0.2079 };
-            double[] Frequency3Power = new double[] { 210.69, 211.42 };
-
-            dicifrearray.Add("Frequency3InSituRate", Frequency3InSituRate);
-            dicifrearray.Add("Frequency3Head", Frequency3Head);
-            dicifrearray.Add("Frequency3Efficiency", Frequency3Efficiency);
-            dicifrearray.Add("Frequency3Power", Frequency3Power);
-
-            for (int i = 0; i < 4; i++)
+            CompareObjectsUsingReflection(expectedCurveDTO.BasePumpCurve.PumpCurve.Units, vsdperformancedto.BasePumpCurve.PumpCurve.Units, "Units not matching for Base Pump Curve--> Pump Curve");
+            Trace.WriteLine("Completed Unit Verification for Base Pump Curve--> Pump Curve");
+            for (int i = 0; i < vsdperformancedto.BasePumpCurve.PumpCurve.Values.Count(); i++)
             {
-                string FrequencyInSituRate = "Frequency" + i + "InSituRate";
-                string FrequencyHead = "Frequency" + i + "Head";
-                string FrequencyEfficiency = "Frequency" + i + "Efficiency";
-                string FrequencyPower = "Frequency" + i + "Power";
-                int lastvalue = vsdperformancedto.VSDPumpCurves[i].PumpCurve.Values.Length - 1;
-                // InSitu Rate For all Frequencies 
-                Assert.AreEqual(dicifrearray[FrequencyInSituRate][0], vsdperformancedto.VSDPumpCurves[i].PumpCurve.Values[0].InsituFlowRate, 0.5, "Mistmatch for first Value of  " + FrequencyInSituRate);
-                Assert.AreEqual(dicifrearray[FrequencyInSituRate][1], vsdperformancedto.VSDPumpCurves[i].PumpCurve.Values[lastvalue].InsituFlowRate, 0.5, "Mistmatch for last  Value of  " + FrequencyInSituRate);
-
-                Assert.AreEqual(dicifrearray[FrequencyHead][0], vsdperformancedto.VSDPumpCurves[i].PumpCurve.Values[0].Head, 0.5, "Mistmatch for first Value of  " + FrequencyHead);
-                Assert.AreEqual(dicifrearray[FrequencyHead][1], vsdperformancedto.VSDPumpCurves[i].PumpCurve.Values[lastvalue].Head, 0.5, "Mistmatch for last  Value of  " + FrequencyHead);
-
-                Assert.AreEqual(dicifrearray[FrequencyEfficiency][0], vsdperformancedto.VSDPumpCurves[i].PumpCurve.Values[0].Efficiency, 0.5, "Mistmatch for first Value of  " + FrequencyEfficiency);
-                Assert.AreEqual(dicifrearray[FrequencyEfficiency][1], vsdperformancedto.VSDPumpCurves[i].PumpCurve.Values[lastvalue].Efficiency, 0.5, "Mistmatch for last  Value of  " + FrequencyEfficiency);
-
-                Assert.AreEqual(dicifrearray[FrequencyPower][0], vsdperformancedto.VSDPumpCurves[i].PumpCurve.Values[0].HorsePower, 0.5, "Mistmatch for first Value of  " + FrequencyPower);
-                Assert.AreEqual(dicifrearray[FrequencyPower][1], vsdperformancedto.VSDPumpCurves[i].PumpCurve.Values[lastvalue].HorsePower, 0.5, "Mistmatch for last  Value of  " + FrequencyPower);
-
+                CompareObjectsUsingReflection(expectedCurveDTO.BasePumpCurve.PumpCurve.Values[i], vsdperformancedto.BasePumpCurve.PumpCurve.Values[i], "Value mismatch in Base Pump Curve--> Pump Curve", null, 0.2);
             }
+            Trace.WriteLine("Verification completed for Gradient Curve points");
+            for (int i = 0; i < vsdperformancedto.VSDPumpCurves.Count(); i++)
+            {
+                CompareObjectsUsingReflection(expectedCurveDTO.VSDPumpCurves[i].PumpCurve.Units, vsdperformancedto.VSDPumpCurves[i].PumpCurve.Units, "Units not matching for VSD Pump Curve--> Pump Curve");
 
+                Trace.WriteLine("Completed Unit Verification for VSD Pump Curve--> Pump Curve");
+                for (int j = 0; j < vsdperformancedto.VSDPumpCurves[i].PumpCurve.Values.Count(); j++)
+                {
+                    CompareObjectsUsingReflection(expectedCurveDTO.VSDPumpCurves[i].PumpCurve.Values[j], vsdperformancedto.VSDPumpCurves[i].PumpCurve.Values[j], "Value mismatch in VSD Pump Curve--> Pump Curve", null, 0.2);
+                }
+                Trace.WriteLine("Verification completed for VSD Pump Curve--> Pump Curve points");
+                CompareObjectsUsingReflection(expectedCurveDTO.VSDPumpCurves[i].PumpCurve.Units, vsdperformancedto.VSDPumpCurves[i].PumpCurve.Units, "Units not matching for VSD Pump Curve--> Pump Curve");
+
+                Trace.WriteLine("Completed Unit Verification for VSD Pump Curve--> OperatingFrequency");
+                
+               Assert.AreEqual(expectedCurveDTO.VSDPumpCurves[i].OperatingFrequency.UnitKey, vsdperformancedto.VSDPumpCurves[i].OperatingFrequency.UnitKey, "Units mismatch in VSD Pump Curve--> OperatingFrequency Unit Key");
+                Assert.AreEqual(expectedCurveDTO.VSDPumpCurves[i].OperatingFrequency.Value, vsdperformancedto.VSDPumpCurves[i].OperatingFrequency.Value, "Units mismatch in VSD Pump Curve--> OperatingFrequency Value", null, 0.2);
+                Trace.WriteLine("Verification completed for VSD Pump Curve--> OperatingFrequency");
+            }
+            
 
             #endregion
-
-
 
 
 
@@ -6037,12 +5971,12 @@ namespace Weatherford.POP.Server.IntegrationTests
                 //Gas Rate
                 Assert.AreEqual(2, (int)us_testInputs.GasRate.Precision);
                 Assert.AreEqual(0, us_testInputs.GasRate.Min);
-                Assert.AreEqual(50000, us_testInputs.GasRate.Max);
+                Assert.AreEqual(1000000, us_testInputs.GasRate.Max);
                 Assert.AreEqual("Mscf/d", us_testInputs.GasRate.UnitKey);
                 //Oil Rate
                 Assert.AreEqual(1, (int)us_testInputs.OilRate.Precision);
                 Assert.AreEqual(0, us_testInputs.OilRate.Min);
-                Assert.AreEqual(10000, us_testInputs.OilRate.Max);
+                Assert.AreEqual(50000, us_testInputs.OilRate.Max);
                 Assert.AreEqual("STB/d", us_testInputs.OilRate.UnitKey);
                 //Total Gas Rate
                 Assert.AreEqual(2, (int)us_testInputs.TotalGasRate.Precision);
@@ -6055,7 +5989,7 @@ namespace Weatherford.POP.Server.IntegrationTests
                 //Water Rate
                 Assert.AreEqual(1, (int)us_testInputs.WaterRate.Precision);
                 Assert.AreEqual(0, us_testInputs.WaterRate.Min);
-                Assert.AreEqual(10000, us_testInputs.WaterRate.Max);
+                Assert.AreEqual(50000, us_testInputs.WaterRate.Max);
                 Assert.AreEqual("STB/d", us_testInputs.WaterRate.UnitKey);
                 //Well Head Pressure
                 Assert.AreEqual(2, (int)us_testInputs.WellHeadPressure.Precision);
@@ -6613,12 +6547,12 @@ namespace Weatherford.POP.Server.IntegrationTests
                 //Gas Rate
                 Assert.AreEqual(2, (int)us_testInputs.GasRate.Precision);
                 Assert.AreEqual(0, us_testInputs.GasRate.Min);
-                Assert.AreEqual(50000, us_testInputs.GasRate.Max);
+                Assert.AreEqual(1000000, us_testInputs.GasRate.Max);
                 Assert.AreEqual("Mscf/d", us_testInputs.GasRate.UnitKey);
                 //Oil Rate
                 Assert.AreEqual(1, (int)us_testInputs.OilRate.Precision);
                 Assert.AreEqual(0, us_testInputs.OilRate.Min);
-                Assert.AreEqual(10000, us_testInputs.OilRate.Max);
+                Assert.AreEqual(50000, us_testInputs.OilRate.Max);
                 Assert.AreEqual("STB/d", us_testInputs.OilRate.UnitKey);
                 //Total Gas Rate
                 Assert.AreEqual(2, (int)us_testInputs.TotalGasRate.Precision);
@@ -6631,7 +6565,7 @@ namespace Weatherford.POP.Server.IntegrationTests
                 //Water Rate
                 Assert.AreEqual(1, (int)us_testInputs.WaterRate.Precision);
                 Assert.AreEqual(0, us_testInputs.WaterRate.Min);
-                Assert.AreEqual(10000, us_testInputs.WaterRate.Max);
+                Assert.AreEqual(50000, us_testInputs.WaterRate.Max);
                 Assert.AreEqual("STB/d", us_testInputs.WaterRate.UnitKey);
                 //Well Head Pressure
                 Assert.AreEqual(2, (int)us_testInputs.WellHeadPressure.Precision);
@@ -12260,14 +12194,17 @@ namespace Weatherford.POP.Server.IntegrationTests
                 return;
             }
             double oldternddays = 90;
+            // We are using new toolbox settings to add well tests from daily avg fir GI adn WI wells as part of story : FRWM-7052
+            //AutoInjectionDailyAverageWelltest : is defaulted to false.
+            SetValuesInSystemSettings(SettingServiceStringConstants.AUTO_INJECTION_DAILY_AVERAGE_WELLTEST, "1");
             try
             {
 
                 //Add GI well and a well test
-                WellDTO ginjwell = AddNonRRLWell(GetFacilityId("GASINJWELL_", 3), WellTypeId.GInj);
+                WellDTO ginjwell = AddNonRRLWell(GetFacilityId("GASINJWELL_", 3), WellTypeId.GInj ,false,CalibrationMethodId.LFactor);
 
                 //Add WI well
-                WellDTO winjewell = AddNonRRLWell(GetFacilityId("WATERINJWELL_", 3), WellTypeId.WInj);
+                WellDTO winjewell = AddNonRRLWell(GetFacilityId("WATERINJWELL_", 3), WellTypeId.WInj, false, CalibrationMethodId.LFactor);
 
                 _wellsToRemove.Add(ginjwell);
                 _wellsToRemove.Add(winjewell);
@@ -12378,6 +12315,7 @@ namespace Weatherford.POP.Server.IntegrationTests
             {
                 ChangeUnitSystemUserSetting("US");
                 SetValuesInSystemSettings(SettingServiceStringConstants.TIME_SPAN_DAILY_TRENDS, oldternddays.ToString());
+                SetValuesInSystemSettings(SettingServiceStringConstants.AUTO_INJECTION_DAILY_AVERAGE_WELLTEST, "0");
             }
         }
 
@@ -15110,94 +15048,47 @@ namespace Weatherford.POP.Server.IntegrationTests
             #endregion
 
 
-            //Verify VSD Curves for each Frequency
-
-            #region VSDCURVES
-            Assert.AreEqual(50, vsdperformancedto[0].VSDPumpCurves[0].OperatingFrequency.Value, "Frequucny [0] Mismatch");
-            Assert.AreEqual(55, vsdperformancedto[0].VSDPumpCurves[1].OperatingFrequency.Value, "Frequucny [1] Mismatch");
-            Assert.AreEqual(60, vsdperformancedto[0].VSDPumpCurves[2].OperatingFrequency.Value, "Frequucny [2] Mismatch");
-            Assert.AreEqual(65, vsdperformancedto[0].VSDPumpCurves[3].OperatingFrequency.Value, "Frequucny [3] Mismatch");
-
-            Dictionary<string, double[]> dicifrearray = new Dictionary<string, double[]>();
-            //Veify the First and Last Values for Pump Curve for all Frequency
-            // 50 Hz 
-            double[] Frequency0InSituRate = new double[] { 587.8, 5224.7 };
-            dicifrearray.Add("Frequency0InSituRate", Frequency0InSituRate);
-            double[] Frequency0Head = new double[] { 5883.86, 196.35 };
-            dicifrearray.Add("Frequency0Head", Frequency0Head);
-            double[] Frequency0Efficiency = new double[] { 0.2147, 0.0662 };
-            dicifrearray.Add("Frequency0Efficiency", Frequency0Efficiency);
-            double[] Frequency0Power = new double[] { 98.51, 92.23 };
-            dicifrearray.Add("Frequency0Power", Frequency0Power);
-            double[] Frequency0Differential = new double[] { 2108.13, 68.68 };
-            dicifrearray.Add("Frequency0Differential", Frequency0Differential);
-            // 55 Hz 
-            double[] Frequency1InSituRate = new double[] { 589.9, 5658.6 };
-            double[] Frequency1Head = new double[] { 7154.77, 479.73 };
-            double[] Frequency1Efficiency = new double[] { 0.1979, 0.1295 };
-            double[] Frequency1Power = new double[] { 129.98, 125.06 };
-            double[] Frequency1Differential = new double[] { 2554.42, 168.14 };
-
-            dicifrearray.Add("Frequency1InSituRate", Frequency1InSituRate);
-            dicifrearray.Add("Frequency1Head", Frequency1Head);
-            dicifrearray.Add("Frequency1Efficiency", Frequency1Efficiency);
-            dicifrearray.Add("Frequency1Power", Frequency1Power);
-            dicifrearray.Add("Frequency1Differential", Frequency1Differential);
-            // 60 Hz 
-
-            double[] Frequency2InSituRate = new double[] { 592.7, 6095.3 };
-            double[] Frequency2Head = new double[] { 8549.48, 789.64 };
-            double[] Frequency2Efficiency = new double[] { 0.1838, 0.1748 };
-            double[] Frequency2Power = new double[] { 167.26, 164.59 };
-            double[] Frequency2Differential = new double[] { 3038.37, 277.37 };
-
-            dicifrearray.Add("Frequency2InSituRate", Frequency2InSituRate);
-            dicifrearray.Add("Frequency2Head", Frequency2Head);
-            dicifrearray.Add("Frequency2Efficiency", Frequency2Efficiency);
-            dicifrearray.Add("Frequency2Power", Frequency2Power);
-            dicifrearray.Add("Frequency2Differential", Frequency2Differential);
-
-            // 65 Hz 
-            double[] Frequency3InSituRate = new double[] { 596, 6532.5 };
-            double[] Frequency3Head = new double[] { 10066.78, 1122.26 };
-            double[] Frequency3Efficiency = new double[] { 0.1718, 0.2079 };
-            double[] Frequency3Power = new double[] { 210.69, 211.42 };
-            double[] Frequency3Differential = new double[] { 3557.4, 395.13 };
-
-            dicifrearray.Add("Frequency3InSituRate", Frequency3InSituRate);
-            dicifrearray.Add("Frequency3Head", Frequency3Head);
-            dicifrearray.Add("Frequency3Efficiency", Frequency3Efficiency);
-            dicifrearray.Add("Frequency3Power", Frequency3Power);
-            dicifrearray.Add("Frequency3Differential", Frequency3Differential);
-
-            for (int i = 0; i < 4; i++)
+           
+            #region Compare Object from JOSN
+            // Test Response Is giving same API repsonse DTO with for Sensitivties ..Also orignal test was only using first element of collection for Comparison
+            string Path = "Weatherford.POP.Server.IntegrationTests.TestDocuments.";
+            string FileName = "PumpCurveResponse.json";
+            ESPVSDPerformanceCurvesAndUnitsDTO expectedCurveDTO1 = JsonConvert.DeserializeObject<ESPVSDPerformanceCurvesAndUnitsDTO>(GetJsonString(Path + FileName));
+            ESPVSDPerformanceCurvesAndUnitsDTO expectedCurveDTO2 = JsonConvert.DeserializeObject<ESPVSDPerformanceCurvesAndUnitsDTO>(GetJsonString(Path + FileName));
+            ESPVSDPerformanceCurvesAndUnitsDTO[] expectedCurveDTO = new ESPVSDPerformanceCurvesAndUnitsDTO[] { expectedCurveDTO1, expectedCurveDTO1 };
+            //  expectedCurveDTO[k]
+            //  vsdperformancedto[k].VSDPumpCurve
+            // BasePumpCurve.PumpCurve
+            for (int k = 0; k < vsdperformancedto.Length; k++)
             {
-                string FrequencyInSituRate = "Frequency" + i + "InSituRate";
-                string FrequencyHead = "Frequency" + i + "Head";
-                string FrequencyEfficiency = "Frequency" + i + "Efficiency";
-                string FrequencyPower = "Frequency" + i + "Power";
-                string FrequencyDifferential = "Frequency" + i + "Differential";
-                int lastvalue = vsdperformancedto[0].VSDPumpCurves[i].PumpCurve.Values.Length - 1;
-                // InSitu Rate For all Frequencies 
-                Assert.AreEqual(dicifrearray[FrequencyInSituRate][0], vsdperformancedto[0].VSDPumpCurves[i].PumpCurve.Values[0].InsituFlowRate, 0.5, "Mistmatch for first Value of  " + FrequencyInSituRate);
-                Assert.AreEqual(dicifrearray[FrequencyInSituRate][1], vsdperformancedto[0].VSDPumpCurves[i].PumpCurve.Values[lastvalue].InsituFlowRate, 0.5, "Mistmatch for last  Value of  " + FrequencyInSituRate);
+                CompareObjectsUsingReflection(expectedCurveDTO[k].BasePumpCurve.PumpCurve.Units, vsdperformancedto[k].BasePumpCurve.PumpCurve.Units, "Units not matching for Base Pump Curve--> Pump Curve");
+                Trace.WriteLine("Completed Unit Verification for Base Pump Curve--> Pump Curve");
+                for (int i = 0; i < vsdperformancedto[k].BasePumpCurve.PumpCurve.Values.Count(); i++)
+                {
+                    CompareObjectsUsingReflection(expectedCurveDTO[k].BasePumpCurve.PumpCurve.Values[i], vsdperformancedto[k].BasePumpCurve.PumpCurve.Values[i], "Value mismatch in Base Pump Curve--> Pump Curve", null, 0.2);
+                }
+                Trace.WriteLine("Verification completed for Gradient Curve points");
+                for (int i = 0; i < vsdperformancedto[k].VSDPumpCurves.Count(); i++)
+                {
+                    CompareObjectsUsingReflection(expectedCurveDTO[k].VSDPumpCurves[i].PumpCurve.Units, vsdperformancedto[k].VSDPumpCurves[i].PumpCurve.Units, "Units not matching for VSD Pump Curve--> Pump Curve");
 
-                Assert.AreEqual(dicifrearray[FrequencyDifferential][0], vsdperformancedto[0].VSDPumpCurves[i].PumpCurve.Values[0].DifferentialPressure, 0.5, "Mistmatch for first Value of  " + FrequencyDifferential);
-                Assert.AreEqual(dicifrearray[FrequencyDifferential][1], vsdperformancedto[0].VSDPumpCurves[i].PumpCurve.Values[lastvalue].DifferentialPressure, 0.5, "Mistmatch for last  Value of  " + FrequencyDifferential);
+                    Trace.WriteLine("Completed Unit Verification for VSD Pump Curve--> Pump Curve");
+                    for (int j = 0; j < vsdperformancedto[k].VSDPumpCurves[i].PumpCurve.Values.Count(); j++)
+                    {
+                        CompareObjectsUsingReflection(expectedCurveDTO[k].VSDPumpCurves[i].PumpCurve.Values[j], vsdperformancedto[k].VSDPumpCurves[i].PumpCurve.Values[j], "Value mismatch in VSD Pump Curve--> Pump Curve", null, 0.2);
+                    }
+                    Trace.WriteLine("Verification completed for VSD Pump Curve--> Pump Curve points");
+                    CompareObjectsUsingReflection(expectedCurveDTO[k].VSDPumpCurves[i].PumpCurve.Units, vsdperformancedto[k].VSDPumpCurves[i].PumpCurve.Units, "Units not matching for VSD Pump Curve--> Pump Curve");
 
-                Assert.AreEqual(dicifrearray[FrequencyHead][0], vsdperformancedto[0].VSDPumpCurves[i].PumpCurve.Values[0].Head, 0.5, "Mistmatch for first Value of  " + FrequencyHead);
-                Assert.AreEqual(dicifrearray[FrequencyHead][1], vsdperformancedto[0].VSDPumpCurves[i].PumpCurve.Values[lastvalue].Head, 0.5, "Mistmatch for last  Value of  " + FrequencyHead);
+                    Trace.WriteLine("Completed Unit Verification for VSD Pump Curve--> OperatingFrequency");
 
-                Assert.AreEqual(dicifrearray[FrequencyEfficiency][0], vsdperformancedto[0].VSDPumpCurves[i].PumpCurve.Values[0].Efficiency, 0.5, "Mistmatch for first Value of  " + FrequencyEfficiency);
-                Assert.AreEqual(dicifrearray[FrequencyEfficiency][1], vsdperformancedto[0].VSDPumpCurves[i].PumpCurve.Values[lastvalue].Efficiency, 0.5, "Mistmatch for last  Value of  " + FrequencyEfficiency);
-
-                Assert.AreEqual(dicifrearray[FrequencyPower][0], vsdperformancedto[0].VSDPumpCurves[i].PumpCurve.Values[0].HorsePower, 0.5, "Mistmatch for first Value of  " + FrequencyPower);
-                Assert.AreEqual(dicifrearray[FrequencyPower][1], vsdperformancedto[0].VSDPumpCurves[i].PumpCurve.Values[lastvalue].HorsePower, 0.5, "Mistmatch for last  Value of  " + FrequencyPower);
-
+                    Assert.AreEqual(expectedCurveDTO[k].VSDPumpCurves[i].OperatingFrequency.UnitKey, vsdperformancedto[k].VSDPumpCurves[i].OperatingFrequency.UnitKey, "Units mismatch in VSD Pump Curve--> OperatingFrequency Unit Key");
+                    Assert.AreEqual(expectedCurveDTO[k].VSDPumpCurves[i].OperatingFrequency.Value, vsdperformancedto[k].VSDPumpCurves[i].OperatingFrequency.Value, "Units mismatch in VSD Pump Curve--> OperatingFrequency Value", null, 0.2);
+                    Trace.WriteLine("Verification completed for VSD Pump Curve--> OperatingFrequency");
+                }
             }
 
-
-            #endregion
+#endregion
 
 
             //Deleting Sensitivity

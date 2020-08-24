@@ -59,6 +59,7 @@ namespace Weatherford.POP.Server.IntegrationTests
         protected List<AssetSettingDTO> _assetSettingsToRestore;
         protected List<Tuple<long, string>> _assetSettingNamesToRemove;
         protected List<UserDTO> _usersToRemove;
+        protected List<ADGroupDTO> _adGroupsToRemove;
         protected List<RoleDTO> _rolesToRemove;
         protected List<WellDTO> _wellsAtStart;
         protected List<WellAllocationGroupDTO> _wellAllocationGroupsToRemove;
@@ -316,6 +317,11 @@ namespace Weatherford.POP.Server.IntegrationTests
             get { return _reportService ?? (_reportService = _serviceFactory.GetService<IReportService>()); }
         }
 
+        protected ITrackingItemService _trackingItemService;
+        protected ITrackingItemService TrackingItemService
+        {
+            get { return _trackingItemService ?? (_trackingItemService = _serviceFactory.GetService<ITrackingItemService>()); }
+        }
         #endregion Services
 
         protected AuthenticatedUserDTO AuthenticatedUser { get; private set; }
@@ -370,6 +376,7 @@ namespace Weatherford.POP.Server.IntegrationTests
             _wellSettingNamesToRemove = new List<Tuple<long, string>>();
             _wellSettingsToRemove = new List<WellSettingDTO>();
             _usersToRemove = new List<UserDTO>();
+            _adGroupsToRemove = new List<ADGroupDTO>();
             _rolesToRemove = new List<RoleDTO>();
             _wellAllocationGroupsToRemove = new List<WellAllocationGroupDTO>();
             _allocationGroupsToRemove = new List<AllocationGroupDTO>();
@@ -426,6 +433,8 @@ namespace Weatherford.POP.Server.IntegrationTests
                         try
                         {
                             WellAllocationService.DeleteWellAllowableSnapshot(Snapshot.Id.ToString());
+
+                            Trace.WriteLine("Entry deleted successfully for: " + Snapshot.Name);
                         }
                         catch (Exception ex)
                         {
@@ -808,7 +817,18 @@ namespace Weatherford.POP.Server.IntegrationTests
 
                     }
                 }
+                foreach (ADGroupDTO adgroup in _adGroupsToRemove)
+                {
+                    try
+                    {
+                        AdministrationService.RemoveGroup(adgroup.Id.ToString());
+                    }
+                    catch (Exception ex)
+                    {
+                        System.Diagnostics.Trace.WriteLine(string.Format("Failed to remove AdGroup {0}: {1}", adgroup.Name, ex.Message));
 
+                    }
+                }
                 foreach (RoleDTO role in _rolesToRemove)
                 {
                     try
@@ -1139,6 +1159,7 @@ namespace Weatherford.POP.Server.IntegrationTests
             List<PropertyInfo> props = first.GetType().GetProperties(BindingFlags.Instance | BindingFlags.Public).ToList();
             foreach (PropertyInfo prop in props)
             {
+                Trace.WriteLine($"Verifiying the Property {prop.Name} ");
                 if (propertiesToIgnore.Contains(prop.Name))
                 {
                     continue;
@@ -1216,6 +1237,8 @@ namespace Weatherford.POP.Server.IntegrationTests
                 {
                     badValues.Add(Tuple.Create(prop.Name, val1?.ToString(), val2?.ToString()));
                 }
+
+                Trace.WriteLine($"Verified the Property {prop.Name} ");
             }
             Assert.AreEqual(0, badValues.Count, $"{message}: data does not match: " + string.Join(", ", badValues.Select(t => t.Item1 + ": \"" + t.Item2 + "\" != \"" + t.Item3 + "\"")));
         }

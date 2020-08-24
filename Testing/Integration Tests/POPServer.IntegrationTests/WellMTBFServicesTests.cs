@@ -100,26 +100,26 @@ namespace Weatherford.POP.Server.IntegrationTests
             string[] avgSPM = { ((int)WellQuantity.AverageSPM).ToString() };
             CygNetTrendDTO spmTrend = SurveillanceService.GetCygNetTrendsByUDCAndDateRange(avgSPM, well.Id.ToString(), DTOExtensions.ToISO8601(DateTime.UtcNow.AddDays(-1)), DTOExtensions.ToISO8601(DateTime.UtcNow)).FirstOrDefault();
             Assert.IsNotNull(spmTrend.PointValues, "Average SPM has no trend values.");
-            var avgSPMTrend = GetAverageDailyValues(spmTrend, out errorMessage, "hour");
+            List<GeneralTrendPointDTO> avgSPMTrend = GetAverageDailyValues(spmTrend, out errorMessage, "hour", 1);
 
             string[] runTimeYest = { ((int)WellQuantity.RunTimeYesterday).ToString() };
             CygNetTrendDTO runtimeTrend = SurveillanceService.GetCygNetTrendsByUDCAndDateRange(runTimeYest, well.Id.ToString(), DTOExtensions.ToISO8601(DateTime.UtcNow.AddDays(-1)), DTOExtensions.ToISO8601(DateTime.UtcNow)).FirstOrDefault();
             Assert.IsNotNull(runtimeTrend.PointValues, "Run Time has no trend values.");
-            var avgRunTimeTrend = GetAverageDailyValues(runtimeTrend, out errorMessage, "hour");
+            List<GeneralTrendPointDTO> avgRunTimeTrend = GetAverageDailyValues(runtimeTrend, out errorMessage, "hour", 2);
 
             string[] infProdYest = { ((int)WellQuantity.InferredProductionYesterday).ToString() };
             CygNetTrendDTO inferredTrend = SurveillanceService.GetCygNetTrendsByUDCAndDateRange(infProdYest, well.Id.ToString(), DTOExtensions.ToISO8601(DateTime.UtcNow.AddDays(-1)), DTOExtensions.ToISO8601(DateTime.UtcNow)).FirstOrDefault();
             Assert.IsNotNull(inferredTrend.PointValues, "Inferred Production has no trend values.");
-            var avgInferredProdTrend = GetAverageDailyValues(inferredTrend, out errorMessage, "hour");
+            List<GeneralTrendPointDTO> avgInferredProdTrend = GetAverageDailyValues(inferredTrend, out errorMessage, "hour", 2);
 
             string[] cyclesYest = { ((int)WellQuantity.CyclesYesterday).ToString() };
             CygNetTrendDTO cycleTrend = SurveillanceService.GetCygNetTrendsByUDCAndDateRange(cyclesYest, well.Id.ToString(), DTOExtensions.ToISO8601(DateTime.UtcNow.AddDays(-1)), DTOExtensions.ToISO8601(DateTime.UtcNow)).FirstOrDefault();
             Assert.IsNotNull(cycleTrend.PointValues, "Cycles Yesterday has no trend values.");
-            var avgCycleYestTrend = GetAverageDailyValues(cycleTrend, out errorMessage, "hour");
+            List<GeneralTrendPointDTO> avgCycleYestTrend = GetAverageDailyValues(cycleTrend, out errorMessage, "hour", 1);
 
-            double mtbfSPMVal = Math.Round((double)mtbfTrend[0].SPMValue, 2, MidpointRounding.AwayFromZero);
-            double mtbfRunTimeVal = Math.Round((double)mtbfTrend[0].RunTimeValue, 2, MidpointRounding.AwayFromZero);
-            double mtbfIPVal = Math.Round((double)mtbfTrend[0].InferredProductionValue, 2, MidpointRounding.AwayFromZero);
+            double mtbfSPMVal = Math.Round((double)mtbfTrend.OrderBy(trend => trend.TrendDateTime).First().SPMValue, 1, MidpointRounding.AwayFromZero);
+            double mtbfRunTimeVal = Math.Round((double)mtbfTrend.OrderBy(trend => trend.TrendDateTime).First().RunTimeValue, 2, MidpointRounding.AwayFromZero);
+            double mtbfIPVal = Math.Round((double)mtbfTrend.OrderBy(trend => trend.TrendDateTime).First().InferredProductionValue, 2, MidpointRounding.AwayFromZero);
             Assert.AreEqual((double)avgSPMTrend.First().Value, mtbfSPMVal, 0.1, "MTBF SPM Trend Mismatch");
             Assert.AreEqual((double)avgRunTimeTrend.First().Value, mtbfRunTimeVal, 0.1, "MTBF Run value Mimatch");
             Assert.AreEqual((double)avgInferredProdTrend.First().Value, mtbfIPVal, 0.1, "MTBF Inferred Production value Mismatch");
@@ -180,7 +180,7 @@ namespace Weatherford.POP.Server.IntegrationTests
                 trendPointList.Add(trendPoint);
             }
 
-            return trendPointList;
+            return trendPointList.OrderBy(trend => trend.Timestamp).ToList();
         }
 
         //Test Method for Get Failure Details
