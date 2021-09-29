@@ -10,10 +10,18 @@ namespace copyonlylatest
 {
     class Program
     {
+        public  static string desiredfolderpath = "";
         static void Main(string[] args)
         {
-           // BuildCopy();
-            UQACopy();
+            string fcopy = System.Configuration.ConfigurationManager.AppSettings.Get("Foldercopy");
+            if (fcopy.Equals("true"))
+            {
+                UQACopy();
+            }
+            else
+            {
+                BuildCopy();
+            }
         }
 
         static void BuildCopy()
@@ -112,7 +120,7 @@ namespace copyonlylatest
                         {
                             Directory.CreateDirectory(Path.Combine(dst, indfolder, fldr));
                         }
-
+                        desiredfolderpath = Path.Combine(dst, indfolder, fldr);
                         dorobocopyFolders(Path.Combine(src, indfolder, fldr), Path.Combine(dst, indfolder, fldr));
                     }
                     LogMessage("************************Copy Process Completed !!!**************** ");
@@ -130,6 +138,7 @@ namespace copyonlylatest
             int chkdays = Int32.Parse(System.Configuration.ConfigurationManager.AppSettings["Hourstocheck"]);
             string ForeSiteDepFolders = System.Configuration.ConfigurationManager.AppSettings["desiredFolders"];
             string targetsiglefile = System.Configuration.ConfigurationManager.AppSettings["targetfile"];
+            string CopyFolderswithoutParent = System.Configuration.ConfigurationManager.AppSettings.Get("CopyFolderswithoutParent");
             targetsiglefile = "";
             string skipfolders = System.Configuration.ConfigurationManager.AppSettings["skipfolders"];
             var directory = new DirectoryInfo(src);
@@ -191,13 +200,26 @@ namespace copyonlylatest
                 {
                     foreach (string fldr in reqfolders)
                     {
-                        LogMessage("File Name : = " + fldr);
-                        if (!Directory.Exists(Path.Combine(dst, indfolder, fldr)))
+                        if (CopyFolderswithoutParent.Equals("true"))
                         {
-                            Directory.CreateDirectory(Path.Combine(dst, indfolder, fldr));
+                            LogMessage("File Name : = " + fldr);
+                            if (!Directory.Exists(Path.Combine(dst,fldr)))
+                            {
+                                Directory.CreateDirectory(Path.Combine(dst,fldr));
+                            }
+                            LogMessage("Copying only latest from : ******************" + Path.Combine(src, indfolder, fldr));
+                            dorobocopyFolders(Path.Combine(src, indfolder, fldr), Path.Combine(dst,fldr));
                         }
+                        else
+                        { 
+                        LogMessage("File Name : = " + fldr);
+                            if (!Directory.Exists(Path.Combine(dst, indfolder, fldr)))
+                            {
+                                Directory.CreateDirectory(Path.Combine(dst, indfolder, fldr));
+                            }
                         LogMessage("Copying only latest from : ******************" + Path.Combine(src, indfolder, fldr));
                         dorobocopyFolders(Path.Combine(src, indfolder, fldr), Path.Combine(dst, indfolder, fldr));
+                    }
                     }
                 }
                 LogMessage("************************Copy Process Completed Copied latest build only !!!**************** ");
@@ -217,7 +239,7 @@ namespace copyonlylatest
                         {
                             Directory.CreateDirectory(Path.Combine(dst, indfolder, fldr));
                         }
-
+                        desiredfolderpath = Path.Combine(dst, indfolder, fldr);
                         dorobocopyFolders(Path.Combine(src, indfolder, fldr), Path.Combine(dst, indfolder, fldr));
                     }
                     LogMessage("************************Copy Process Completed !!!**************** ");

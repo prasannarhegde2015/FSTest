@@ -1,0 +1,6 @@
+C:\Users\E159279\Documents\Visual Studio 2017\Projects\ScreenUnlock\ScreenUnlock\bin\Debug\ScreenUnlock.exe.config
+C:\Users\E159279\Documents\Visual Studio 2017\Projects\ScreenUnlock\ScreenUnlock\bin\Debug\ScreenUnlock.exe
+C:\Users\E159279\Documents\Visual Studio 2017\Projects\ScreenUnlock\ScreenUnlock\bin\Debug\ScreenUnlock.pdb
+C:\Users\E159279\Documents\Visual Studio 2017\Projects\ScreenUnlock\ScreenUnlock\obj\Debug\ScreenUnlock.csprojResolveAssemblyReference.cache
+C:\Users\E159279\Documents\Visual Studio 2017\Projects\ScreenUnlock\ScreenUnlock\obj\Debug\ScreenUnlock.exe
+C:\Users\E159279\Documents\Visual Studio 2017\Projects\ScreenUnlock\ScreenUnlock\obj\Debug\ScreenUnlock.pdb

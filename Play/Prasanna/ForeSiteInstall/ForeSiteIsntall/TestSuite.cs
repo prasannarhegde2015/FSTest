@@ -34,7 +34,7 @@ namespace CygNet
             AutomationForsite.LaunchApplicationtestcase();
             string server = ConfigurationManager.AppSettings.Get("server");
             string dbname = ConfigurationManager.AppSettings.Get("dbname");
-            AutomationForsite.foresitescreen(server, dbname);
+            AutomationForsite.ForeSiteScreen(server, dbname);
         }
 
 

@@ -45,22 +45,29 @@ namespace ForeSiteUninstall
             cwindow1.SearchProperties[WinWindow.PropertyNames.ClassName] = "CabinetWClass";
             cwindow1.DrawHighlight();
             cwindow1.Maximized = true;
-            WinPane searchbox = new WinPane(cwindow1);
-            searchbox.SearchProperties[WinPane.PropertyNames.ControlType] = "Pane";
-            searchbox.SearchProperties[WinPane.PropertyNames.Name] = " Search Programs and Features";
-            UITestControlCollection colofpane = searchbox.GetChildren();
-            UITestControl trt = null;
-            foreach(UITestControl ctl1searchbox in colofpane)
-            {
-                
-                if (ctl1searchbox.Name == "Search Box")
-                {
-                    trt = ctl1searchbox;
-                    break;
-                }
-                
-            }
-            WinEdit txtsearchbox = (WinEdit)trt;
+            WinWindow searchbox = new WinWindow(cwindow1);
+            searchbox.SearchProperties[WinWindow.PropertyNames.ClassName] = "UniversalSearchBand";
+            searchbox.SearchProperties[WinWindow.PropertyNames.ControlType] = "Window";
+            WinClient wn = new WinClient(searchbox);
+            wn.DrawHighlight();
+            wn.SearchProperties[WinClient.PropertyNames.ControlType] = "Client";
+            wn.SearchProperties[WinClient.PropertyNames.ClassName] = "UniversalSearchBand";
+            wn.DrawHighlight();
+            //UITestControlCollection colofpane = wn.GetChildren();
+            //UITestControl trt = null;
+            //foreach(UITestControl ctl1searchbox in colofpane)
+            //{
+
+            //    if (ctl1searchbox.Name == "SearchEditBox")
+            //    {
+            //        trt = ctl1searchbox;
+            //        break;
+            //    }
+
+            //}
+            WinEdit txtsearchbox = new WinEdit(wn);
+          //  WinEdit txtsearchbox = (WinEdit)trt;
+            txtsearchbox.DrawHighlight();
             Mouse.Click(txtsearchbox);
             
 
@@ -69,11 +76,12 @@ namespace ForeSiteUninstall
                     Playback.Wait(2000);
                     Keyboard.SendKeys("Weatherford ForeSite Bundle");
                     Playback.Wait(1000);
-               
+                    Keyboard.SendKeys("{Enter}");
+
             }
             catch (Exception ex)
             {
-
+                Trace.WriteLine($"Error recived is {ex.Message}");
             }
             WinList InstalledApplist = new WinList(cwindow1);
             InstalledApplist.SearchProperties[WinList.PropertyNames.ControlType] = "List";
@@ -86,6 +94,10 @@ namespace ForeSiteUninstall
                 InstalledApplist.DrawHighlight();
                 UITestControlCollection Listcount = InstalledApplist.Items;
                 int n = Listcount.Count;
+                if (n == 0)
+                {
+                    return; // Do nothing
+                }
                 for (int i = 0; i < n; i++)
                 {
                     WinListItem Items = new WinListItem(InstalledApplist);
@@ -106,13 +118,18 @@ namespace ForeSiteUninstall
                     }
                     catch (Exception ex)
                     {
-
+                        Trace.WriteLine($"Error message : {ex.Message}");
                     }
 
                 }
 
-               
 
+
+            }
+            else
+            {
+                Keyboard.SendKeys("%{F4}");
+                Playback.Wait(2000);
             }
         }
 
@@ -122,6 +139,7 @@ namespace ForeSiteUninstall
             Trace.WriteLine(AutomationElement.RootElement.Current.ProcessId.ToString());
             AutomationElement root = AutomationElement.RootElement;
             AutomationElement bundlwwin = null;
+            int attempt = 0;
             do
             {
                 AutomationElementCollection allwins = root.FindAll(TreeScope.Descendants,
@@ -137,8 +155,19 @@ namespace ForeSiteUninstall
                     }
                 }
                 Playback.Wait(1000);
+                if (attempt > 5)
+                {
+                    break;
+                }
+                attempt++;
             } while (bundlwwin == null);
-
+            if (attempt > 5)
+            {
+                Playback.Wait(2000);
+                Keyboard.SendKeys("%{F4}");
+                Playback.Wait(2000);
+                return; // Nothing to do
+            }
 
             AutomationElement btnuninstall = null;
 

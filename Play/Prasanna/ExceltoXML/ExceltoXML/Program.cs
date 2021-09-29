@@ -2,6 +2,8 @@
 using System.Collections.Generic;
 using System.Data;
 using System.Data.Odbc;
+using System.Diagnostics;
+using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -17,24 +19,61 @@ namespace ExcelToXmlUtility
         public static string strtablname = "";
         static void Main(string[] args)
         {
-            Console.WriteLine("Please Enter Source Excel File , DataSetName , TableName and Target XML file name");
-            Console.WriteLine("Note that Utility will look for Excel  file Sheet name as 'mapping'");
-            Console.WriteLine("First Argument is ExcelFile Path ,Second is DataSetName third is tablename and fourht is  xml path");
-            Console.WriteLine("ExampleUsage : ExcelToXmlUtility.exe <excelfilepath> <datasetname> <tablename> <xmloutpupath>");
-            if (args.Length != 4)
+            Console.WriteLine("*********************Usage : ********************");
+            Console.WriteLine("******Required File Format *.xls and sheet name ='mapping' : ********************");
+            Console.WriteLine("Enter '1' to Convert Single File**********************");
+            Console.WriteLine("Enter '2' for batch Process **********************");
+            Console.WriteLine("Enter Processing Option '1' or '2' **********************");
+            string userinput =Console.ReadLine();
+            if (userinput != "1" && userinput != "2" )
             {
-                Console.WriteLine("Invalid Argments List Please Correct it as per above help message");
+                Console.WriteLine("Invalid User Input ..Please Enter Valid Optiions and Gry again");
+                return;
             }
-            excelfile = args[0];
-            strdatasetname = args[1];
-            strtablname = args[2];
-            xmlfile = args[3];
-            generateXmlFilefromDataTable(strdatasetname, strtablname);
-            // Test Target Consumer Method
+
+            switch (userinput)
+            {
+                case "1":
+                    {
+                        Console.WriteLine($"Enter Absolute Path for Excel File (*.xls) eg 'c:\\logs\\Test.xls' **********************");
+                        string inputexcel = Console.ReadLine();
+                        if (!File.Exists(inputexcel))
+                        {
+                            Console.WriteLine("File Not found : Please make sure path entered is valid");
+                            return;
+                        }
+                        CreateXML(inputexcel);
+                        break;
+                        
+                    };
+                case "2":
+                    {
+                        Console.WriteLine($"Enter Absolute Path for Directory having Excel Files (*.xls) eg 'c:\\logs' **********************");
+                        string inputexcel = Console.ReadLine();
+                        if (!Directory.Exists(inputexcel) && Directory.GetFiles(inputexcel,"*.xls").Length ==0)
+                        {
+                            Console.WriteLine("Direcoty Not found or No Excel Files in that directory : Please make sure path entered is valid");
+                            return;
+                        }
+                        CreateXmlsinGo(inputexcel);
+                        break;
+
+                    }
+                default:
+                    {
+                        break;
+                    }
+            }
+
+        }
+
+        static void CreateXML(string xlsfile)
+        {
+            xmlfile = xlsfile.Replace("xls", "xml");
+            generateXmlFilefromDataTable(xlsfile,"DataSet", "record");
             DataTable dtnew = BuildDataTableFromXml(xmlfile);
             Console.WriteLine("End to End Testing was completed");
         }
-
 
         static DataTable exceltoDataTable(string xlsfilepath)
         {
@@ -42,15 +81,31 @@ namespace ExcelToXmlUtility
             try
             {
                 DataTable dt2 = new DataTable();
-
-                conn2.ConnectionString = @"Driver={Microsoft Excel Driver (*.xls)};DriverId=790;ReadOnly=0;Dbq=" + xlsfilepath;
-                conn2.Open();
-                string strcmdText = "Select * from [mapping$]";
-                OdbcCommand cmd = new OdbcCommand(strcmdText);
-                cmd.Connection = conn2;
-                //OdbcDataReader reder = cmd.ExecuteReader();
-                OdbcDataAdapter da = new OdbcDataAdapter(cmd);
-                da.Fill(dt2);
+                if (File.Exists(xlsfilepath))
+                {
+                    string filename = Path.GetFileNameWithoutExtension(xlsfilepath);
+                    filename = filename + ".xls";
+                    Console.WriteLine($"File Name of Excel is: {filename} ");
+                    string localpath = Directory.GetCurrentDirectory();
+                    Console.WriteLine($"Currnet Path is: {localpath} ");
+                    if (!File.Exists(Path.Combine(localpath, filename)))
+                    {
+                        Console.WriteLine($"Doing Copy ...Source : {xlsfilepath}   Destination {Path.Combine(localpath, filename)} ");
+                        File.Copy(xlsfilepath, Path.Combine(localpath, filename));
+                    }
+                    conn2.ConnectionString = @"Driver={Microsoft Excel Driver (*.xls)};DriverId=790;ReadOnly=0;Dbq=" + filename;
+                    conn2.Open();
+                    string strcmdText = "Select * from [mapping$]";
+                    OdbcCommand cmd = new OdbcCommand(strcmdText);
+                    cmd.Connection = conn2;
+                    //OdbcDataReader reder = cmd.ExecuteReader();
+                    OdbcDataAdapter da = new OdbcDataAdapter(cmd);
+                    da.Fill(dt2);
+                }
+                else
+                {
+                    Console.WriteLine($"File Name Provided {xlsfilepath} does not exist ");
+                }
                 return dt2;
             }
             finally
@@ -60,13 +115,26 @@ namespace ExcelToXmlUtility
             }
         }
 
-        static void generateXmlFilefromDataTable(string datasetname, string tblname)
+        static void generateXmlFilefromDataTable(string excelfile, string datasetname, string tblname)
         {
             DataTable tbl = exceltoDataTable(excelfile);
             DataSet dataSet = new DataSet(datasetname);
             tbl.TableName = tblname;
             dataSet.Tables.Add(tbl);
             dataSet.WriteXml(xmlfile);
+            string rawxml = File.ReadAllText(xmlfile);
+            string cleanxml = "";
+            //We  may need more of such cleanup
+            string[] extranouscharctersarray = new string[] { "_x0020_" , "_x0021_" , "_x0022_",
+                                                             "_x0023_","_x0024","_x0025",
+                                                             "_x0026_","_x0027_","_x0028_",
+                                                              "_x0029_","_x002F_d","_x00B3_"};
+            foreach (string extran in extranouscharctersarray)
+            {
+                rawxml = rawxml.Replace(extran, "");
+            }
+            cleanxml = rawxml;
+            File.WriteAllText(xmlfile, cleanxml);
             Console.WriteLine("Output Xml generated at path " + xmlfile);
         }
         //Target Consumer Test Method
@@ -111,6 +179,18 @@ namespace ExcelToXmlUtility
             }
 
             return Dt;
+        }
+        /// <summary>
+        /// Need to call this in another Test Project Method if required
+        /// </summary>
+        public static void CreateXmlsinGo(string rootlocation)
+        {
+            string utilpath = rootlocation;
+            string[] collection = Directory.GetFiles(utilpath, "*.xls");
+            foreach (var item in collection)
+            {
+                CreateXML(item);
+            }
         }
     }
 }

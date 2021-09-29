@@ -1,3 +1,4 @@
+﻿using Microsoft.Win32;
 using System;
 using System.Collections.Generic;
 using System.Configuration;
@@ -6,6 +7,9 @@ using System.Net;
 using System.Net.Mail;
 using System.Text;
 using System.Threading.Tasks;
+using MailKit.Net.Smtp;
+using MailKit.Security;
+using MimeKit;
 
 namespace SendAutoEmail
 {
@@ -13,8 +17,13 @@ namespace SendAutoEmail
     {
         static void Main(string[] args)
         {
-          //  SendEmail();
-            SendEmailFromGmail();
+            //  SendEmail();
+            //   SendEmailFromSMTP();
+            //  GetInstalledApps();
+            //   Console.ReadLine();
+            SendGmailEmail("Test Email Local", "Ignore for now");
+
+
         }
         private static void sendemail(string ListTo, string fileName)
         {
@@ -49,54 +58,73 @@ namespace SendAutoEmail
                 throw new Exception("Error in Sending Mails.." + ex.Message);
             }
         }
-        private static void SendEmail()
+       
+
+       
+        private static void SendGmailEmail(string subject, string body)
         {
-            String userName = "WFT\\E159279";
-            String password = "Lowis2020JAN;";
-            MailMessage msg = new MailMessage("prasanna.hegde@weatherford.com", "prasanna.hegde@weatherford.com");
-            msg.Subject = "Your Subject Name";
-            StringBuilder sb = new StringBuilder();
-            sb.AppendLine("Name: ");
-            sb.AppendLine("Mobile Number: ");
-            sb.AppendLine("Email:");
-            sb.AppendLine("Drop Downlist Name:");
-            msg.Body = sb.ToString();
-            //Attachment attach = new Attachment(Server.MapPath("folder/" + ImgName));
-            //msg.Attachments.Add(attach);
-            SmtpClient SmtpClient = new SmtpClient();
-            SmtpClient.Credentials = new System.Net.NetworkCredential(userName, password);
-            SmtpClient.Host = "smtp.office365.com";
-            SmtpClient.Port = 587;
-            SmtpClient.EnableSsl = true;
-            SmtpClient.Send(msg);
+            int port = 465;
+            string host = "smtp.gmail.com";
+            string username = "devopsuser2018@gmail.com";
+            string fromdisplayName = "MTC";
+            string password = "ForeSite430406";
+            string mailFrom = "noreply@ATS.com";
+            var toAddress = new MailboxAddress( "Prasanna", "prasanna.hegde@weatherford.com");
+            var toAddress2 = new MailboxAddress( "Swati", "swati.dumbre@weatherford.com");
+
+            List<MailboxAddress> addresslist = new List<MailboxAddress>();
+            addresslist.Add(toAddress);
+            addresslist.Add(toAddress2);
+
+            foreach (var item in addresslist)
+            {
+                var message = new MimeMessage();
+                message.From.Add(new MailboxAddress(fromdisplayName, mailFrom));
+                message.To.Add(item);
+                message.Subject = subject;
+                message.Body = new TextPart("plain") { Text = body };
+
+                using (var client = new MailKit.Net.Smtp.SmtpClient())
+                {
+                    client.Connect(host, port, SecureSocketOptions.Auto);
+                    NetworkCredential networkCredential = new NetworkCredential(username, password);
+                    client.Authenticate(networkCredential);
+                    client.Send(message);
+                    client.Disconnect(true);
+                } 
+            }
         }
 
-        private static void SendEmailFromGmail()
+
+        public static string GetInstalledApps(string Appname)
         {
-
-            var fromAddress = new MailAddress("devopsuser2018@gmail.com", "DevOpsTestAccount");
-            var toAddress = new MailAddress("prasanna.hegde@weatherford.com", "Prasanna");
-            const string fromPassword = "DevOpsUser97bd916$";
-            const string subject = "Gmail SMTP MailKit test";
-            const string body = "Tracking Item <Subject> is approaching the designated Due Date. Please take appropriate action to Complete and/or Close this Tracking Item.";
-
-            var smtp = new SmtpClient
+            //Weatherford ForeSite Bundle
+            string reqdisplayversion = String.Empty;
+            List<RegistryKey> lstInstalled = new List<RegistryKey>();
+            string uninstallKey = @"SOFTWARE\Microsoft\Windows\CurrentVersion\Uninstall";
+            using (RegistryKey rk = Registry.LocalMachine.OpenSubKey(uninstallKey))
             {
-                Host = "smtp.gmail.com",
-                Port = 587,
-                EnableSsl = true,
-                DeliveryMethod = SmtpDeliveryMethod.Network,
-                UseDefaultCredentials = false,
-                Credentials = new NetworkCredential(fromAddress.Address, fromPassword)
-            };
-            using (var message = new MailMessage(fromAddress, toAddress)
-            {
-                Subject = subject,
-                Body = body
-            })
-            {
-                smtp.Send(message);
+                foreach (string skName in rk.GetSubKeyNames())
+                {
+                    using (RegistryKey sk = rk.OpenSubKey(skName))
+                    {
+                        try
+                        {
+                         //   Console.WriteLine($"Regsitery Key Disaply Name: {sk.GetValue("DisplayName")}");
+                            if (sk.GetValue("DisplayName").ToString().ToLower() == Appname.ToLower())
+                            {
+                              reqdisplayversion = sk.GetValue("DisplayVersion").ToString();
+                            }
+                        }
+                        catch
+                        {
+ 
+                        }
+                    }
+                }
             }
+            return reqdisplayversion;
+
         }
     }
 }

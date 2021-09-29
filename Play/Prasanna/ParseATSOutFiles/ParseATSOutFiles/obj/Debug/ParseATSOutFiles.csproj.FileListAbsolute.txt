@@ -3,3 +3,18 @@ c:\users\e159279\documents\visual studio 2017\Projects\ParseATSOutFiles\ParseATS
 c:\users\e159279\documents\visual studio 2017\Projects\ParseATSOutFiles\ParseATSOutFiles\bin\Debug\ParseATSOutFiles.pdb
 c:\users\e159279\documents\visual studio 2017\Projects\ParseATSOutFiles\ParseATSOutFiles\obj\Debug\ParseATSOutFiles.exe
 c:\users\e159279\documents\visual studio 2017\Projects\ParseATSOutFiles\ParseATSOutFiles\obj\Debug\ParseATSOutFiles.pdb
+C:\Workspace\Perforce\ForesiteTrunk\play\Prasanna\ParseATSOutFiles\ParseATSOutFiles\bin\Debug\ParseATSOutFiles.exe.config
+C:\Workspace\Perforce\ForesiteTrunk\play\Prasanna\ParseATSOutFiles\ParseATSOutFiles\bin\Debug\ParseATSOutFiles.exe
+C:\Workspace\Perforce\ForesiteTrunk\play\Prasanna\ParseATSOutFiles\ParseATSOutFiles\bin\Debug\ParseATSOutFiles.pdb
+C:\Workspace\Perforce\ForesiteTrunk\play\Prasanna\ParseATSOutFiles\ParseATSOutFiles\bin\Debug\MailKit.dll
+C:\Workspace\Perforce\ForesiteTrunk\play\Prasanna\ParseATSOutFiles\ParseATSOutFiles\bin\Debug\MimeKit.dll
+C:\Workspace\Perforce\ForesiteTrunk\play\Prasanna\ParseATSOutFiles\ParseATSOutFiles\bin\Debug\BouncyCastle.Crypto.dll
+C:\Workspace\Perforce\ForesiteTrunk\play\Prasanna\ParseATSOutFiles\ParseATSOutFiles\bin\Debug\MailKit.pdb
+C:\Workspace\Perforce\ForesiteTrunk\play\Prasanna\ParseATSOutFiles\ParseATSOutFiles\bin\Debug\MailKit.xml
+C:\Workspace\Perforce\ForesiteTrunk\play\Prasanna\ParseATSOutFiles\ParseATSOutFiles\bin\Debug\MimeKit.pdb
+C:\Workspace\Perforce\ForesiteTrunk\play\Prasanna\ParseATSOutFiles\ParseATSOutFiles\bin\Debug\MimeKit.xml
+C:\Workspace\Perforce\ForesiteTrunk\play\Prasanna\ParseATSOutFiles\ParseATSOutFiles\obj\Debug\ParseATSOutFiles.csproj.AssemblyReference.cache
+C:\Workspace\Perforce\ForesiteTrunk\play\Prasanna\ParseATSOutFiles\ParseATSOutFiles\obj\Debug\ParseATSOutFiles.csproj.CoreCompileInputs.cache
+C:\Workspace\Perforce\ForesiteTrunk\play\Prasanna\ParseATSOutFiles\ParseATSOutFiles\obj\Debug\ParseATSOutFiles.csproj.CopyComplete
+C:\Workspace\Perforce\ForesiteTrunk\play\Prasanna\ParseATSOutFiles\ParseATSOutFiles\obj\Debug\ParseATSOutFiles.exe
+C:\Workspace\Perforce\ForesiteTrunk\play\Prasanna\ParseATSOutFiles\ParseATSOutFiles\obj\Debug\ParseATSOutFiles.pdb

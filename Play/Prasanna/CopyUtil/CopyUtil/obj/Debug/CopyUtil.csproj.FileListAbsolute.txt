@@ -9,3 +9,9 @@ C:\Prasanna\ForeSite\UI Automation\Helper Projects\CopyUtil\CopyUtil\obj\Debug\C
 C:\Prasanna\ForeSite\UI Automation\Helper Projects\CopyUtil\CopyUtil\bin\Debug\CopyUtil.exe
 C:\Prasanna\ForeSite\UI Automation\Helper Projects\CopyUtil\CopyUtil\bin\Debug\CopyUtil.pdb
 C:\Prasanna\ForeSite\UI Automation\Helper Projects\CopyUtil\CopyUtil\obj\Debug\CopyUtil.csprojResolveAssemblyReference.cache
+C:\Workspace\Perforce\ForesiteTrunk\play\Prasanna\CopyUtil\CopyUtil\bin\Debug\CopyUtil.exe.config
+C:\Workspace\Perforce\ForesiteTrunk\play\Prasanna\CopyUtil\CopyUtil\bin\Debug\CopyUtil.exe
+C:\Workspace\Perforce\ForesiteTrunk\play\Prasanna\CopyUtil\CopyUtil\bin\Debug\CopyUtil.pdb
+C:\Workspace\Perforce\ForesiteTrunk\play\Prasanna\CopyUtil\CopyUtil\obj\Debug\CopyUtil.csprojResolveAssemblyReference.cache
+C:\Workspace\Perforce\ForesiteTrunk\play\Prasanna\CopyUtil\CopyUtil\obj\Debug\CopyUtil.exe
+C:\Workspace\Perforce\ForesiteTrunk\play\Prasanna\CopyUtil\CopyUtil\obj\Debug\CopyUtil.pdb

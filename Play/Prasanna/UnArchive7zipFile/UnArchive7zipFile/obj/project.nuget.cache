@@ -1,0 +1,10 @@
+{
+  "version": 2,
+  "dgSpecHash": "J8/7AWIQBQiS+T+pP4GBQi4fvl6JUXDVr0ozSQzuB3vNvFSSuYpdnw5lvEioXD3iViGJUJA7wVO0Yubj8D7aYQ==",
+  "success": true,
+  "projectFilePath": "C:\\Workspace\\Perforce\\ForesiteTrunk\\play\\Prasanna\\UnArchive7zipFile\\UnArchive7zipFile\\UnArchive7zipFile.csproj",
+  "expectedPackageFiles": [
+    "C:\\Users\\E159279\\.nuget\\packages\\sikulisharp\\1.5.0\\sikulisharp.1.5.0.nupkg.sha512"
+  ],
+  "logs": []
+}

@@ -1,0 +1,7 @@
+C:\Workspace\Perforce\ForesiteTrunk\play\Prasanna\ForeSiteInstall\bin\Debug\ForeSiteIsntall.dll.config
+C:\Workspace\Perforce\ForesiteTrunk\play\Prasanna\ForeSiteInstall\bin\Debug\ForeSiteIsntall.dll
+C:\Workspace\Perforce\ForesiteTrunk\play\Prasanna\ForeSiteInstall\bin\Debug\ForeSiteIsntall.pdb
+C:\Workspace\Perforce\ForesiteTrunk\play\Prasanna\ForeSiteInstall\obj\Debug\ForeSiteInstall.csproj.CoreCompileInputs.cache
+C:\Workspace\Perforce\ForesiteTrunk\play\Prasanna\ForeSiteInstall\obj\Debug\ForeSiteIsntall.dll
+C:\Workspace\Perforce\ForesiteTrunk\play\Prasanna\ForeSiteInstall\obj\Debug\ForeSiteIsntall.pdb
+C:\Workspace\Perforce\ForesiteTrunk\play\Prasanna\ForeSiteInstall\obj\Debug\ForeSiteInstall.csproj.AssemblyReference.cache
