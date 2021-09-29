@@ -1,0 +1,58 @@
+{
+  "format": 1,
+  "restore": {
+    "C:\\Workspace\\Perforce\\ForesiteTrunk\\play\\Prasanna\\UnArchive7zipFile\\UnArchive7zipFile\\UnArchive7zipFile.csproj": {}
+  },
+  "projects": {
+    "C:\\Workspace\\Perforce\\ForesiteTrunk\\play\\Prasanna\\UnArchive7zipFile\\UnArchive7zipFile\\UnArchive7zipFile.csproj": {
+      "version": "1.0.0",
+      "restore": {
+        "projectUniqueName": "C:\\Workspace\\Perforce\\ForesiteTrunk\\play\\Prasanna\\UnArchive7zipFile\\UnArchive7zipFile\\UnArchive7zipFile.csproj",
+        "projectName": "UnArchive7zipFile",
+        "projectPath": "C:\\Workspace\\Perforce\\ForesiteTrunk\\play\\Prasanna\\UnArchive7zipFile\\UnArchive7zipFile\\UnArchive7zipFile.csproj",
+        "packagesPath": "C:\\Users\\E159279\\.nuget\\packages\\",
+        "outputPath": "C:\\Workspace\\Perforce\\ForesiteTrunk\\play\\Prasanna\\UnArchive7zipFile\\UnArchive7zipFile\\obj\\",
+        "projectStyle": "PackageReference",
+        "skipContentFileWrite": true,
+        "configFilePaths": [
+          "C:\\Workspace\\Perforce\\ForesiteTrunk\\NuGet.Config",
+          "C:\\Users\\E159279\\AppData\\Roaming\\NuGet\\NuGet.Config",
+          "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
+        ],
+        "originalTargetFrameworks": [
+          "net451"
+        ],
+        "sources": {
+          "C:\\Program Files (x86)\\Microsoft SDKs\\NuGetPackages\\": {},
+          "https://api.nuget.org/v3/index.json": {}
+        },
+        "frameworks": {
+          "net451": {
+            "projectReferences": {}
+          }
+        }
+      },
+      "frameworks": {
+        "net451": {
+          "dependencies": {
+            "SikuliSharp": {
+              "target": "Package",
+              "version": "[1.5.0, )"
+            }
+          }
+        }
+      },
+      "runtimes": {
+        "win": {
+          "#import": []
+        },
+        "win-x64": {
+          "#import": []
+        },
+        "win-x86": {
+          "#import": []
+        }
+      }
+    }
+  }
+}

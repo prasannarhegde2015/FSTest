@@ -1,0 +1,10 @@
+C:\Workspace\Perforce\ForesiteTrunk\play\Prasanna\UnArchive7zipFile\UnArchive7zipFile\bin\Debug\7ZaExe\7za.dll
+C:\Workspace\Perforce\ForesiteTrunk\play\Prasanna\UnArchive7zipFile\UnArchive7zipFile\bin\Debug\7ZaExe\7zxa.dll
+C:\Workspace\Perforce\ForesiteTrunk\play\Prasanna\UnArchive7zipFile\UnArchive7zipFile\bin\Debug\7ZaExe\7za.exe
+C:\Workspace\Perforce\ForesiteTrunk\play\Prasanna\UnArchive7zipFile\UnArchive7zipFile\bin\Debug\UnArchive7zipFile.exe.config
+C:\Workspace\Perforce\ForesiteTrunk\play\Prasanna\UnArchive7zipFile\UnArchive7zipFile\bin\Debug\UnArchive7zipFile.exe
+C:\Workspace\Perforce\ForesiteTrunk\play\Prasanna\UnArchive7zipFile\UnArchive7zipFile\bin\Debug\UnArchive7zipFile.pdb
+C:\Workspace\Perforce\ForesiteTrunk\play\Prasanna\UnArchive7zipFile\UnArchive7zipFile\obj\Debug\UnArchive7zipFile.exe
+C:\Workspace\Perforce\ForesiteTrunk\play\Prasanna\UnArchive7zipFile\UnArchive7zipFile\obj\Debug\UnArchive7zipFile.pdb
+C:\Workspace\Perforce\ForesiteTrunk\play\Prasanna\UnArchive7zipFile\UnArchive7zipFile\obj\Debug\UnArchive7zipFile.csproj.CoreCompileInputs.cache
+C:\Workspace\Perforce\ForesiteTrunk\play\Prasanna\UnArchive7zipFile\UnArchive7zipFile\obj\Debug\UnArchive7zipFile.csproj.AssemblyReference.cache

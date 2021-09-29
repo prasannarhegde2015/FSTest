@@ -1,0 +1,275 @@
+{
+  "version": 2,
+  "targets": {
+    ".NETFramework,Version=v4.6.1": {
+      "NPOI/2.5.1": {
+        "type": "package",
+        "dependencies": {
+          "Portable.BouncyCastle": "1.8.6",
+          "SharpZipLib": "1.2.0"
+        },
+        "compile": {
+          "lib/net45/NPOI.OOXML.dll": {},
+          "lib/net45/NPOI.OpenXml4Net.dll": {},
+          "lib/net45/NPOI.OpenXmlFormats.dll": {},
+          "lib/net45/NPOI.dll": {}
+        },
+        "runtime": {
+          "lib/net45/NPOI.OOXML.dll": {},
+          "lib/net45/NPOI.OpenXml4Net.dll": {},
+          "lib/net45/NPOI.OpenXmlFormats.dll": {},
+          "lib/net45/NPOI.dll": {}
+        }
+      },
+      "Portable.BouncyCastle/1.8.6": {
+        "type": "package",
+        "compile": {
+          "lib/net40/BouncyCastle.Crypto.dll": {}
+        },
+        "runtime": {
+          "lib/net40/BouncyCastle.Crypto.dll": {}
+        }
+      },
+      "SharpZipLib/1.2.0": {
+        "type": "package",
+        "compile": {
+          "lib/net45/ICSharpCode.SharpZipLib.dll": {}
+        },
+        "runtime": {
+          "lib/net45/ICSharpCode.SharpZipLib.dll": {}
+        }
+      }
+    },
+    ".NETFramework,Version=v4.6.1/win": {
+      "NPOI/2.5.1": {
+        "type": "package",
+        "dependencies": {
+          "Portable.BouncyCastle": "1.8.6",
+          "SharpZipLib": "1.2.0"
+        },
+        "compile": {
+          "lib/net45/NPOI.OOXML.dll": {},
+          "lib/net45/NPOI.OpenXml4Net.dll": {},
+          "lib/net45/NPOI.OpenXmlFormats.dll": {},
+          "lib/net45/NPOI.dll": {}
+        },
+        "runtime": {
+          "lib/net45/NPOI.OOXML.dll": {},
+          "lib/net45/NPOI.OpenXml4Net.dll": {},
+          "lib/net45/NPOI.OpenXmlFormats.dll": {},
+          "lib/net45/NPOI.dll": {}
+        }
+      },
+      "Portable.BouncyCastle/1.8.6": {
+        "type": "package",
+        "compile": {
+          "lib/net40/BouncyCastle.Crypto.dll": {}
+        },
+        "runtime": {
+          "lib/net40/BouncyCastle.Crypto.dll": {}
+        }
+      },
+      "SharpZipLib/1.2.0": {
+        "type": "package",
+        "compile": {
+          "lib/net45/ICSharpCode.SharpZipLib.dll": {}
+        },
+        "runtime": {
+          "lib/net45/ICSharpCode.SharpZipLib.dll": {}
+        }
+      }
+    },
+    ".NETFramework,Version=v4.6.1/win-x64": {
+      "NPOI/2.5.1": {
+        "type": "package",
+        "dependencies": {
+          "Portable.BouncyCastle": "1.8.6",
+          "SharpZipLib": "1.2.0"
+        },
+        "compile": {
+          "lib/net45/NPOI.OOXML.dll": {},
+          "lib/net45/NPOI.OpenXml4Net.dll": {},
+          "lib/net45/NPOI.OpenXmlFormats.dll": {},
+          "lib/net45/NPOI.dll": {}
+        },
+        "runtime": {
+          "lib/net45/NPOI.OOXML.dll": {},
+          "lib/net45/NPOI.OpenXml4Net.dll": {},
+          "lib/net45/NPOI.OpenXmlFormats.dll": {},
+          "lib/net45/NPOI.dll": {}
+        }
+      },
+      "Portable.BouncyCastle/1.8.6": {
+        "type": "package",
+        "compile": {
+          "lib/net40/BouncyCastle.Crypto.dll": {}
+        },
+        "runtime": {
+          "lib/net40/BouncyCastle.Crypto.dll": {}
+        }
+      },
+      "SharpZipLib/1.2.0": {
+        "type": "package",
+        "compile": {
+          "lib/net45/ICSharpCode.SharpZipLib.dll": {}
+        },
+        "runtime": {
+          "lib/net45/ICSharpCode.SharpZipLib.dll": {}
+        }
+      }
+    },
+    ".NETFramework,Version=v4.6.1/win-x86": {
+      "NPOI/2.5.1": {
+        "type": "package",
+        "dependencies": {
+          "Portable.BouncyCastle": "1.8.6",
+          "SharpZipLib": "1.2.0"
+        },
+        "compile": {
+          "lib/net45/NPOI.OOXML.dll": {},
+          "lib/net45/NPOI.OpenXml4Net.dll": {},
+          "lib/net45/NPOI.OpenXmlFormats.dll": {},
+          "lib/net45/NPOI.dll": {}
+        },
+        "runtime": {
+          "lib/net45/NPOI.OOXML.dll": {},
+          "lib/net45/NPOI.OpenXml4Net.dll": {},
+          "lib/net45/NPOI.OpenXmlFormats.dll": {},
+          "lib/net45/NPOI.dll": {}
+        }
+      },
+      "Portable.BouncyCastle/1.8.6": {
+        "type": "package",
+        "compile": {
+          "lib/net40/BouncyCastle.Crypto.dll": {}
+        },
+        "runtime": {
+          "lib/net40/BouncyCastle.Crypto.dll": {}
+        }
+      },
+      "SharpZipLib/1.2.0": {
+        "type": "package",
+        "compile": {
+          "lib/net45/ICSharpCode.SharpZipLib.dll": {}
+        },
+        "runtime": {
+          "lib/net45/ICSharpCode.SharpZipLib.dll": {}
+        }
+      }
+    }
+  },
+  "libraries": {
+    "NPOI/2.5.1": {
+      "sha512": "Kw2spKUI8Np0Zr/b8/hsK8NUdjJhDFApDd8WrUFZAo9ltGhN2N4M7vrxuXe9fFb8/745vP60SQWVRfxzyCpkEw==",
+      "type": "package",
+      "path": "npoi/2.5.1",
+      "files": [
+        ".signature.p7s",
+        "LICENSE",
+        "lib/NPOI.OOXML.XML",
+        "lib/NPOI.XML",
+        "lib/net40/NPOI.OOXML.dll",
+        "lib/net40/NPOI.OpenXml4Net.dll",
+        "lib/net40/NPOI.OpenXmlFormats.dll",
+        "lib/net40/NPOI.dll",
+        "lib/net45/NPOI.OOXML.dll",
+        "lib/net45/NPOI.OpenXml4Net.dll",
+        "lib/net45/NPOI.OpenXmlFormats.dll",
+        "lib/net45/NPOI.dll",
+        "lib/netstandard2.0/NPOI.OOXML.dll",
+        "lib/netstandard2.0/NPOI.OpenXml4Net.dll",
+        "lib/netstandard2.0/NPOI.OpenXmlFormats.dll",
+        "lib/netstandard2.0/NPOI.dll",
+        "logo/120_120.jpg",
+        "logo/240_240.png",
+        "logo/32_32.jpg",
+        "logo/60_60.jpg",
+        "npoi.2.5.1.nupkg.sha512",
+        "npoi.nuspec"
+      ]
+    },
+    "Portable.BouncyCastle/1.8.6": {
+      "sha512": "70b78MxGzsVBGItuH6qFMmsIxaoUBAqvjoA20JwJlCMudV3gJBipoXofyV9jUE/Fi5OYDSPyyrtj5GB2TqRPoQ==",
+      "type": "package",
+      "path": "portable.bouncycastle/1.8.6",
+      "files": [
+        ".signature.p7s",
+        "lib/net40/BouncyCastle.Crypto.dll",
+        "lib/net40/BouncyCastle.Crypto.xml",
+        "lib/netstandard2.0/BouncyCastle.Crypto.dll",
+        "lib/netstandard2.0/BouncyCastle.Crypto.xml",
+        "portable.bouncycastle.1.8.6.nupkg.sha512",
+        "portable.bouncycastle.nuspec"
+      ]
+    },
+    "SharpZipLib/1.2.0": {
+      "sha512": "h2nY8FjSsc8YRQmucUYS+uTDrMSNOH7Y3JVVxjJeWUrk9TkgnYXoD5Fys+elUIPGCOtIJqM6czDxjEukefWwGA==",
+      "type": "package",
+      "path": "sharpziplib/1.2.0",
+      "files": [
+        ".signature.p7s",
+        "lib/net45/ICSharpCode.SharpZipLib.dll",
+        "lib/net45/ICSharpCode.SharpZipLib.pdb",
+        "lib/net45/ICSharpCode.SharpZipLib.xml",
+        "lib/netstandard2.0/ICSharpCode.SharpZipLib.dll",
+        "lib/netstandard2.0/ICSharpCode.SharpZipLib.pdb",
+        "lib/netstandard2.0/ICSharpCode.SharpZipLib.xml",
+        "sharpziplib.1.2.0.nupkg.sha512",
+        "sharpziplib.nuspec"
+      ]
+    }
+  },
+  "projectFileDependencyGroups": {
+    ".NETFramework,Version=v4.6.1": [
+      "NPOI >= 2.5.1"
+    ]
+  },
+  "packageFolders": {
+    "C:\\Users\\E159279\\.nuget\\packages\\": {}
+  },
+  "project": {
+    "version": "1.0.0",
+    "restore": {
+      "projectUniqueName": "C:\\Workspace\\Perforce\\ForesiteTrunk\\play\\Prasanna\\ExceltoXML\\ExceltoXML\\ExceltoXML.csproj",
+      "projectName": "ExceltoXML",
+      "projectPath": "C:\\Workspace\\Perforce\\ForesiteTrunk\\play\\Prasanna\\ExceltoXML\\ExceltoXML\\ExceltoXML.csproj",
+      "outputPath": "C:\\Workspace\\Perforce\\ForesiteTrunk\\play\\Prasanna\\ExceltoXML\\ExceltoXML\\obj\\",
+      "projectStyle": "PackageReference",
+      "originalTargetFrameworks": [
+        "net461"
+      ],
+      "frameworks": {
+        "net461": {
+          "projectReferences": {}
+        }
+      }
+    },
+    "dependencies": {
+      "NPOI": {
+        "target": "Package",
+        "version": "2.5.1"
+      }
+    },
+    "frameworks": {
+      "net461": {
+        "dependencies": {
+          "NPOI": {
+            "target": "Package",
+            "version": "2.5.1"
+          }
+        }
+      }
+    },
+    "runtimes": {
+      "win": {
+        "#import": []
+      },
+      "win-x64": {
+        "#import": []
+      },
+      "win-x86": {
+        "#import": []
+      }
+    }
+  }
+}

@@ -1,0 +1,13 @@
+c:\users\e159279\documents\visual studio 2017\Projects\ParseNotification\ParseNotification\bin\Debug\ParseNotification.exe.config
+c:\users\e159279\documents\visual studio 2017\Projects\ParseNotification\ParseNotification\bin\Debug\ParseNotification.exe
+c:\users\e159279\documents\visual studio 2017\Projects\ParseNotification\ParseNotification\bin\Debug\ParseNotification.pdb
+c:\users\e159279\documents\visual studio 2017\Projects\ParseNotification\ParseNotification\obj\Debug\ParseNotification.csprojResolveAssemblyReference.cache
+c:\users\e159279\documents\visual studio 2017\Projects\ParseNotification\ParseNotification\obj\Debug\ParseNotification.exe
+c:\users\e159279\documents\visual studio 2017\Projects\ParseNotification\ParseNotification\obj\Debug\ParseNotification.pdb
+C:\Workspace\Perforce\ForesiteTrunk\play\Prasanna\ParseNotification\ParseNotification\obj\Debug\ParseNotification.csproj.AssemblyReference.cache
+C:\Workspace\Perforce\ForesiteTrunk\play\Prasanna\ParseNotification\ParseNotification\obj\Debug\ParseNotification.csproj.CoreCompileInputs.cache
+C:\Workspace\Perforce\ForesiteTrunk\play\Prasanna\ParseNotification\ParseNotification\obj\Debug\ParseNotification.exe
+C:\Workspace\Perforce\ForesiteTrunk\play\Prasanna\ParseNotification\ParseNotification\obj\Debug\ParseNotification.pdb
+C:\Workspace\Perforce\ForesiteTrunk\play\Prasanna\ParseNotification\ParseNotification\bin\Debug\ParseNotification.exe.config
+C:\Workspace\Perforce\ForesiteTrunk\play\Prasanna\ParseNotification\ParseNotification\bin\Debug\ParseNotification.exe
+C:\Workspace\Perforce\ForesiteTrunk\play\Prasanna\ParseNotification\ParseNotification\bin\Debug\ParseNotification.pdb
