@@ -1,6 +1,0 @@
-C:\Workspace\Perforce\ForesiteTrunk\play\Prasanna\CreateSocketSCVFile\CreateSocketSCVFile\bin\Debug\CreateSocketSCVFile.exe.config
-C:\Workspace\Perforce\ForesiteTrunk\play\Prasanna\CreateSocketSCVFile\CreateSocketSCVFile\bin\Debug\CreateSocketSCVFile.exe
-C:\Workspace\Perforce\ForesiteTrunk\play\Prasanna\CreateSocketSCVFile\CreateSocketSCVFile\bin\Debug\CreateSocketSCVFile.pdb
-C:\Workspace\Perforce\ForesiteTrunk\play\Prasanna\CreateSocketSCVFile\CreateSocketSCVFile\obj\Debug\CreateSocketSCVFile.csprojResolveAssemblyReference.cache
-C:\Workspace\Perforce\ForesiteTrunk\play\Prasanna\CreateSocketSCVFile\CreateSocketSCVFile\obj\Debug\CreateSocketSCVFile.exe
-C:\Workspace\Perforce\ForesiteTrunk\play\Prasanna\CreateSocketSCVFile\CreateSocketSCVFile\obj\Debug\CreateSocketSCVFile.pdb
